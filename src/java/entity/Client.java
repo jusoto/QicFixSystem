@@ -5,7 +5,6 @@
  */
 package entity;
 
-import db.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -134,6 +133,10 @@ public class Client extends User {
             }
         }
 
+    }
+
+    public void selectById(Integer idclient) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

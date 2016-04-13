@@ -5,7 +5,6 @@
  */
 package entity;
 
-import db.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,52 +20,51 @@ import util.Utility;
  */
 public class Service {
 
-    private Integer idservice;
-    private Integer idtower;
-    private Integer idclient;
-    private String towerDescription;
+    private Integer id;
+    private Integer clientId;
+    private Date creationDate;
     private Date startDate;
     private Date endDate;
     private Date cancelDate;
     private Double cost;
-    private Double positionX;
-    private Double positionY;
-    private String address;
+    private Double latitudePickup;
+    private Double longitudePickup;
+    private Double latitudeDestination;
+    private Double longitudeDestination;
+    private String streetAddressPickup;
+    private String statePickup;
+    private String zipcodePickup;
+    private String streetAddressDestination;
+    private String stateDestination;
+    private String zipcodeDestination;
     private String clientDescription;
+    private String towerDescription;
 
     public Service() {
     }
 
-    public Integer getIdservice() {
-        return idservice;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdservice(Integer idservice) {
-        this.idservice = idservice;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Integer getIdtower() {
-        return idtower;
+    public Integer getClientId() {
+        return clientId;
     }
 
-    public void setIdtower(Integer idtower) {
-        this.idtower = idtower;
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
     }
 
-    public Integer getIdclient() {
-        return idclient;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public void setIdclient(Integer idclient) {
-        this.idclient = idclient;
-    }
-
-    public String getTowerDescription() {
-        return towerDescription;
-    }
-
-    public void setTowerDescription(String towerDescription) {
-        this.towerDescription = towerDescription;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public Date getStartDate() {
@@ -101,28 +99,84 @@ public class Service {
         this.cost = cost;
     }
 
-    public Double getPositionX() {
-        return positionX;
+    public Double getLatitudePickup() {
+        return latitudePickup;
     }
 
-    public void setPositionX(Double positionX) {
-        this.positionX = positionX;
+    public void setLatitudePickup(Double latitudePickup) {
+        this.latitudePickup = latitudePickup;
     }
 
-    public Double getPositionY() {
-        return positionY;
+    public Double getLongitudePickup() {
+        return longitudePickup;
     }
 
-    public void setPositionY(Double positionY) {
-        this.positionY = positionY;
+    public void setLongitudePickup(Double longitudePickup) {
+        this.longitudePickup = longitudePickup;
     }
 
-    public String getAddress() {
-        return address;
+    public Double getLatitudeDestination() {
+        return latitudeDestination;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setLatitudeDestination(Double latitudeDestination) {
+        this.latitudeDestination = latitudeDestination;
+    }
+
+    public Double getLongitudeDestination() {
+        return longitudeDestination;
+    }
+
+    public void setLongitudeDestination(Double longitudeDestination) {
+        this.longitudeDestination = longitudeDestination;
+    }
+
+    public String getStreetAddressPickup() {
+        return streetAddressPickup;
+    }
+
+    public void setStreetAddressPickup(String streetAddressPickup) {
+        this.streetAddressPickup = streetAddressPickup;
+    }
+
+    public String getStatePickup() {
+        return statePickup;
+    }
+
+    public void setStatePickup(String statePickup) {
+        this.statePickup = statePickup;
+    }
+
+    public String getZipcodePickup() {
+        return zipcodePickup;
+    }
+
+    public void setZipcodePickup(String zipcodePickup) {
+        this.zipcodePickup = zipcodePickup;
+    }
+
+    public String getStreetAddressDestination() {
+        return streetAddressDestination;
+    }
+
+    public void setStreetAddressDestination(String streetAddressDestination) {
+        this.streetAddressDestination = streetAddressDestination;
+    }
+
+    public String getStateDestination() {
+        return stateDestination;
+    }
+
+    public void setStateDestination(String stateDestination) {
+        this.stateDestination = stateDestination;
+    }
+
+    public String getZipcodeDestination() {
+        return zipcodeDestination;
+    }
+
+    public void setZipcodeDestination(String zipcodeDestination) {
+        this.zipcodeDestination = zipcodeDestination;
     }
 
     public String getClientDescription() {
@@ -133,6 +187,14 @@ public class Service {
         this.clientDescription = clientDescription;
     }
 
+    public String getTowerDescription() {
+        return towerDescription;
+    }
+
+    public void setTowerDescription(String towerDescription) {
+        this.towerDescription = towerDescription;
+    }
+
     public boolean createService(List<Integer> listServiceman) {
 
         boolean resp = false;
@@ -140,21 +202,20 @@ public class Service {
         int idservice;
         HasTower rel = new HasTower();
 
-        String sql = "INSERT INTO service (idcustomer, position_x, position_y, start_date, address, customer_description)"
-                + " VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO service (client_id, creation_date, start_date, end_date, cancel_date, cost,"
+                + " latitude_pickup, longitude_pickup, latitude_destination, longitude_destination,"
+                + " street_address_pickup, state_pickup, zipcode_pickup,"
+                + " street_address_destination, state_destination, zipcode_destination,"
+                + " client_description, tower_description)"
+                + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         Database db = new Database();
         try {
             db.Connect();
             db.setPreparedStatement(sql);
-            db.getPreparedStatement().setInt(++parameterIndex, this.getIdclient());
-            db.getPreparedStatement().setDouble(++parameterIndex, this.getPositionX());
-            db.getPreparedStatement().setDouble(++parameterIndex, this.getPositionY());
-            db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getStartDate());
-            db.getPreparedStatement().setString(++parameterIndex, this.getAddress());
-            db.getPreparedStatement().setString(++parameterIndex, this.getClientDescription());
+            db = prepareStatement(db);
             idservice = db.ExecuteNonQuery();
-            this.setIdservice(idservice);
+            this.setId(idservice);
             rel.createRequest(idservice, listServiceman);
             resp = true;
         } catch (SQLException ex) {
@@ -176,7 +237,7 @@ public class Service {
         boolean resp = false;
         int parameterIndex = 0;
 
-        String sql = "UPDATE service SET tower_description=?, end_date=?, cost=? WHERE idservice=?";
+        String sql = "UPDATE service SET tower_description=?, end_date=?, cost=? WHERE id=?";
 
         Database db = new Database();
         try {
@@ -185,7 +246,7 @@ public class Service {
             db.getPreparedStatement().setString(++parameterIndex, this.getTowerDescription());
             db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getEndDate());
             db.getPreparedStatement().setDouble(++parameterIndex, this.getCost());
-            db.getPreparedStatement().setInt(++parameterIndex, this.getIdservice());
+            db.getPreparedStatement().setInt(++parameterIndex, this.getId());
             db.ExecuteNonQuery();
             resp = true;
         } catch (SQLException ex) {
@@ -208,7 +269,12 @@ public class Service {
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT idservice, idtower, idservice_type, idclient, tower_description, date_start, date_end, cost, position_x, position_y, address, client_description FROM service";
+        sql = "SELECT id, client_id, creation_date, start_date, end_date, cancel_date, cost,"
+                + " latitude_pickup, longitude_pickup, latitude_destination, longitude_destination,"
+                + " street_address_pickup, state_pickup, zipcode_pickup,"
+                + " street_address_destination, state_destination, zipcode_destination,"
+                + " client_description, tower_description"
+                + " FROM service";
 
         Database db = new Database();
         try {
@@ -216,11 +282,7 @@ public class Service {
             db.setStatement();
             rs = db.ExecuteQuery(sql);
             while (rs.next()) {
-                Service service = new Service();
-                service.setIdclient(rs.getString("idclient") != null ? rs.getInt("idclient") : null);
-                service.setStartDate(rs.getString("start_date") != null ? (java.sql.Date) Utility.StringToDate(rs.getString("start_date")) : null);
-                service.setPositionX(rs.getString("position_x") != null ? rs.getDouble("position_x") : null);
-                service.setPositionY(rs.getString("position_y") != null ? rs.getDouble("position_y") : null);
+                Service service = readResulset(rs);
                 list.add(service);
             }
         } catch (SQLException ex) {
@@ -241,6 +303,49 @@ public class Service {
         }
 
         return list;
+    }
+
+    private Service readResulset(ResultSet rs) throws SQLException {
+        Service service = new Service();
+        service.setId(rs.getString("id") != null ? rs.getInt("id") : null);
+        service.setClientId(rs.getString("client_id") != null ? rs.getInt("client_id") : null);
+        service.setStartDate(rs.getString("creation_date") != null ? (java.sql.Date) Utility.StringToDate(rs.getString("creation_date")) : null);
+        service.setStartDate(rs.getString("start_date") != null ? (java.sql.Date) Utility.StringToDate(rs.getString("start_date")) : null);
+        service.setStartDate(rs.getString("end_date") != null ? (java.sql.Date) Utility.StringToDate(rs.getString("end_date")) : null);
+        service.setStartDate(rs.getString("cancel_date") != null ? (java.sql.Date) Utility.StringToDate(rs.getString("cancel_date")) : null);
+        service.setLatitudePickup(rs.getString("latitude_pickup") != null ? rs.getDouble("latitude_pickup") : null);
+        service.setLongitudePickup(rs.getString("longitude_pickup") != null ? rs.getDouble("longitude_pickup") : null);
+        service.setLatitudePickup(rs.getString("latitude_destination") != null ? rs.getDouble("latitude_destination") : null);
+        service.setLongitudePickup(rs.getString("longitude_destination") != null ? rs.getDouble("longitude_destination") : null);
+        service.setStreetAddressPickup(rs.getString("street_address_pickup"));
+        service.setStatePickup(rs.getString("state_pickup"));
+        service.setZipcodePickup(rs.getString("zipcode_pickup"));
+        service.setStreetAddressDestination(rs.getString("street_address_destination"));
+        service.setStateDestination(rs.getString("state_destination"));
+        service.setZipcodeDestination(rs.getString("zipcode_destination"));
+        return service;
+    }
+
+    private Database prepareStatement(Database db) throws SQLException {
+        Integer parameterIndex = 0;
+        db.getPreparedStatement().setInt(++parameterIndex, this.getClientId());
+        db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getCreationDate());
+        db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getStartDate());
+        db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getEndDate());
+        db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getCancelDate());
+        db.getPreparedStatement().setDouble(++parameterIndex, this.getLatitudePickup());
+        db.getPreparedStatement().setDouble(++parameterIndex, this.getLongitudePickup());
+        db.getPreparedStatement().setDouble(++parameterIndex, this.getLatitudeDestination());
+        db.getPreparedStatement().setDouble(++parameterIndex, this.getLongitudeDestination());
+        db.getPreparedStatement().setString(++parameterIndex, this.getStreetAddressPickup());
+        db.getPreparedStatement().setString(++parameterIndex, this.getStatePickup());
+        db.getPreparedStatement().setString(++parameterIndex, this.getZipcodePickup());
+        db.getPreparedStatement().setString(++parameterIndex, this.getStreetAddressDestination());
+        db.getPreparedStatement().setString(++parameterIndex, this.getStateDestination());
+        db.getPreparedStatement().setString(++parameterIndex, this.getZipcodeDestination());
+        db.getPreparedStatement().setString(++parameterIndex, this.getTowerDescription());
+        db.getPreparedStatement().setString(++parameterIndex, this.getClientDescription());
+        return db;
     }
 
 }

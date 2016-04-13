@@ -38,7 +38,7 @@ public class UserREST {
      */
     @Path("/validate")
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces("text/plain")
     public String findAll(@QueryParam("ema") String email, @QueryParam("pas") String password) {
         String token = "";
         User obj = new User();

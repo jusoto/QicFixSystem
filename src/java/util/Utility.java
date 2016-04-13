@@ -86,7 +86,7 @@ public class Utility {
     }
 
     public static String generateToken() {
-        String token = "";
+        String token = "123";
         
         
         

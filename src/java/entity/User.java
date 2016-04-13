@@ -5,7 +5,6 @@
  */
 package entity;
 
-import db.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

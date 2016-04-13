@@ -5,7 +5,6 @@
  */
 package entity;
 
-import db.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -125,6 +124,10 @@ public class Tower extends User {
         }
 
         return resp;
+    }
+
+    public void selectById(Integer idtower) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
 
