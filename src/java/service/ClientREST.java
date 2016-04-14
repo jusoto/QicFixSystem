@@ -37,7 +37,7 @@ public class ClientREST {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Client> findAll() {
         Client obj = new Client();
-        return obj.selectAllCustomer();
+        return obj.selectAll();
     }
 
     /**

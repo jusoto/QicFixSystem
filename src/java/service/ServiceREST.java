@@ -5,6 +5,7 @@
  */
 package service;
 
+import appLogic.AppLogicFacade;
 import entity.Client;
 import entity.Service;
 import java.util.List;
@@ -38,16 +39,24 @@ public class ServiceREST {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Service> findAll() {
         Service obj = new Service();
-        return obj.SelectAll();
+        return obj.selectAll();
     }
 
     /**
-     * PUT method for updating or creating an instance of BancoREST
+     * PUT method for updating or creating an instance of ReciboCobroREST
      * @param content representation for the resource
+     * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(String content) {
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.TEXT_PLAIN})
+    public String putJson(String content) {
+        String message;
+        AppLogicFacade obj = new AppLogicFacade();
+        message = obj.requestService(content);
+        return message;
     }
+    
+    
     
 }

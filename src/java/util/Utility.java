@@ -5,7 +5,13 @@
  */
 package util;
 
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import entity.User;
+import java.lang.reflect.Type;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,9 +26,10 @@ public class Utility {
 
     private static Pattern pattern;
     private static Matcher matcher;
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    private static final String DATE_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss";
-    private static final String DATE_FORMAT_STRING_SHORT = "yyyy-MM-dd";
+    public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    public static final String DATE_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String DATE_FORMAT_STRING_SHORT = "yyyy-MM-dd";
+    public static final String GOOGLE_MAPS_API_KEY = "AIzaSyAhOv2MNrliIM1BrBBOdgzD2Fip1rzUkHQ";
 
     public static boolean checkSession(String sessionKey) {
         boolean resp = false;
@@ -91,6 +98,23 @@ public class Utility {
         
         
         return token;
+    }
+
+    public static String getLocationFromAddress(String pickup) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public static class JsonDateDeserializer implements JsonDeserializer<Date> {
+        @Override
+        public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            final DateFormat df = new SimpleDateFormat("MMM dd, yyyy"); 
+            try {  
+                return df.parse(json.getAsString());  
+            } catch (final java.text.ParseException e) {  
+                e.printStackTrace();
+                return null;
+            }  
+        }        
     }
 
 }

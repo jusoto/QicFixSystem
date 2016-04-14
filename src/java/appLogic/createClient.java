@@ -37,7 +37,7 @@ public class createClient extends HttpServlet {
         obj.setPassword(request.getParameter("password").toString());
         obj.setAddress(request.getParameter("address").toString());
         obj.setDob(Utility.StringToDate(request.getParameter("dob").toString()));
-        obj.createCustomer();
+        obj.create();
         response.sendRedirect("registerCustomer.jsp");
     }
 

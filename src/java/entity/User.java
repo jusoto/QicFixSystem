@@ -12,37 +12,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.websocket.Session;
 
 /**
  *
  * @author Juan
  */
 public class User {
-    
+
     private String email;
     private String password;
-    private String name;
-    private String address;
+    private Integer userTypeId;
+    private String fname;
+    private String lname;
+    private String streetAddress;
+    private String city;
+    private String state;
+    private String zipcode;
     private Date dob;
+    private Date blockEnd;
 
     public User() {
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getEmail() {
@@ -53,12 +42,68 @@ public class User {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getUserTypeId() {
+        return userTypeId;
+    }
+
+    public void setUserTypeId(Integer userTypeId) {
+        this.userTypeId = userTypeId;
+    }
+
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
     public Date getDob() {
@@ -68,23 +113,40 @@ public class User {
     public void setDob(Date dob) {
         this.dob = dob;
     }
-    
-    public boolean validateUser(String email, String pass){
+
+    public Date getBlockEnd() {
+        return blockEnd;
+    }
+
+    public void setBlockEnd(Date blockEnd) {
+        this.blockEnd = blockEnd;
+    }
+
+    public boolean validateUser(String email, String pass) {
         boolean respuesta = false;
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT email, name, address, dob FROM user WHERE email='" + email + "' AND password='" + pass + "'";
+        sql = "SELECT email, user_type_id, fname, lname, street_address, city, state, zipcode, dob, block_end FROM user WHERE email='" + email + "' AND password='" + pass + "'";
 
-        Database db = new Database();
+        Database db = Database.getInstance();
+        //Database db = new Database();
         try {
             db.Connect();
             db.setStatement();
             rs = db.ExecuteQuery(sql);
-            if (rs!=null && rs.next()) {
+            if (rs != null && rs.next()) {
+                this.setEmail(rs.getString("email"));
+                this.setUserTypeId(rs.getInt("user_type_id"));
+                this.setFname(rs.getString("fname"));
+                this.setLname(rs.getString("lname"));
+                this.setStreetAddress(rs.getString("street_address"));
+                this.setStreetAddress(rs.getString("city"));
+                this.setStreetAddress(rs.getString("state"));
+                this.setStreetAddress(rs.getString("zipcode"));
+                this.setStreetAddress(rs.getString("street_address"));
+                this.setDob(rs.getString("dob") != null ? rs.getDate("dob") : null);
                 respuesta = true;
-                this.setName(rs.getString("name"));
-                this.setAddress(rs.getString("address"));
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -96,7 +158,7 @@ public class User {
                     System.out.println(ex.toString());
                 }
             }
-            if(db!=null){
+            if (db != null) {
                 try {
                     db.Close();
                 } catch (SQLException ex) {
@@ -104,27 +166,24 @@ public class User {
                 }
             }
         }
-        
+
         return respuesta;
     }
-    
+
     public boolean createUser() {
 
         boolean resp = false;
         int parameterIndex = 0;
 
-        String sql = "INSERT INTO user (name, address, email, password, dob)"
-                + " VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO user (email, password, user_type_id, fname, lname, street_address, city, state, zipcode, dob)"
+                + " VALUES (?,?,?,?,?,?,?,?,?,?)";
 
-        Database db = new Database();
+        Database db = Database.getInstance();
+        //Database db = new Database();
         try {
             db.Connect();
             db.setPreparedStatement(sql);
-            db.getPreparedStatement().setString(++parameterIndex, this.getName());
-            db.getPreparedStatement().setString(++parameterIndex, this.getAddress());
-            db.getPreparedStatement().setString(++parameterIndex, this.getEmail());
-            db.getPreparedStatement().setString(++parameterIndex, this.getPassword());
-            db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getDob());
+            addValues(db);
             db.ExecuteNonQuery();
             resp = true;
         } catch (SQLException ex) {
@@ -147,7 +206,7 @@ public class User {
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT name, email, address, dob FROM user";
+        sql = "SELECT email, password, user_type_id, fname, lname, street_address, city, state, zipcode, dob FROM user";
 
         Database db = new Database();
         try {
@@ -155,12 +214,8 @@ public class User {
             db.setStatement();
             rs = db.ExecuteQuery(sql);
             while (rs.next()) {
-                User user = new User();
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-                user.setAddress(rs.getString("address"));
-                user.setDob(rs.getString("dob") != null ? rs.getDate("dob") : null);
-                list.add(user);
+                User obj = readResult(rs);
+                list.add(obj);
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -181,6 +236,33 @@ public class User {
 
         return list;
     }
-    
-    
+
+    private void addValues(Database db) throws SQLException {
+        Integer parameterIndex = 0;
+        db.getPreparedStatement().setString(++parameterIndex, this.getEmail());
+        db.getPreparedStatement().setString(++parameterIndex, this.getPassword());
+        db.getPreparedStatement().setString(++parameterIndex, this.getFname());
+        db.getPreparedStatement().setString(++parameterIndex, this.getLname());
+        db.getPreparedStatement().setString(++parameterIndex, this.getStreetAddress());
+        db.getPreparedStatement().setString(++parameterIndex, this.getCity());
+        db.getPreparedStatement().setString(++parameterIndex, this.getState());
+        db.getPreparedStatement().setString(++parameterIndex, this.getZipcode());
+        db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getDob());
+    }
+
+    private User readResult(ResultSet rs) throws SQLException {
+        User obj = new User();
+        obj.setEmail(rs.getString("email"));
+        obj.setUserTypeId(rs.getInt("user_type_id"));
+        obj.setFname(rs.getString("fname"));
+        obj.setLname(rs.getString("lname"));
+        obj.setStreetAddress(rs.getString("street_address"));
+        obj.setStreetAddress(rs.getString("city"));
+        obj.setStreetAddress(rs.getString("state"));
+        obj.setStreetAddress(rs.getString("zipcode"));
+        obj.setStreetAddress(rs.getString("street_address"));
+        obj.setDob(rs.getString("dob") != null ? rs.getDate("dob") : null);
+        return obj;
+    }
+
 }

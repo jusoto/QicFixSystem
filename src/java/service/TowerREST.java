@@ -21,7 +21,7 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author Juan
  */
-@Path("serviceman")
+@Path("tower")
 public class TowerREST {
     
     
@@ -39,7 +39,7 @@ public class TowerREST {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Tower> findAll() {
         Tower obj = new Tower();
-        return obj.selectAllTower();
+        return obj.selectAll();
     }
 
     /**
@@ -50,5 +50,6 @@ public class TowerREST {
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(String content) {
     }
+    
     
 }

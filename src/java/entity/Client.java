@@ -18,29 +18,29 @@ import java.util.logging.Logger;
  */
 public class Client extends User {
 
-    private Integer idclient;
+    private Integer id;
 
     public Client() {
     }
 
-    public Integer getIdclient() {
-        return idclient;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdclient(Integer idclient) {
-        this.idclient = idclient;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public boolean createCustomer() {
+    public boolean create() {
 
         boolean resp = false;
-        int parameterIndex = 1;
+        int parameterIndex = 0;
 
         String sql = "INSERT INTO client (email) VALUES (?)";
 
         if (createUser()) {
 
-            Database db = new Database();
+            Database db = Database.getInstance();
             try {
                 db.Connect();
                 db.setPreparedStatement(sql);
@@ -62,25 +62,23 @@ public class Client extends User {
         return resp;
     }
 
-    public List<Client> selectAllCustomer() {
+    public List<Client> selectAll() {
         List<Client> list = new ArrayList<Client>();
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT c.idclient, u.name, c.email FROM user u, client c"
+        sql = "SELECT c.id, c.email, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, client c"
                 + " WHERE c.email=u.email";
 
-        Database db = new Database();
+        //Database db = new Database();
+        Database db = Database.getInstance();
         try {
             db.Connect();
             db.setStatement();
             rs = db.ExecuteQuery(sql);
             while (rs.next()) {
-                Client client = new Client();
-                client.setName(rs.getString("name"));
-                client.setIdclient(rs.getString("idclient") != null ? rs.getInt("idclient") : null);
-                client.setEmail(rs.getString("email"));
-                list.add(client);
+                Client obj = readResult(rs);
+                list.add(obj);
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -106,15 +104,16 @@ public class Client extends User {
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT idclient FROM client WHERE email='" + this.getEmail() + "'";
+        sql = "SELECT id FROM client WHERE email='" + this.getEmail() + "'";
 
-        Database db = new Database();
+        //Database db = new Database();
+        Database db = Database.getInstance();
         try {
             db.Connect();
             db.setStatement();
             rs = db.ExecuteQuery(sql);
             if (rs.next()) {
-                this.setIdclient(rs.getString("idclient") != null ? rs.getInt("idclient") : null);
+                this.setId(rs.getString("id") != null ? rs.getInt("id") : null);
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -135,8 +134,57 @@ public class Client extends User {
 
     }
 
-    public void selectById(Integer idclient) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Client selectById(Integer clientId) {
+        //List<Client> list = new ArrayList<Client>();
+        String sql;
+        ResultSet rs = null;
+        Client obj = null;
+
+        sql = "SELECT c.id, c.email, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, client c"
+                + " WHERE c.email=u.email AND where c.id=" + clientId;
+
+        //Database db = new Database();
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setStatement();
+            rs = db.ExecuteQuery(sql);
+            if (rs.next()) {
+                obj = readResult(rs);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex.toString());
+                }
+            }
+            try {
+                db.Close();
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+
+        return obj;
+    }
+
+    private Client readResult(ResultSet rs) throws SQLException {
+        Client obj = new Client();
+        obj.setId(rs.getString("id") != null ? rs.getInt("id") : null);
+        obj.setEmail(rs.getString("email"));
+        obj.setFname(rs.getString("fname"));
+        obj.setLname(rs.getString("lname"));
+        obj.setStreetAddress(rs.getString("street_address"));
+        obj.setCity(rs.getString("city"));
+        obj.setState(rs.getString("state"));
+        obj.setZipcode(rs.getString("zipcode"));
+        obj.setDob(rs.getString("dob")!=null?rs.getDate("dob"):null);
+        obj.setBlockEnd(rs.getString("block_end")!=null?rs.getDate("block_end"):null);
+        return obj;
     }
 
 }

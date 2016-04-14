@@ -11,4 +11,18 @@ package test;
  */
 public class ServiceTest {
     
+    
+    
+    public void test101_CreateClient_Sunny_01(){
+        
+    }
+    
+    public void test101_CreateClient_Sunny_02(){
+        
+    }
+    
+    public void test101_CreateClient_Rainy_01(){
+        
+    }
+    
 }

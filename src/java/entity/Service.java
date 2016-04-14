@@ -5,6 +5,10 @@
  */
 package entity;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,9 +36,11 @@ public class Service {
     private Double latitudeDestination;
     private Double longitudeDestination;
     private String streetAddressPickup;
+    private String cityPickup;
     private String statePickup;
     private String zipcodePickup;
     private String streetAddressDestination;
+    private String cityDestination;
     private String stateDestination;
     private String zipcodeDestination;
     private String clientDescription;
@@ -195,28 +201,51 @@ public class Service {
         this.towerDescription = towerDescription;
     }
 
-    public boolean createService(List<Integer> listServiceman) {
+    public String getCityPickup() {
+        return cityPickup;
+    }
+
+    public void setCityPickup(String cityPickup) {
+        this.cityPickup = cityPickup;
+    }
+
+    public String getCityDestination() {
+        return cityDestination;
+    }
+
+    public void setCityDestination(String cityDestination) {
+        this.cityDestination = cityDestination;
+    }
+
+    public boolean createService(List<Tower> listTower) {
 
         boolean resp = false;
         int parameterIndex = 0;
-        int idservice;
+        int serviceId;
         HasTower rel = new HasTower();
 
         String sql = "INSERT INTO service (client_id, creation_date, start_date, end_date, cancel_date, cost,"
                 + " latitude_pickup, longitude_pickup, latitude_destination, longitude_destination,"
-                + " street_address_pickup, state_pickup, zipcode_pickup,"
-                + " street_address_destination, state_destination, zipcode_destination,"
+                + " street_address_pickup, city_pickup, state_pickup, zipcode_pickup,"
+                + " street_address_destination, city_destination, state_destination, zipcode_destination,"
                 + " client_description, tower_description)"
-                + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        Database db = new Database();
+        Database db = Database.getInstance();
         try {
             db.Connect();
             db.setPreparedStatement(sql);
-            db = prepareStatement(db);
-            idservice = db.ExecuteNonQuery();
-            this.setId(idservice);
-            rel.createRequest(idservice, listServiceman);
+            prepareStatement(db);
+            serviceId = db.ExecuteNonQuery();
+            this.setId(serviceId);
+
+            //Create Relational Class Between Service and Tower
+            for (int i = 0; i < listTower.size(); i++) {
+                rel.setServiceId(serviceId);
+                rel.setTowerId(listTower.get(i).getId());
+                rel.create();
+            }
+
             resp = true;
         } catch (SQLException ex) {
             Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
@@ -239,7 +268,7 @@ public class Service {
 
         String sql = "UPDATE service SET tower_description=?, end_date=?, cost=? WHERE id=?";
 
-        Database db = new Database();
+        Database db = Database.getInstance();
         try {
             db.Connect();
             db.setPreparedStatement(sql);
@@ -264,19 +293,19 @@ public class Service {
         return resp;
     }
 
-    public List<Service> SelectAll() {
+    public List<Service> selectAll() {
         List<Service> list = new ArrayList<Service>();
         String sql;
         ResultSet rs = null;
 
         sql = "SELECT id, client_id, creation_date, start_date, end_date, cancel_date, cost,"
                 + " latitude_pickup, longitude_pickup, latitude_destination, longitude_destination,"
-                + " street_address_pickup, state_pickup, zipcode_pickup,"
-                + " street_address_destination, state_destination, zipcode_destination,"
+                + " street_address_pickup, citiy_pickup, state_pickup, zipcode_pickup,"
+                + " street_address_destination, city_destination, state_destination, zipcode_destination,"
                 + " client_description, tower_description"
                 + " FROM service";
 
-        Database db = new Database();
+        Database db = Database.getInstance();
         try {
             db.Connect();
             db.setStatement();
@@ -318,15 +347,17 @@ public class Service {
         service.setLatitudePickup(rs.getString("latitude_destination") != null ? rs.getDouble("latitude_destination") : null);
         service.setLongitudePickup(rs.getString("longitude_destination") != null ? rs.getDouble("longitude_destination") : null);
         service.setStreetAddressPickup(rs.getString("street_address_pickup"));
+        service.setCityPickup(rs.getString("city_pickup"));
         service.setStatePickup(rs.getString("state_pickup"));
         service.setZipcodePickup(rs.getString("zipcode_pickup"));
         service.setStreetAddressDestination(rs.getString("street_address_destination"));
+        service.setCityDestination(rs.getString("city_destination"));
         service.setStateDestination(rs.getString("state_destination"));
         service.setZipcodeDestination(rs.getString("zipcode_destination"));
         return service;
     }
 
-    private Database prepareStatement(Database db) throws SQLException {
+    private void prepareStatement(Database db) throws SQLException {
         Integer parameterIndex = 0;
         db.getPreparedStatement().setInt(++parameterIndex, this.getClientId());
         db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getCreationDate());
@@ -338,14 +369,76 @@ public class Service {
         db.getPreparedStatement().setDouble(++parameterIndex, this.getLatitudeDestination());
         db.getPreparedStatement().setDouble(++parameterIndex, this.getLongitudeDestination());
         db.getPreparedStatement().setString(++parameterIndex, this.getStreetAddressPickup());
+        db.getPreparedStatement().setString(++parameterIndex, this.getCityPickup());
         db.getPreparedStatement().setString(++parameterIndex, this.getStatePickup());
         db.getPreparedStatement().setString(++parameterIndex, this.getZipcodePickup());
         db.getPreparedStatement().setString(++parameterIndex, this.getStreetAddressDestination());
+        db.getPreparedStatement().setString(++parameterIndex, this.getCityDestination());
         db.getPreparedStatement().setString(++parameterIndex, this.getStateDestination());
         db.getPreparedStatement().setString(++parameterIndex, this.getZipcodeDestination());
         db.getPreparedStatement().setString(++parameterIndex, this.getTowerDescription());
         db.getPreparedStatement().setString(++parameterIndex, this.getClientDescription());
-        return db;
+    }
+
+    /*public boolean update(List<Tower> listTower) {
+        boolean resp = false;
+        int parameterIndex = 0;
+        int serviceId;
+        HasTower rel = new HasTower();
+
+        String sql = "INSERT INTO service (client_id, creation_date, start_date, end_date, cancel_date, cost,"
+                + " latitude_pickup, longitude_pickup, latitude_destination, longitude_destination,"
+                + " street_address_pickup, city_pickup, state_pickup, zipcode_pickup,"
+                + " street_address_destination, city_destination, state_destination, zipcode_destination,"
+                + " client_description, tower_description)"
+                + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setPreparedStatement(sql);
+            prepareStatement(db);
+            serviceId = db.ExecuteNonQuery();
+            this.setId(serviceId);
+
+            //Create Relational Class Between Service and Tower
+            for (int i = 0; i < listTower.size(); i++) {
+                //rel.deleteAll();
+                rel.setServiceId(serviceId);
+                rel.setTowerId(listTower.get(i).getId());
+                rel.create();
+            }
+
+            resp = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (db != null) {
+                try {
+                    db.Close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        return resp;
+    }*/
+    
+    
+    
+    public static String toJson(List<Service> list) {
+        Gson gson = new GsonBuilder().setDateFormat(Utility.DATE_FORMAT_STRING_SHORT).create();
+        String gsonString = gson.toJson(list, new TypeToken<List<Service>>() {
+        }.getType());
+        return gsonString;
+    }
+    
+    private List<Service> ConvertirJsonToList(String json) throws JsonSyntaxException {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new JsonDateDeserializer()).create();
+        List<Service> list = gson.fromJson(json, new TypeToken<List<Service>>() {
+        }.getType());
+        return list;
     }
 
 }

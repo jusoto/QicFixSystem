@@ -44,7 +44,7 @@ public class createTower extends HttpServlet {
         obj.setDob(Utility.StringToDate(request.getAttribute("dob").toString()));
         obj.setPositionX(positionX);
         obj.setPositionY(positionY);
-        obj.createTower();
+        obj.create();
         request.setAttribute("msgCreateServiceman", "Serviceman was created.");
         response.sendRedirect("registerServiceman.jsp");
     }

@@ -20,30 +20,30 @@ import util.Utility;
  */
 public class Payment {
 
-    private Integer idpayment;
-    private Integer idservice;
+    private Integer id;
+    private Integer serviceId;
     private Date date;
     private Double amount;
     private String creditCardLast;
-    private String paypalAuto;
+    private String paypalAutho;
 
     public Payment() {
     }
 
     public Integer getIdpayment() {
-        return idpayment;
+        return id;
     }
 
     public void setIdpayment(Integer idpayment) {
-        this.idpayment = idpayment;
+        this.id = idpayment;
     }
 
     public Integer getIdservice() {
-        return idservice;
+        return serviceId;
     }
 
     public void setIdservice(Integer idservice) {
-        this.idservice = idservice;
+        this.serviceId = idservice;
     }
 
     public Date getDate() {
@@ -71,11 +71,11 @@ public class Payment {
     }
 
     public String getPaypalAuto() {
-        return paypalAuto;
+        return paypalAutho;
     }
 
     public void setPaypalAuto(String paypalAuto) {
-        this.paypalAuto = paypalAuto;
+        this.paypalAutho = paypalAuto;
     }
 
     public boolean registerPayment() {

@@ -20,23 +20,28 @@ import java.util.logging.Logger;
  */
 public class Database {
     
-    private String jdbcDriver;
-    private String dbUrl;
-    private String user;
-    private String pass;
-    private Connection conn;
-    private PreparedStatement preparedStatement;
-    private Statement statement;
-    private ResultSet generatedKeys;
+    private static String jdbcDriver = "com.mysql.jdbc.Driver";
+    private static String dbUrl = "jdbc:mysql://localhost:3306/qicfixdb";
+    private static String user = "root";
+    private static String pass = "";
+    private static Connection conn;
+    private static PreparedStatement preparedStatement = null;
+    private static Statement statement = null;
+    private static ResultSet generatedKeys = null;
+    private static Database instance = new Database();
 
     public Database() {
-        this.preparedStatement = null;
+        /*this.preparedStatement = null;
         this.statement = null;
         this.generatedKeys = null;
         this.jdbcDriver = "com.mysql.jdbc.Driver";
         this.dbUrl = "jdbc:mysql://localhost:3306/qicfixdb";
         this.user = "root";
-        this.pass = "";
+        this.pass = "";*/
+    }
+    
+    public static Database getInstance(){
+        return instance;
     }
 
     public PreparedStatement getPreparedStatement() {
