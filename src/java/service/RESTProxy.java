@@ -15,32 +15,32 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
  * @author Juan
  */
 public interface RESTProxy extends Serializable {
- 
-    @POST
+    
+    /*@POST
     @Path("login")
-    @Produces( MediaType.APPLICATION_JSON )
-    public Response login(@Context HttpHeaders httpHeaders, @FormParam("username") String username, @FormParam("password") String password);
- 
-    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(@Context HttpHeaders httpHeaders, @FormParam("email") String email, @FormParam("password") String password);
+*/
+    /*@GET
     @Path("get-method")
-    @Produces( MediaType.APPLICATION_JSON )
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getMethod();
- 
+
     @POST
     @Path("post-method")
-    @Produces( MediaType.APPLICATION_JSON )
-    public Response postMethod();
- 
-    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postMethod();*/
+
+    /*@POST
     @Path("logout")
-    public Response logout(
-        @Context HttpHeaders httpHeaders
-    );
-    
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response logout(@Context HttpHeaders httpHeaders);*/
+
 }

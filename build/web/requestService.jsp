@@ -4,14 +4,12 @@
     Author     : Juan
 --%>
 
-<%@page import="entity.ServiceType"%>
+<%@page import="entity.Tower"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="entity.Serviceman"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    List<ServiceType> listServiceType = new ServiceType().selectAll();
-    List<Serviceman> listServiceman = new Serviceman().selectAllServiceman();
+    List<Tower> listTower = new Tower().selectAll();
 %>
 <!DOCTYPE html>
 <html>
@@ -23,22 +21,6 @@
         <h1>Detail of service</h1>
         <form name="requestServiceForm" action="serviceStatus.jsp" method="POST">
             <table>
-                <tr>
-                    <td>
-                        <label>Service Type</label>
-                    </td>
-                    <td>
-                        <select>
-                            <%
-                            for (int i=0; i<listServiceType.size(); i++){
-                                %>
-                                <option value="<%=listServiceType.get(i).getIdserviceType()%>"><%=listServiceType.get(i).getName()%></option>
-                                <%
-                            }
-                            %>
-                        </select>
-                    </td>
-                </tr>
                 <tr>
                     <td>
                         <label>Id Customer</label>
@@ -57,18 +39,34 @@
                 </tr>
                 <tr>
                     <td>
-                        <label>Position X</label>
+                        <label>Address</label>
                     </td>
                     <td>
-                        <input type="text" name="positionX"/>
+                        <input type="text" name="street_address"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label>Position Y</label>
+                        <label>City</label>
                     </td>
                     <td>
-                        <input type="text" name="positionY"/>
+                        <input type="text" name="city"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>State</label>
+                    </td>
+                    <td>
+                        <input type="text" name="state"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Zip code</label>
+                    </td>
+                    <td>
+                        <input type="text" name="zipcode"/>
                     </td>
                 </tr>
                 <tr>
@@ -91,21 +89,21 @@
                     <td>
                 <tr>
                     <td>
-                        <label>Serviceman</label>
+                        <label>Tower</label>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <table>
                         <%
-                            for (int i=0; i<listServiceman.size(); i++){
+                            for (int i=0; i<listTower.size(); i++){
                         %>
                         <tr>
                             <td>
-                                <input type="checkbox" name="chkServiceman" value="<%=listServiceman.get(i).getIdserviceman()%>"/>
+                                <input type="checkbox" name="chkTower" value="<%=listTower.get(i).getId()%>"/>
                             </td>
                             <td>
-                                <label><%=listServiceman.get(i).getName()%></label>
+                                <label><%=listTower.get(i).getFname()%></label>
                             </td>
                         </tr>
                         <%

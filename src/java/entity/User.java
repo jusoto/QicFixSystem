@@ -24,6 +24,7 @@ public class User {
     private Integer userTypeId;
     private String fname;
     private String lname;
+    private String phone;
     private String streetAddress;
     private String city;
     private String state;
@@ -122,12 +123,20 @@ public class User {
         this.blockEnd = blockEnd;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public boolean validateUser(String email, String pass) {
         boolean respuesta = false;
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT email, user_type_id, fname, lname, street_address, city, state, zipcode, dob, block_end FROM user WHERE email='" + email + "' AND password='" + pass + "'";
+        sql = "SELECT email, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob, block_end FROM user WHERE email='" + email + "' AND password='" + pass + "'";
 
         Database db = Database.getInstance();
         //Database db = new Database();
@@ -140,6 +149,7 @@ public class User {
                 this.setUserTypeId(rs.getInt("user_type_id"));
                 this.setFname(rs.getString("fname"));
                 this.setLname(rs.getString("lname"));
+                this.setPhone(rs.getString("phone"));
                 this.setStreetAddress(rs.getString("street_address"));
                 this.setStreetAddress(rs.getString("city"));
                 this.setStreetAddress(rs.getString("state"));
@@ -175,7 +185,7 @@ public class User {
         boolean resp = false;
         int parameterIndex = 0;
 
-        String sql = "INSERT INTO user (email, password, user_type_id, fname, lname, street_address, city, state, zipcode, dob)"
+        String sql = "INSERT INTO user (email, password, user_type_id, phone, fname, lname, street_address, city, state, zipcode, dob)"
                 + " VALUES (?,?,?,?,?,?,?,?,?,?)";
 
         Database db = Database.getInstance();
@@ -206,7 +216,7 @@ public class User {
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT email, password, user_type_id, fname, lname, street_address, city, state, zipcode, dob FROM user";
+        sql = "SELECT email, password, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob FROM user";
 
         Database db = new Database();
         try {
@@ -256,11 +266,11 @@ public class User {
         obj.setUserTypeId(rs.getInt("user_type_id"));
         obj.setFname(rs.getString("fname"));
         obj.setLname(rs.getString("lname"));
+        obj.setPhone(rs.getString("phone"));
         obj.setStreetAddress(rs.getString("street_address"));
-        obj.setStreetAddress(rs.getString("city"));
-        obj.setStreetAddress(rs.getString("state"));
-        obj.setStreetAddress(rs.getString("zipcode"));
-        obj.setStreetAddress(rs.getString("street_address"));
+        obj.setCity(rs.getString("city"));
+        obj.setState(rs.getString("state"));
+        obj.setZipcode(rs.getString("zipcode"));
         obj.setDob(rs.getString("dob") != null ? rs.getDate("dob") : null);
         return obj;
     }

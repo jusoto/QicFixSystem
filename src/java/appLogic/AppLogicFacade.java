@@ -6,11 +6,15 @@
 package appLogic;
 
 import entity.Client;
+import entity.DatastoreFacade;
 import entity.Service;
 import entity.Tower;
 import java.util.List;
-import entity.Location;
-import entity.User;
+import util.Location;
+import java.security.GeneralSecurityException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.security.auth.login.LoginException;
 import util.Utility;
 
 /**
@@ -18,99 +22,152 @@ import util.Utility;
  * @author Juan
  */
 public class AppLogicFacade {
-    
-    Client client;
-    Tower tower;
-    Service service;
-    
-    public AppLogicFacade(){
+
+    Authenticator authenticator;
+
+    public AppLogicFacade() {
+        authenticator = Authenticator.getInstance();
     }
-    
-    public String requestService(String content){
+
+    public String requestService(String content, String authToken, String email, Location location) {
         String message = "false";
-        String pickup;
-        String destination;
-        List<Service> list = Service.fromJson(content);
-        for(int i=0; i<list.size(); i++){
-            Service service = list.get(i);
-            pickup = service.getStreetAddressPickup() + ", " + service.getCityPickup()+" "+service.getStatePickup()+", "+service.getZipcodePickup();
-            destination = service.getStreetAddressDestination() + ", " + service.getCityDestination()+" "+service.getStateDestination()+", "+service.getZipcodeDestination();
-            String locationPickup = Utility.getLocationFromAddress(pickup);
-            String locationDestination = Utility.getLocationFromAddress(destination);
-            service.setLatitudePickup(Double.parseDouble(locationPickup.split(",")[0].trim()));
-            service.setLongitudePickup(Double.parseDouble(locationPickup.split(",")[1].trim()));
-            service.setLatitudeDestination(Double.parseDouble(locationDestination.split(",")[0].trim()));
-            service.setLongitudeDestination(Double.parseDouble(locationDestination.split(",")[1].trim()));
+        if (authenticator.isAuthTokenValid(authToken)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            if(ds.requestService(content, email, location)){
+                message = "true";
+            }
         }
         return message;
     }
-    
-    public void updatePickup(Integer idservice, String pickup){
-        
+
+    public List<Tower> listTower(String authToken, String pickup, Integer order) {
+        if (authenticator.isAuthTokenValid(authToken)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            Location location = null;
+            try {
+                location = Utility.getLocationFromAddress(pickup);
+            } catch (Exception ex) {
+                Logger.getLogger(AppLogicFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return ds.selectAllTower(location, order);
+        }
+        return null;
     }
-    
-    public void updateDestination(Integer idservice, Location destination){
-        
+
+    public String login(String email, String password) throws LoginException {
+        String token;
+
+        token = authenticator.login(email, password);
+
+        return token;
     }
-    
-    public List<Tower> listTower(String pickup, Integer order){
-        List<Tower> list;
-        Tower tower = new Tower();
-        list = tower.selectAllOrdered(pickup, order);
+
+    public void logout(String authToken) {
+        if (authenticator.isAuthTokenValid(authToken)) {
+            try {
+                authenticator.logout(authToken);
+            } catch (GeneralSecurityException ex) {
+                Logger.getLogger(AppLogicFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public Location getLocationByAddress(String address) {
+        Location location = null;
+        try {
+            location = Utility.getLocationFromAddress(address);
+        } catch (Exception ex) {
+            Logger.getLogger(AppLogicFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return location;
+    }
+
+    public List<Service> selectAllService(String authToken) {
+        if (authenticator.isAuthTokenValid(authToken)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            return ds.selectAllService();
+        }
+        return null;
+    }
+
+    public String acceptService(String content, String authToken, String email, Integer serviceId) {
+        String message = "false";
+        if (authenticator.isAuthTokenValid(authToken)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            if (ds.acceptService(email, serviceId)) {
+                message = "true";
+            }
+        }
+        return message;
+    }
+
+    public String declineService(String content, String authToken, String email, Integer serviceId) {
+        String message = "false";
+        if (authenticator.isAuthTokenValid(authToken)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            if (ds.declineService(email, serviceId)) {
+                message = "true";
+            }
+        }
+        return message;
+    }
+
+    public String chargeService(String content, String authToken, String email, Integer serviceId) {
+        String message = "false";
+        if (authenticator.isAuthTokenValid(authToken)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            if (ds.chargeService(email, serviceId)) {
+                message = "true";
+            }
+        }
+        return message;
+    }
+
+    public List<Service> selectServiceByTowerEmail(String authToken, String towerEmail) {
+        List<Service> list = null;
+        if (authenticator.isAuthTokenValid(authToken)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            list = ds.selectServiceByTowerEmail(towerEmail);
+        }
         return list;
     }
-    
-    public void selectTowers(List<Tower> list){
-        
+
+    public void clientRegistration(Client client) {
+
     }
-    
-    public void chargeClient(Integer idservice, Double charge){
-        
+
+    public void towerRegistration(Tower tower) {
+
     }
-    
-    public void makePayment(Integer idservice, Double payment){
-        
-    }
-    
-    public void rateTower(Integer serviceId, Integer towerId, Integer rate){
-        
-    }
-    
-    public void login(User user){
-        
-    }
-    
-    public void logout(User user){
-        
-    }
-    
-    public void clientRegistration(Client client){
-        
-    }
-    
-    public void towerRegistration(Tower tower){
-        
-    }
-    
-    public String getAddressByLocation(Location location){
+
+    public String getAddressByLocation(Location location) {
         String address = "";
-        
-        
-        
+
         return address;
     }
     
-    public Location getLocationByAddress(String address){
-        Location location;
-        double latitude = 0;
-        double longitude = 0;
-        
-        
-        
-        location = new Location(latitude, longitude);
-        
-        return location;
+    public void updatePickup(Integer idservice, String pickup) {
+
     }
-    
-    
+
+    public void updateDestination(Integer idservice, String destination) {
+
+    }
+
+    public void selectTowers(List<Tower> list) {
+
+    }
+
+    public void chargeClient(Integer idservice, Double charge) {
+
+    }
+
+    public void makePayment(Integer idservice, Double payment) {
+
+    }
+
+    public void rateTower(Integer serviceId, Integer towerId, Integer rate) {
+
+    }
+
 }

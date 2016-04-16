@@ -154,5 +154,10 @@ public class Payment {
         
         return list;
     }
+    
+    //TODO: Charge through Paypal
+    public Boolean charge() {
+        return true;
+    }
 
 }

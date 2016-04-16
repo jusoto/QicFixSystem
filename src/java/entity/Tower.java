@@ -5,6 +5,7 @@
  */
 package entity;
 
+import util.Location;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class Tower extends User {
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, t.latitude, t.longitude, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, tower t"
+        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, t.latitude, t.longitude, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, tower t"
                 + " WHERE t.email=u.email";
 
         Database db = new Database();
@@ -147,7 +148,7 @@ public class Tower extends User {
         ResultSet rs = null;
         Tower obj = null;
 
-        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, tower t"
+        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, tower t"
                 + " WHERE t.email=u.email AND where t.id=" + towerId;
 
         //Database db = new Database();
@@ -189,6 +190,7 @@ public class Tower extends User {
         obj.setLongitude(rs.getString("longitude")!=null?rs.getDouble("longitude"):null);
         obj.setFname(rs.getString("fname"));
         obj.setLname(rs.getString("lname"));
+        obj.setPhone(rs.getString("phone"));
         obj.setStreetAddress(rs.getString("street_address"));
         obj.setCity(rs.getString("city"));
         obj.setState(rs.getString("state"));
@@ -200,16 +202,16 @@ public class Tower extends User {
     
     //order 1: orders by Nearest Tower related to the user
     //order 2: orders by Best Rated Tower
-    public List<Tower> selectAllOrdered(Service service, Integer order) {
+    public List<Tower> selectAllOrdered(Location location, Integer order) {
         List<Tower> list = new ArrayList<Tower>();
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, t.latitude, t.longitude, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, tower t"
+        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, t.latitude, t.longitude, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, tower t"
                 + " WHERE t.email=u.email";
         
 
-        Database db = new Database();
+        Database db = Database.getInstance();
         try {
             db.Connect();
             db.setStatement();
@@ -236,5 +238,9 @@ public class Tower extends User {
         }
 
         return list;
+    }
+
+    public Integer getIdByEmail() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

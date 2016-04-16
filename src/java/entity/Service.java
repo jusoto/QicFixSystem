@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.Utility;
+import util.Utility.JsonDateDeserializer;
 
 /**
  *
@@ -217,7 +218,7 @@ public class Service {
         this.cityDestination = cityDestination;
     }
 
-    public boolean createService(List<Tower> listTower) {
+    public boolean create(List<Tower> listTower) {
 
         boolean resp = false;
         int parameterIndex = 0;
@@ -300,7 +301,7 @@ public class Service {
 
         sql = "SELECT id, client_id, creation_date, start_date, end_date, cancel_date, cost,"
                 + " latitude_pickup, longitude_pickup, latitude_destination, longitude_destination,"
-                + " street_address_pickup, citiy_pickup, state_pickup, zipcode_pickup,"
+                + " street_address_pickup, city_pickup, state_pickup, zipcode_pickup,"
                 + " street_address_destination, city_destination, state_destination, zipcode_destination,"
                 + " client_description, tower_description"
                 + " FROM service";
@@ -310,6 +311,7 @@ public class Service {
             db.Connect();
             db.setStatement();
             rs = db.ExecuteQuery(sql);
+            //System.out.println("Service: "+sql);
             while (rs.next()) {
                 Service service = readResulset(rs);
                 list.add(service);
@@ -434,10 +436,53 @@ public class Service {
         return gsonString;
     }
     
-    private List<Service> ConvertirJsonToList(String json) throws JsonSyntaxException {
+    public static List<Service> fromJson(String json) throws JsonSyntaxException {
         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new JsonDateDeserializer()).create();
         List<Service> list = gson.fromJson(json, new TypeToken<List<Service>>() {
         }.getType());
+        return list;
+    }
+
+    List<Service> selectServiceByTowerId(Integer towerId) {
+        List<Service> list = new ArrayList<Service>();
+        String sql;
+        ResultSet rs = null;
+
+        sql = "SELECT id, client_id, creation_date, start_date, end_date, cancel_date, cost,"
+                + " latitude_pickup, longitude_pickup, latitude_destination, longitude_destination,"
+                + " street_address_pickup, city_pickup, state_pickup, zipcode_pickup,"
+                + " street_address_destination, city_destination, state_destination, zipcode_destination,"
+                + " client_description, tower_description"
+                + " FROM service s, has_tower ht"
+                + " WHERE ht.service_id=s.id AND ht.tower_id="+towerId;
+
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setStatement();
+            rs = db.ExecuteQuery(sql);
+            //System.out.println("Service: "+sql);
+            while (rs.next()) {
+                Service service = readResulset(rs);
+                list.add(service);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex.toString());
+                }
+            }
+            try {
+                db.Close();
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+
         return list;
     }
 

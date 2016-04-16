@@ -25,8 +25,8 @@
             client.setEmail(email);
             client.selectIdByEmail();
             session.setAttribute("email", email);
-            session.setAttribute("name", user.getName());
-            session.setAttribute("idclient", client.getIdclient());
+            session.setAttribute("fname", user.getFname());
+            session.setAttribute("client_id", client.getId());
             response.setStatus(response.SC_MOVED_TEMPORARILY);
             response.setHeader("Location", "index.jsp");
         }else{

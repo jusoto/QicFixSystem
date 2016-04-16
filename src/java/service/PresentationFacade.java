@@ -11,4 +11,9 @@ package service;
  */
 public class PresentationFacade {
     
+    public PresentationFacade(){
+    }
+    
+    //Test Webservice URLs
+    
 }

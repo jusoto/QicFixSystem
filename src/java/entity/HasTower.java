@@ -264,4 +264,46 @@ public class HasTower {
         
         return resp;
     }
+
+    public List<HasTower> selectAll() {
+        List<HasTower> list = new ArrayList<HasTower>();
+        String sql;
+        ResultSet rs = null;
+        Integer count = 0;
+
+        sql = "SELECT service_id, tower_id, tower_accept_date, tower_decline_date"
+                + " FROM has_tower WHERE service_id=" + this.getServiceId();
+
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setStatement();
+            rs = db.ExecuteQuery(sql);
+            while (rs.next()) {
+                HasTower obj = new HasTower();
+                obj.setServiceId(rs.getString("service_id") != null ? rs.getInt("service_id") : null);
+                obj.setTowerId(rs.getString("tower_id") != null ? rs.getInt("tower_id") : null);
+                obj.setTowerAcceptDate(rs.getString("tower_accept_date") != null ? rs.getDate("tower_accept_date") : null);
+                obj.setTowerDeclineDate(rs.getString("tower_decline_date") != null ? rs.getDate("tower_decline_date") : null);
+                list.add(obj);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex.toString());
+                }
+            }
+            try {
+                db.Close();
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+        return list;
+    }
+
 }

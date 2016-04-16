@@ -30,6 +30,9 @@ public class ApplicationConfig extends Application {
     
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(service.ClientREST.class);
+        resources.add(service.HasTowerREST.class);
+        resources.add(service.LoginREST.class);
+        resources.add(service.LogoutREST.class);
         resources.add(service.ServiceREST.class);
         resources.add(service.TowerREST.class);
         resources.add(service.UserREST.class);

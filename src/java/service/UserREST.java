@@ -5,9 +5,13 @@
  */
 package service;
 
+import appLogic.AppLogicFacade;
 import entity.Client;
 import entity.User;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.security.auth.login.LoginException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -36,14 +40,19 @@ public class UserREST {
      * Retrieves representation of an instance of service.BancoREST
      * @return an instance of java.lang.String
      */
-    @Path("/validate")
+    //@Path("validate")
+    //@Path("login")
     @GET
-    @Produces("text/plain")
-    public String findAll(@QueryParam("ema") String email, @QueryParam("pas") String password) {
-        String token = "";
-        User obj = new User();
-        obj.validateUser(email, password);
-        token = Utility.generateToken();
+    @Produces(MediaType.TEXT_PLAIN)
+    public String login(@QueryParam("email") String _email, @QueryParam("passsword") String _password) {
+        String token;
+        AppLogicFacade obj = new AppLogicFacade();
+        try {
+            token = obj.login(_email, _password);
+        } catch (LoginException ex) {
+            token = "";
+        }
+        System.out.println("Email: "+_email+", Pass: "+_password);
         return token;
     }
 
