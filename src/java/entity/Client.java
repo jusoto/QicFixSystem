@@ -43,6 +43,8 @@ public class Client extends User {
         int parameterIndex = 0;
 
         String sql = "INSERT INTO client (email) VALUES (?)";
+        
+        this.setUserTypeId(1);
 
         if (createUser()) {
 

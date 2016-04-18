@@ -133,15 +133,7 @@ public class AppLogicFacade {
         }
         return list;
     }
-
-    public void clientRegistration(Client client) {
-
-    }
-
-    public void towerRegistration(Tower tower) {
-
-    }
-
+    
     public String getAddressByLocation(Location location) {
         String address = "";
 

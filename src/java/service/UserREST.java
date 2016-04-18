@@ -23,15 +23,16 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("user")
 public class UserREST {
-    
+
     @Context
     private UriInfo context;
 
     public UserREST() {
     }
-    
+
     /**
      * Retrieves representation of an instance of service.BancoREST
+     *
      * @param _email
      * @param _password
      * @return an instance of java.lang.String
@@ -48,21 +49,23 @@ public class UserREST {
         } catch (LoginException ex) {
             token = "";
         }
-        System.out.println("Email: "+_email+", Pass: "+_password);
+        System.out.println("Email: " + _email + ", Pass: " + _password);
         return token;
     }
 
     /**
      * PUT method for updating or creating an instance of BancoREST
+     *
      * @param content representation for the resource
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(String content) {
     }
-    
+
     /**
      * POST method for updating or creating an instance of BancoREST
+     *
      * @param _email
      */
     @Path("block")
@@ -72,6 +75,5 @@ public class UserREST {
         AppLogicFacade obj = new AppLogicFacade();
         obj.blockUser(_email);
     }
-    
-    
+
 }

@@ -165,7 +165,7 @@ public class User {
         List<User> list;
         String message;
         RESTConnection conn = RESTConnection.getInstance();
-        String path = Utility.USER_BLOCK_PATH;
+        String path = Utility.USER_BY_EMAIL_PATH;
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("email", email);
         message = conn.getMethod(path, parameters);

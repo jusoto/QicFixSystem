@@ -48,7 +48,10 @@ public class TowerREST {
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(String content) {
+    public String putJson(String content) {
+        String message = "false";
+        
+        return message;
     }
     
     

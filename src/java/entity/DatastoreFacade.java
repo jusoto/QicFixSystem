@@ -6,10 +6,6 @@
 package entity;
 
 import util.Location;
-import appLogic.AppLogicFacade;
-import entity.Client;
-import entity.Service;
-import entity.Tower;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;

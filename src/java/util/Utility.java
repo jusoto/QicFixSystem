@@ -39,15 +39,21 @@ public class Utility {
     private static Pattern pattern;
     private static Matcher matcher;
     public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    public static final String DATE_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String DATE_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss.S";
     public static final String DATE_FORMAT_STRING_SHORT = "yyyy-MM-dd";
     public static final String GOOGLE_MAPS_API_KEY = "AIzaSyAhOv2MNrliIM1BrBBOdgzD2Fip1rzUkHQ";
     public static final String LOGIN_PATH = "/login";
     public static final String USER_PATH = "/user";
-    public static final String USER_RETRIEVE_PATH = "/user/retrieve";
+    //public static final String USER_RETRIEVE_PATH = "/user/retrieve";
     public static final String USER_BLOCK_PATH = "/user/block";
-    public static String SERVICE_CREATE_PATH;
-    public static String TOWER_CREATE_PATH;
+    public static final String SERVICE_CREATE_PATH = "/service";
+    public static final String TOWER_CREATE_PATH = "/tower";
+    public static final String TOWER_BY_EMAIL_PATH = "/tower/email";
+    public static final String USER_CREATE_PATH = "/user";
+    public static final String USER_ID_BY_EMAIL_PATH = "/user/id";
+    public static final String TOWER_PATH = "/tower";
+    public static final String CLIENT_BY_EMAIL_PATH = "/client/email";
+    public static final String USER_BY_EMAIL_PATH = "/user/email";
 
     public static boolean checkSession(String sessionKey) {
         boolean resp;

@@ -113,7 +113,7 @@ public class Tower extends User {
 
         String sql = "INSERT INTO tower (email, comany_name, permit_number, latitude, longitude)"
                 + " VALUES (?,?,?,?,?)";
-
+this.setUserTypeId(2);
         if (createUser()) {
 
             Database db = Database.getInstance();

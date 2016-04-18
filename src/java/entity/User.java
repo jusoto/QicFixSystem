@@ -188,10 +188,10 @@ public class User {
     public boolean createUser() {
 
         boolean resp = false;
-        int parameterIndex = 0;
+        //int parameterIndex = 0;
 
         String sql = "INSERT INTO user (email, password, user_type_id, phone, fname, lname, street_address, city, state, zipcode, dob)"
-                + " VALUES (?,?,?,?,?,?,?,?,?,?)";
+                + " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
         Database db = Database.getInstance();
         //Database db = new Database();
@@ -254,20 +254,24 @@ public class User {
 
     private void addValues(Database db) throws SQLException {
         Integer parameterIndex = 0;
+        //email, password, user_type_id, phone, fname, lname, street_address, city, state, zipcode, dob
         db.getPreparedStatement().setString(++parameterIndex, this.getEmail());
         db.getPreparedStatement().setString(++parameterIndex, this.getPassword());
+        db.getPreparedStatement().setInt(++parameterIndex, this.getUserTypeId());
+        db.getPreparedStatement().setString(++parameterIndex, this.getPhone());
         db.getPreparedStatement().setString(++parameterIndex, this.getFname());
         db.getPreparedStatement().setString(++parameterIndex, this.getLname());
         db.getPreparedStatement().setString(++parameterIndex, this.getStreetAddress());
         db.getPreparedStatement().setString(++parameterIndex, this.getCity());
         db.getPreparedStatement().setString(++parameterIndex, this.getState());
         db.getPreparedStatement().setString(++parameterIndex, this.getZipcode());
-        db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getDob());
+        db.getPreparedStatement().setDate(++parameterIndex, dob!=null? (java.sql.Date) this.getDob():null);
     }
 
     private User readResult(ResultSet rs) throws SQLException {
         User obj = new User();
         obj.setEmail(rs.getString("email"));
+        obj.setPassword(rs.getString("password"));
         obj.setUserTypeId(rs.getInt("user_type_id"));
         obj.setFname(rs.getString("fname"));
         obj.setLname(rs.getString("lname"));

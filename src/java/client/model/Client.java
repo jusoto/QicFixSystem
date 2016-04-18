@@ -37,7 +37,7 @@ public class Client extends User {
         //Response response;
         String message;
         RESTConnection conn = RESTConnection.getInstance();
-        String path = Utility.USER_BLOCK_PATH;
+        String path = Utility.USER_CREATE_PATH;
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("email", getEmail());
         parameters.put("token", token);
@@ -49,7 +49,7 @@ public class Client extends User {
         Integer id = -1;
         String message;
         RESTConnection conn = RESTConnection.getInstance();
-        String path = Utility.USER_BLOCK_PATH;
+        String path = Utility.USER_ID_BY_EMAIL_PATH;
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("email", getEmail());
         parameters.put("token", token);
@@ -68,7 +68,7 @@ public class Client extends User {
         List<Client> list = null;
         String message;
         RESTConnection conn = RESTConnection.getInstance();
-        String path = Utility.USER_BLOCK_PATH;
+        String path = Utility.CLIENT_BY_EMAIL_PATH;
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("email", getEmail());
         parameters.put("token", token);
