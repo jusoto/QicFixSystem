@@ -5,6 +5,10 @@
  */
 package entity;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.Utility;
 
 /**
  *
@@ -30,7 +35,7 @@ public class User {
     private String state;
     private String zipcode;
     private Date dob;
-    private Date blockEnd;
+    private String blocked;
 
     public User() {
     }
@@ -115,12 +120,12 @@ public class User {
         this.dob = dob;
     }
 
-    public Date getBlockEnd() {
-        return blockEnd;
+    public String getBlocked() {
+        return blocked;
     }
 
-    public void setBlockEnd(Date blockEnd) {
-        this.blockEnd = blockEnd;
+    public void setBlocked(String blocked) {
+        this.blocked = blocked;
     }
 
     public String getPhone() {
@@ -136,7 +141,7 @@ public class User {
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT email, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob, block_end FROM user WHERE email='" + email + "' AND password='" + pass + "'";
+        sql = "SELECT email, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob, block_end FROM user WHERE email='" + email + "' AND password='" + pass + "' AND blocked=''";
 
         Database db = Database.getInstance();
         //Database db = new Database();
@@ -273,6 +278,80 @@ public class User {
         obj.setZipcode(rs.getString("zipcode"));
         obj.setDob(rs.getString("dob") != null ? rs.getDate("dob") : null);
         return obj;
+    }
+
+    public static List<User> fromJsonUser(String json) throws JsonSyntaxException {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new Utility.JsonDateDeserializer()).create();
+        List<User> list = gson.fromJson(json, new TypeToken<List<User>>() {
+        }.getType());
+        return list;
+    }
+
+    public List<User> selectByEmail(String email) {
+        List<User> list = new ArrayList<User>();
+        String sql;
+        ResultSet rs = null;
+
+        sql = "SELECT email, password, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob"
+                + " FROM user"
+                + " WHERE email='"+email+"'";
+
+        Database db = new Database();
+        try {
+            db.Connect();
+            db.setStatement();
+            rs = db.ExecuteQuery(sql);
+            while (rs.next()) {
+                User obj = readResult(rs);
+                list.add(obj);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex.toString());
+                }
+            }
+            try {
+                db.Close();
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+
+        return list;
+    }
+
+    public boolean update() {
+        boolean resp = false;
+        int parameterIndex = 0;
+
+        String sql = "UPDATE user SET blocked=? WHERE email=?";
+
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setPreparedStatement(sql);
+            db.getPreparedStatement().setString(++parameterIndex, this.getBlocked());
+            db.getPreparedStatement().setString(++parameterIndex, this.getEmail());
+            db.ExecuteNonQuery();
+            resp = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (db != null) {
+                try {
+                    db.Close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        return resp;
     }
 
 }

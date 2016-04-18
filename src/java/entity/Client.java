@@ -5,12 +5,18 @@
  */
 package entity;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.Utility;
 
 /**
  *
@@ -183,8 +189,22 @@ public class Client extends User {
         obj.setState(rs.getString("state"));
         obj.setZipcode(rs.getString("zipcode"));
         obj.setDob(rs.getString("dob")!=null?rs.getDate("dob"):null);
-        obj.setBlockEnd(rs.getString("block_end")!=null?rs.getDate("block_end"):null);
+        obj.setBlocked(rs.getString("blocked"));
         return obj;
+    }
+    
+    public static String toJson(List<Client> list) {
+        Gson gson = new GsonBuilder().setDateFormat(Utility.DATE_FORMAT_STRING_SHORT).create();
+        String gsonString = gson.toJson(list, new TypeToken<List<Client>>() {
+        }.getType());
+        return gsonString;
+    }
+    
+    public static List<Client> fromJson(String json) throws JsonSyntaxException {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new Utility.JsonDateDeserializer()).create();
+        List<Client> list = gson.fromJson(json, new TypeToken<List<Client>>() {
+        }.getType());
+        return list;
     }
 
 }

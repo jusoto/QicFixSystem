@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.text.Document;
+import javax.ws.rs.core.CacheControl;
+import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -40,13 +42,17 @@ public class Utility {
     public static final String DATE_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss";
     public static final String DATE_FORMAT_STRING_SHORT = "yyyy-MM-dd";
     public static final String GOOGLE_MAPS_API_KEY = "AIzaSyAhOv2MNrliIM1BrBBOdgzD2Fip1rzUkHQ";
+    public static final String LOGIN_PATH = "/login";
+    public static final String USER_PATH = "/user";
+    public static final String USER_RETRIEVE_PATH = "/user/retrieve";
+    public static final String USER_BLOCK_PATH = "/user/block";
+    public static String SERVICE_CREATE_PATH;
+    public static String TOWER_CREATE_PATH;
 
     public static boolean checkSession(String sessionKey) {
-        boolean resp = false;
+        boolean resp;
 
-        if (sessionKey != "") {
-            resp = true;
-        }
+        resp = !(sessionKey == null || sessionKey.equals(""));
 
         return resp;
     }
@@ -159,6 +165,15 @@ public class Utility {
                 return null;
             }
         }
+    }
+
+    public static Response.ResponseBuilder getNoCacheResponseBuilder(Response.Status status) {
+        CacheControl cc = new CacheControl();
+        cc.setNoCache(true);
+        cc.setMaxAge(-1);
+        cc.setMustRevalidate(true);
+
+        return Response.status(status).cacheControl(cc);
     }
 
 }

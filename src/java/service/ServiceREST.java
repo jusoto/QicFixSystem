@@ -6,7 +6,6 @@
 package service;
 
 import appLogic.AppLogicFacade;
-import entity.Client;
 import util.Location;
 import entity.Service;
 import java.util.List;
@@ -39,9 +38,9 @@ public class ServiceREST {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Service> findAll(@QueryParam("token") String authToken) {
+    public List<Service> findAll(@QueryParam("token") String authToken, @QueryParam("email") String email) {
         AppLogicFacade obj = new AppLogicFacade();
-        return obj.selectAllService(authToken);
+        return obj.selectAllService(authToken, email);
     }
 
     /**

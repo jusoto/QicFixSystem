@@ -5,14 +5,14 @@
  */
 package client.model;
 
-import entity.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import util.Utility;
 
 /**
  *
@@ -31,7 +31,7 @@ public class User {
     private String state;
     private String zipcode;
     private Date dob;
-    private Date blockEnd;
+    private String blocked;
 
     public User() {
     }
@@ -116,12 +116,12 @@ public class User {
         this.dob = dob;
     }
 
-    public Date getBlockEnd() {
-        return blockEnd;
+    public String getBlocked() {
+        return blocked;
     }
 
-    public void setBlockEnd(Date blockEnd) {
-        this.blockEnd = blockEnd;
+    public void setBlocked(String blocked) {
+        this.blocked = blocked;
     }
 
     public String getPhone() {
@@ -131,149 +131,49 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
-    public boolean validateUser(String email, String pass) {
-        boolean respuesta = false;
-        String sql;
-        ResultSet rs = null;
-
-        sql = "SELECT email, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob, block_end FROM user WHERE email='" + email + "' AND password='" + pass + "'";
-
-        Database db = Database.getInstance();
-        //Database db = new Database();
-        try {
-            db.Connect();
-            db.setStatement();
-            rs = db.ExecuteQuery(sql);
-            if (rs != null && rs.next()) {
-                this.setEmail(rs.getString("email"));
-                this.setUserTypeId(rs.getInt("user_type_id"));
-                this.setFname(rs.getString("fname"));
-                this.setLname(rs.getString("lname"));
-                this.setPhone(rs.getString("phone"));
-                this.setStreetAddress(rs.getString("street_address"));
-                this.setStreetAddress(rs.getString("city"));
-                this.setStreetAddress(rs.getString("state"));
-                this.setStreetAddress(rs.getString("zipcode"));
-                this.setStreetAddress(rs.getString("street_address"));
-                this.setDob(rs.getString("dob") != null ? rs.getDate("dob") : null);
-                respuesta = true;
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                    System.out.println(ex.toString());
-                }
-            }
-            if (db != null) {
-                try {
-                    db.Close();
-                } catch (SQLException ex) {
-                    System.out.println(ex.toString());
-                }
-            }
-        }
-
-        return respuesta;
+    
+    public static String toJsonUser(List<User> list) {
+        Gson gson = new GsonBuilder().setDateFormat(Utility.DATE_FORMAT_STRING_SHORT).create();
+        String gsonString = gson.toJson(list, new TypeToken<List<User>>() {
+        }.getType());
+        return gsonString;
     }
 
-    public boolean createUser() {
-
-        boolean resp = false;
-        int parameterIndex = 0;
-
-        String sql = "INSERT INTO user (email, password, user_type_id, phone, fname, lname, street_address, city, state, zipcode, dob)"
-                + " VALUES (?,?,?,?,?,?,?,?,?,?)";
-
-        Database db = Database.getInstance();
-        //Database db = new Database();
-        try {
-            db.Connect();
-            db.setPreparedStatement(sql);
-            addValues(db);
-            db.ExecuteNonQuery();
-            resp = true;
-        } catch (SQLException ex) {
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (db != null) {
-                try {
-                    db.Close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-
-        return resp;
-    }
-
-    public List<User> SelectAll() {
-        List<User> list = new ArrayList<User>();
-        String sql;
-        ResultSet rs = null;
-
-        sql = "SELECT email, password, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob FROM user";
-
-        Database db = new Database();
-        try {
-            db.Connect();
-            db.setStatement();
-            rs = db.ExecuteQuery(sql);
-            while (rs.next()) {
-                User obj = readResult(rs);
-                list.add(obj);
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                    System.out.println(ex.toString());
-                }
-            }
-            try {
-                db.Close();
-            } catch (SQLException ex) {
-                System.out.println(ex.toString());
-            }
-        }
-
+    public static List<User> fromJsonUser(String json) throws JsonSyntaxException {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new Utility.JsonDateDeserializer()).create();
+        List<User> list = gson.fromJson(json, new TypeToken<List<User>>() {
+        }.getType());
         return list;
     }
-
-    private void addValues(Database db) throws SQLException {
-        Integer parameterIndex = 0;
-        db.getPreparedStatement().setString(++parameterIndex, this.getEmail());
-        db.getPreparedStatement().setString(++parameterIndex, this.getPassword());
-        db.getPreparedStatement().setString(++parameterIndex, this.getFname());
-        db.getPreparedStatement().setString(++parameterIndex, this.getLname());
-        db.getPreparedStatement().setString(++parameterIndex, this.getStreetAddress());
-        db.getPreparedStatement().setString(++parameterIndex, this.getCity());
-        db.getPreparedStatement().setString(++parameterIndex, this.getState());
-        db.getPreparedStatement().setString(++parameterIndex, this.getZipcode());
-        db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getDob());
+    
+    public boolean block(String email){
+        String message;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.USER_BLOCK_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", email);
+        message = conn.getMethod(path, parameters);
+        if(message!=null){
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    private User readResult(ResultSet rs) throws SQLException {
-        User obj = new User();
-        obj.setEmail(rs.getString("email"));
-        obj.setUserTypeId(rs.getInt("user_type_id"));
-        obj.setFname(rs.getString("fname"));
-        obj.setLname(rs.getString("lname"));
-        obj.setPhone(rs.getString("phone"));
-        obj.setStreetAddress(rs.getString("street_address"));
-        obj.setCity(rs.getString("city"));
-        obj.setState(rs.getString("state"));
-        obj.setZipcode(rs.getString("zipcode"));
-        obj.setDob(rs.getString("dob") != null ? rs.getDate("dob") : null);
-        return obj;
+    public User selectByEmail(String token, String email) {
+        User user = null;
+        List<User> list;
+        String message;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.USER_BLOCK_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", email);
+        message = conn.getMethod(path, parameters);
+        list = fromJsonUser(message);
+        if(list.size()>0){
+            user = list.get(0);
+        }
+        return user;
     }
 
 }

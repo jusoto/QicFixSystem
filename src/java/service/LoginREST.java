@@ -6,21 +6,17 @@
 package service;
 
 import appLogic.AppLogicFacade;
-import appLogic.Authenticator;
-import com.google.gson.Gson;
-import java.security.GeneralSecurityException;
 import javax.security.auth.login.LoginException;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import static util.Utility.getNoCacheResponseBuilder;
 
 /**
  *
@@ -60,15 +56,6 @@ public class LoginREST {
 
             return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(message).build();
         }
-    }
-
-    private Response.ResponseBuilder getNoCacheResponseBuilder(Response.Status status) {
-        CacheControl cc = new CacheControl();
-        cc.setNoCache(true);
-        cc.setMaxAge(-1);
-        cc.setMustRevalidate(true);
-
-        return Response.status(status).cacheControl(cc);
     }
 
 }

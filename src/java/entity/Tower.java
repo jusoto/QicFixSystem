@@ -196,7 +196,7 @@ public class Tower extends User {
         obj.setState(rs.getString("state"));
         obj.setZipcode(rs.getString("zipcode"));
         obj.setDob(rs.getString("dob")!=null?rs.getDate("dob"):null);
-        obj.setBlockEnd(rs.getString("block_end")!=null?rs.getDate("block_end"):null);
+        obj.setBlocked(rs.getString("blocked"));
         return obj;
     }
     

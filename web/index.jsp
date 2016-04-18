@@ -7,27 +7,37 @@
 <%@page import="entity.User"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    if (session.getAttribute("email") != null) {
+        if (Utility.checkSession(session.getAttribute("email").toString())) {
+%>
 <!DOCTYPE html>
 <html>
     <head>
         <jsp:include page="WEB-INF/head/head.jsp" />
     </head>
     <body>
-        <jsp:include page="WEB-INF/menu/menu.jsp" />
-<%
-    if(session.getAttribute("email")!=null){
-        if(Utility.checkSession(session.getAttribute("email").toString())){
-%>
-<div>
-    <span>
-        Logged as <%=session.getAttribute("name")%>
-    </span>
-    <span>
-        <form name="logout" action="logout.jsp" method="POST">
-            <input type="submit" name="btnLogout" value="Logout"/>
-        </form>
-    </span>
-</div>
+        <%
+            if (session.getAttribute("client_id") != null) {
+        %>
+        <jsp:include page="WEB-INF/menu/menuClient.jsp" />
+        <%
+            } else {
+        %>
+        <jsp:include page="WEB-INF/menu/menuTower.jsp" />
+        <%
+            }
+        %>
+        <div>
+            <span>
+                Logged as <%=session.getAttribute("name")%>
+            </span>
+            <span>
+                <form name="logout" action="logout.jsp" method="POST">
+                    <input type="submit" name="btnLogout" value="Logout"/>
+                </form>
+            </span>
+        </div>
         <h1>Ask for service</h1>
         <div>
             <form action="requestService.jsp" method="POST">
@@ -35,13 +45,13 @@
             </form>
         </div>
 
-<%
-        }
-    }else{
-       response.setStatus(response.SC_MOVED_TEMPORARILY);
-       response.setHeader("Location", "login.jsp"); 
-    }
-%>
-<jsp:include page="WEB-INF/footer/footer.jsp" />
+        <%
+                }
+            } else {
+                response.setStatus(response.SC_MOVED_TEMPORARILY);
+                response.setHeader("Location", "login.jsp");
+            }
+        %>
+        <jsp:include page="WEB-INF/footer/footer.jsp" />
     </body>
 </html>

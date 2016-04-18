@@ -86,9 +86,10 @@ public final class Authenticator {
      * @param authToken The authorization token generated after login
      * @return TRUE for acceptance and FALSE for denied.
      */
-    public boolean isAuthTokenValid(String authToken) {
+    public boolean isAuthTokenValid(String authToken, String email) {
 
-        if (authorizationTokensStorage.containsKey(authToken)) {
+        if (authorizationTokensStorage.containsKey(authToken)
+                && authorizationTokensStorage.get(authToken).equals(email)) {
             return true;
         }
 

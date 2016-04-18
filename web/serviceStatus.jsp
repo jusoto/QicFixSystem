@@ -4,33 +4,42 @@
     Author     : Juan
 --%>
 
-<%@page import="entity.Serviceman"%>
+<%@page import="client.model.Client"%>
+<%@page import="client.model.Tower"%>
 <%@page import="util.Utility"%>
-<%@page import="entity.Service"%>
+<%@page import="client.model.Service"%>
+<%@page import="client.model.HasTower"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     Service service = new Service();
-    Serviceman serviceman = new Serviceman();
-    if(request.getParameter("idserviceType")!=null){
-        service.setIdserviceType(Integer.parseInt(request.getParameter("idserviceType").toString()));
-    }
-    if(request.getParameter("idcustomer")!=null){
-        service.setIdcustomer(Integer.parseInt(request.getParameter("idcustomer").toString()));
+    Tower tower = new Tower();
+    HasTower hasTower = new HasTower();
+    if(request.getParameter("client_id")!=null){
+        service.setClientId(Integer.parseInt(request.getParameter("client_id").toString()));
     }
     if(request.getParameter("startDate")!=null){
         service.setStartDate(Utility.StringToDate(request.getParameter("startDate").toString()));
     }
-    if(request.getParameter("positionX")!=null){
-        service.setPositionX(Double.parseDouble(request.getParameter("positionX").toString()));
+    if(request.getParameter("street_address_pickup")!=null){
+        service.setCityPickup(request.getParameter("street_address_pickup").toString());
     }
-    if(request.getParameter("positionY")!=null){
-        service.setPositionX(Double.parseDouble(request.getParameter("positionY").toString()));
+    if(request.getParameter("state_pickup")!=null){
+        service.setStatePickup(request.getParameter("state_pickup").toString());
     }
-    if(request.getParameter("address")!=null){
-        service.setAddress(request.getParameter("address").toString());
+    if(request.getParameter("zipcode_pickup")!=null){
+        service.setZipcodeDestination(request.getParameter("zipcode_pickup").toString());
+    }
+    if(request.getParameter("street_address_destination")!=null){
+        service.setCityDestination(request.getParameter("street_address_destination").toString());
+    }
+    if(request.getParameter("state_destination")!=null){
+        service.setStateDestination(request.getParameter("state_destination").toString());
+    }
+    if(request.getParameter("zipcode_destination")!=null){
+        service.setZipcodeDestination(request.getParameter("zipcode_destination").toString());
     }
     if(request.getParameter("customerDescription")!=null){
-        service.setCustomerDescription(request.getParameter("customerDescription").toString());
+        service.setClientDescription(request.getParameter("customerDescription").toString());
     }
     
    
@@ -51,31 +60,32 @@
                     <label>Id Service</label>
                 </td>
                 <td>
-                    <input type="text" value="<%=service.getIdservice()%>"/>
+                    <input type="text" value="<%=service.getId()%>"/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label>Position</label>
+                    <label>Pickup Address</label>
                 </td>
                 <td>
-                    <input type="text" value="<%=service.getPositionX()+", "+service.getPositionY()%>"/>
+                    <input type="text" value="<%=service.getStreetAddressPickup() + " " + service.getCityPickup() + " " + service.getStatePickup() + " " + service.getZipcodePickup()%>"/>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <label>Destination Address</label>
+                </td>
+                <td>
+                    <input type="text" value="<%=service.getStreetAddressDestination() + " " + service.getCityDestination() + " " + service.getStateDestination() + " " + service.getZipcodeDestination()%>"/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label>Address</label>
+                    <label>Tower</label>
                 </td>
                 <td>
-                    <input type="text" value="<%=service.getAddress()%>"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>Serviceman</label>
-                </td>
-                <td>
-                    <input type="text" value="<%=serviceman.getName()%>"/>
+                    <input type="text" value="<%=tower.getFname() +" "+ tower.getLname()%>"/>
                 </td>
             </tr>
         </table>

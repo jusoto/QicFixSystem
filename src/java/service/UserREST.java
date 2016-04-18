@@ -6,11 +6,6 @@
 package service;
 
 import appLogic.AppLogicFacade;
-import entity.Client;
-import entity.User;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.security.auth.login.LoginException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -21,7 +16,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
-import util.Utility;
 
 /**
  *
@@ -38,6 +32,8 @@ public class UserREST {
     
     /**
      * Retrieves representation of an instance of service.BancoREST
+     * @param _email
+     * @param _password
      * @return an instance of java.lang.String
      */
     //@Path("validate")
@@ -63,6 +59,18 @@ public class UserREST {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(String content) {
+    }
+    
+    /**
+     * POST method for updating or creating an instance of BancoREST
+     * @param _email
+     */
+    @Path("block")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public void block(@QueryParam("email") String _email) {
+        AppLogicFacade obj = new AppLogicFacade();
+        obj.blockUser(_email);
     }
     
     

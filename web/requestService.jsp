@@ -4,12 +4,20 @@
     Author     : Juan
 --%>
 
-<%@page import="entity.Tower"%>
+<%@page import="client.model.Tower"%>
+<%@page import="client.model.Client"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    List<Tower> listTower = new Tower().selectAll();
+    List<Tower> listTower = null;
+    if (session.getAttribute("email") != null && session.getAttribute("token") != null) {
+        String email = session.getAttribute("email").toString();
+        String token = session.getAttribute("token").toString();
+        listTower = new Tower().selectAll(token);
+    } else {
+
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -26,7 +34,7 @@
                         <label>Id Customer</label>
                     </td>
                     <td>
-                        <input type="text" name="idcustomer" value="<%=session.getAttribute("idcustomer")%>"/>
+                        <input type="text" name="client_id" value="<%=session.getAttribute("client_id")%>"/>
                     </td>
                 </tr>
                 <tr>
@@ -95,20 +103,22 @@
                 <tr>
                     <td>
                         <table>
-                        <%
-                            for (int i=0; i<listTower.size(); i++){
-                        %>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="chkTower" value="<%=listTower.get(i).getId()%>"/>
-                            </td>
-                            <td>
-                                <label><%=listTower.get(i).getFname()%></label>
-                            </td>
-                        </tr>
-                        <%
-                            }
-                        %>
+                            <%
+                                if (listTower != null) {
+                                    for (int i = 0; i < listTower.size(); i++) {
+                            %>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="chkTower" value="<%=listTower.get(i).getId()%>"/>
+                                </td>
+                                <td>
+                                    <label><%=listTower.get(i).getFname()+" "+listTower.get(i).getLname()%></label>
+                                </td>
+                            </tr>
+                            <%
+                                    }
+                                }
+                            %>
                         </table>
                     </td>
                 </tr>

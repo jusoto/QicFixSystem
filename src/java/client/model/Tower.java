@@ -5,13 +5,14 @@
  */
 package client.model;
 
-import entity.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import util.Utility;
 
 /**
  *
@@ -68,175 +69,67 @@ public class Tower extends User {
         this.longitude = longitude;
     }
 
-    public List<Tower> selectAll() {
-        List<Tower> list = new ArrayList<Tower>();
-        String sql;
-        ResultSet rs = null;
-
-        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, t.latitude, t.longitude, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, tower t"
-                + " WHERE t.email=u.email";
-
-        Database db = new Database();
-        try {
-            db.Connect();
-            db.setStatement();
-            rs = db.ExecuteQuery(sql);
-            while (rs.next()) {
-                Tower obj = readResult(rs);
-                list.add(obj);
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                    System.out.println(ex.toString());
-                }
-            }
-            try {
-                db.Close();
-            } catch (SQLException ex) {
-                System.out.println(ex.toString());
-            }
-        }
-
-        return list;
-    }
-
-    public boolean create() {
-
-        boolean resp = false;
-        int parameterIndex = 0;
-        int id;
-
-        String sql = "INSERT INTO tower (email, comany_name, permit_number, latitude, longitude)"
-                + " VALUES (?,?,?,?,?)";
-
-        if (createUser()) {
-
-            Database db = Database.getInstance();
-            try {
-                db.Connect();
-                db.setPreparedStatement(sql);
-                db.getPreparedStatement().setString(++parameterIndex, this.getEmail());
-                db.getPreparedStatement().setString(++parameterIndex, this.getCompanyName());
-                db.getPreparedStatement().setString(++parameterIndex, this.getPermitNumber());
-                db.getPreparedStatement().setDouble(++parameterIndex, this.getLatitude());
-                db.getPreparedStatement().setDouble(++parameterIndex, this.getLongitude());
-                id = db.ExecuteNonQuery();
-                resp = true;
-            } catch (SQLException ex) {
-                Logger.getLogger(Tower.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                if (db != null) {
-                    try {
-                        db.Close();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(Tower.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        }
-
-        return resp;
-    }
-
-    public Tower selectById(Integer towerId) {
-        String sql;
-        ResultSet rs = null;
-        Tower obj = null;
-
-        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, tower t"
-                + " WHERE t.email=u.email AND where t.id=" + towerId;
-
-        //Database db = new Database();
-        Database db = Database.getInstance();
-        try {
-            db.Connect();
-            db.setStatement();
-            rs = db.ExecuteQuery(sql);
-            if (rs.next()) {
-                obj = readResult(rs);
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                    System.out.println(ex.toString());
-                }
-            }
-            try {
-                db.Close();
-            } catch (SQLException ex) {
-                System.out.println(ex.toString());
-            }
-        }
-
-        return obj;
-    }
-
-    private Tower readResult(ResultSet rs) throws SQLException {
-        Tower obj = new Tower();
-        obj.setId(rs.getString("id") != null ? rs.getInt("id") : null);
-        obj.setEmail(rs.getString("email"));
-        obj.setCompanyName(rs.getString("company_name"));
-        obj.setPermitNumber(rs.getString("permit_number"));
-        obj.setLatitude(rs.getString("latitude")!=null?rs.getDouble("latitude"):null);
-        obj.setLongitude(rs.getString("longitude")!=null?rs.getDouble("longitude"):null);
-        obj.setFname(rs.getString("fname"));
-        obj.setLname(rs.getString("lname"));
-        obj.setPhone(rs.getString("phone"));
-        obj.setStreetAddress(rs.getString("street_address"));
-        obj.setCity(rs.getString("city"));
-        obj.setState(rs.getString("state"));
-        obj.setZipcode(rs.getString("zipcode"));
-        obj.setDob(rs.getString("dob")!=null?rs.getDate("dob"):null);
-        obj.setBlockEnd(rs.getString("block_end")!=null?rs.getDate("block_end"):null);
-        return obj;
+    public boolean create(String token) {
+        String message;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.TOWER_CREATE_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", getEmail());
+        parameters.put("token", token);
+        message = conn.getMethod(path, parameters);
+        return message!=null;
     }
     
-    //order 1: orders by Nearest Tower related to the user
-    //order 2: orders by Best Rated Tower
-    public List<Tower> selectAllOrdered(Location location, Integer order) {
-        List<Tower> list = new ArrayList<Tower>();
-        String sql;
-        ResultSet rs = null;
-
-        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, t.latitude, t.longitude, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, tower t"
-                + " WHERE t.email=u.email";
-        
-
-        Database db = Database.getInstance();
-        try {
-            db.Connect();
-            db.setStatement();
-            rs = db.ExecuteQuery(sql);
-            while (rs.next()) {
-                Tower obj = readResult(rs);
-                list.add(obj);
+    public List<Tower> selectAll(String token){
+        List<Tower> list = null;
+        String message;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.USER_BLOCK_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", getEmail());
+        parameters.put("token", token);
+        try{
+            message = conn.getMethod(path, parameters);
+            if(message!=null){
+                list = fromJson(message);
             }
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                    System.out.println(ex.toString());
-                }
-            }
-            try {
-                db.Close();
-            } catch (SQLException ex) {
-                System.out.println(ex.toString());
-            }
+        }catch(Exception e){
+            //TODO: Handle error NaN
         }
-
         return list;
     }
+    
+    public Tower selectByEmailTower(String token){
+        List<Tower> list = null;
+        String message;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.USER_BLOCK_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", getEmail());
+        parameters.put("token", token);
+        try{
+            message = conn.getMethod(path, parameters);
+            if(message!=null){
+                list = fromJson(message);
+            }
+        }catch(Exception e){
+            //TODO: Handle error NaN
+        }
+        return list.get(0);
+    }
+    
+    public static String toJson(List<Tower> list) {
+        Gson gson = new GsonBuilder().setDateFormat(Utility.DATE_FORMAT_STRING_SHORT).create();
+        String gsonString = gson.toJson(list, new TypeToken<List<Tower>>() {
+        }.getType());
+        return gsonString;
+    }
+    
+    public static List<Tower> fromJson(String json) throws JsonSyntaxException {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new Utility.JsonDateDeserializer()).create();
+        List<Tower> list = gson.fromJson(json, new TypeToken<List<Tower>>() {
+        }.getType());
+        return list;
+    }
+    
 }
