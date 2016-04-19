@@ -37,11 +37,9 @@ public class UserREST {
      * @param _password
      * @return an instance of java.lang.String
      */
-    //@Path("validate")
-    //@Path("login")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String login(@QueryParam("email") String _email, @QueryParam("passsword") String _password) {
+    public String login(@QueryParam("email") String _email, @QueryParam("password") String _password) {
         String token;
         AppLogicFacade obj = new AppLogicFacade();
         try {

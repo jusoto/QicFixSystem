@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -66,7 +67,7 @@ public class DatastoreFacadeTest {
         DatastoreFacade instance = new DatastoreFacade();
         instance.createTower(tower);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -80,7 +81,7 @@ public class DatastoreFacadeTest {
         DatastoreFacade instance = new DatastoreFacade();
         instance.createRequest(service, listTower);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -94,7 +95,7 @@ public class DatastoreFacadeTest {
         DatastoreFacade instance = new DatastoreFacade();
         instance.acceptRequest(serviceId, towerId);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -108,7 +109,7 @@ public class DatastoreFacadeTest {
         DatastoreFacade instance = new DatastoreFacade();
         instance.declineRequest(serviceId, towerId);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -139,7 +140,7 @@ public class DatastoreFacadeTest {
         List<Service> result = instance.selectServiceByTowerEmail(towerEmail);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -155,7 +156,7 @@ public class DatastoreFacadeTest {
         boolean result = instance.chargeService(email, serviceId);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -171,7 +172,7 @@ public class DatastoreFacadeTest {
         boolean result = instance.declineService(email, serviceId);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -187,7 +188,7 @@ public class DatastoreFacadeTest {
         boolean result = instance.acceptService(email, serviceId);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -197,7 +198,11 @@ public class DatastoreFacadeTest {
     public void testSelectAllService() {
         System.out.println("selectAllService");
         DatastoreFacade instance = new DatastoreFacade();
-        List<Service> expResult = null;
+        List<Service> expResult = new ArrayList<Service>();
+        Service service = new Service();
+        service.setId(1);
+        //TODO add all the values
+        expResult.add(service);
         List<Service> result = instance.selectAllService();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
@@ -216,8 +221,6 @@ public class DatastoreFacadeTest {
         List<Tower> expResult = null;
         List<Tower> result = instance.selectAllTower(location, order);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
 
     /**
@@ -233,8 +236,6 @@ public class DatastoreFacadeTest {
         boolean expResult = false;
         boolean result = instance.requestService(content, email, location);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="9" failures="2" hostname="Juan-PC" name="entity.DatastoreFacadeTest" skipped="0" tests="13" time="0.64" timestamp="2016-04-18T20:51:11">
+<testsuite errors="9" failures="2" hostname="Juan-PC" name="entity.DatastoreFacadeTest" skipped="0" tests="13" time="0.723" timestamp="2016-04-18T21:03:03">
   <properties>
     <property name="libs.jsp-compiler.javadoc" value="" />
     <property name="netbeans.autoupdate.country" value="US" />
@@ -80,7 +80,7 @@
     <property name="javax.xml.datatype.DatatypeFactory" value="com.sun.org.apache.xerces.internal.jaxp.datatype.DatatypeFactoryImpl" />
     <property name="libs.spring-webmvc3.0.maven-pom" value="" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner entity.DatastoreFacadeTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Juan\Documents\Proyectos\QicFixSystem\build\test\results\TEST-entity.DatastoreFacadeTest.xml crashfile=C:\Users\Juan\Documents\Proyectos\QicFixSystem\build\junitvmwatcher5583291666696483305.properties propsfile=C:\Users\Juan\Documents\Proyectos\QicFixSystem\build\junit3972953970482994157.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner entity.DatastoreFacadeTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Juan\Documents\Proyectos\QicFixSystem\build\test\results\TEST-entity.DatastoreFacadeTest.xml crashfile=C:\Users\Juan\Documents\Proyectos\QicFixSystem\build\junitvmwatcher6499548769585600896.properties propsfile=C:\Users\Juan\Documents\Proyectos\QicFixSystem\build\junit1818007842483557217.properties" />
     <property name="build.classes.dir" value="build/web/WEB-INF/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="ap.supported.internal" value="true" />
@@ -485,36 +485,11 @@
 	at entity.DatastoreFacadeTest.testCreateRequest(DatastoreFacadeTest.java:81)
 </error>
   </testcase>
-  <testcase classname="entity.DatastoreFacadeTest" name="testRequestService" time="0.063">
-    <error type="java.lang.NullPointerException">java.lang.NullPointerException
-	at entity.DatastoreFacade.requestService(DatastoreFacade.java:112)
-	at entity.DatastoreFacadeTest.testRequestService(DatastoreFacadeTest.java:234)
-</error>
-  </testcase>
-  <testcase classname="entity.DatastoreFacadeTest" name="testDeclineRequest" time="0.312">
+  <testcase classname="entity.DatastoreFacadeTest" name="testAcceptRequest" time="0.36">
     <error message="java.util.Date cannot be cast to java.sql.Date" type="java.lang.ClassCastException">java.lang.ClassCastException: java.util.Date cannot be cast to java.sql.Date
-	at entity.HasTower.cancelRequest(HasTower.java:189)
-	at entity.DatastoreFacade.declineRequest(DatastoreFacade.java:47)
-	at entity.DatastoreFacadeTest.testDeclineRequest(DatastoreFacadeTest.java:109)
-</error>
-  </testcase>
-  <testcase classname="entity.DatastoreFacadeTest" name="testSelectServiceByTowerEmail" time="0.0">
-    <error message="Not supported yet." type="java.lang.UnsupportedOperationException">java.lang.UnsupportedOperationException: Not supported yet.
-	at entity.Tower.getIdByEmail(Tower.java:244)
-	at entity.DatastoreFacade.selectServiceByTowerEmail(DatastoreFacade.java:60)
-	at entity.DatastoreFacadeTest.testSelectServiceByTowerEmail(DatastoreFacadeTest.java:139)
-</error>
-  </testcase>
-  <testcase classname="entity.DatastoreFacadeTest" name="testSelectAllTower" time="0.032">
-    <failure message="expected:&lt;null&gt; but was:&lt;[]&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;null&gt; but was:&lt;[]&gt;
-	at entity.DatastoreFacadeTest.testSelectAllTower(DatastoreFacadeTest.java:218)
-</failure>
-  </testcase>
-  <testcase classname="entity.DatastoreFacadeTest" name="testAcceptService" time="0.0">
-    <error message="Not supported yet." type="java.lang.UnsupportedOperationException">java.lang.UnsupportedOperationException: Not supported yet.
-	at entity.Tower.getIdByEmail(Tower.java:244)
-	at entity.DatastoreFacade.acceptService(DatastoreFacade.java:89)
-	at entity.DatastoreFacadeTest.testAcceptService(DatastoreFacadeTest.java:187)
+	at entity.HasTower.acceptRequest(HasTower.java:156)
+	at entity.DatastoreFacade.acceptRequest(DatastoreFacade.java:40)
+	at entity.DatastoreFacadeTest.testAcceptRequest(DatastoreFacadeTest.java:95)
 </error>
   </testcase>
   <testcase classname="entity.DatastoreFacadeTest" name="testChargeService" time="0.0">
@@ -524,17 +499,42 @@
 	at entity.DatastoreFacadeTest.testChargeService(DatastoreFacadeTest.java:155)
 </error>
   </testcase>
-  <testcase classname="entity.DatastoreFacadeTest" name="testAcceptRequest" time="0.015">
-    <error message="java.util.Date cannot be cast to java.sql.Date" type="java.lang.ClassCastException">java.lang.ClassCastException: java.util.Date cannot be cast to java.sql.Date
-	at entity.HasTower.acceptRequest(HasTower.java:156)
-	at entity.DatastoreFacade.acceptRequest(DatastoreFacade.java:40)
-	at entity.DatastoreFacadeTest.testAcceptRequest(DatastoreFacadeTest.java:95)
+  <testcase classname="entity.DatastoreFacadeTest" name="testAcceptService" time="0.016">
+    <error message="Not supported yet." type="java.lang.UnsupportedOperationException">java.lang.UnsupportedOperationException: Not supported yet.
+	at entity.Tower.getIdByEmail(Tower.java:244)
+	at entity.DatastoreFacade.acceptService(DatastoreFacade.java:89)
+	at entity.DatastoreFacadeTest.testAcceptService(DatastoreFacadeTest.java:187)
 </error>
   </testcase>
-  <testcase classname="entity.DatastoreFacadeTest" name="testSelectAllService" time="0.062">
-    <failure message="expected:&lt;null&gt; but was:&lt;[entity.Service@61832929]&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;null&gt; but was:&lt;[entity.Service@61832929]&gt;
+  <testcase classname="entity.DatastoreFacadeTest" name="testSelectAllService" time="0.113">
+    <failure message="expected:&lt;null&gt; but was:&lt;[entity.Service@19bb089b]&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;null&gt; but was:&lt;[entity.Service@19bb089b]&gt;
 	at entity.DatastoreFacadeTest.testSelectAllService(DatastoreFacadeTest.java:202)
 </failure>
+  </testcase>
+  <testcase classname="entity.DatastoreFacadeTest" name="testSelectAllTower" time="0.016">
+    <failure message="expected:&lt;null&gt; but was:&lt;[]&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;null&gt; but was:&lt;[]&gt;
+	at entity.DatastoreFacadeTest.testSelectAllTower(DatastoreFacadeTest.java:218)
+</failure>
+  </testcase>
+  <testcase classname="entity.DatastoreFacadeTest" name="testSelectServiceByTowerEmail" time="0.0">
+    <error message="Not supported yet." type="java.lang.UnsupportedOperationException">java.lang.UnsupportedOperationException: Not supported yet.
+	at entity.Tower.getIdByEmail(Tower.java:244)
+	at entity.DatastoreFacade.selectServiceByTowerEmail(DatastoreFacade.java:60)
+	at entity.DatastoreFacadeTest.testSelectServiceByTowerEmail(DatastoreFacadeTest.java:139)
+</error>
+  </testcase>
+  <testcase classname="entity.DatastoreFacadeTest" name="testDeclineRequest" time="0.015">
+    <error message="java.util.Date cannot be cast to java.sql.Date" type="java.lang.ClassCastException">java.lang.ClassCastException: java.util.Date cannot be cast to java.sql.Date
+	at entity.HasTower.cancelRequest(HasTower.java:189)
+	at entity.DatastoreFacade.declineRequest(DatastoreFacade.java:47)
+	at entity.DatastoreFacadeTest.testDeclineRequest(DatastoreFacadeTest.java:109)
+</error>
+  </testcase>
+  <testcase classname="entity.DatastoreFacadeTest" name="testRequestService" time="0.063">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at entity.DatastoreFacade.requestService(DatastoreFacade.java:112)
+	at entity.DatastoreFacadeTest.testRequestService(DatastoreFacadeTest.java:232)
+</error>
   </testcase>
   <testcase classname="entity.DatastoreFacadeTest" name="testDeclineService" time="0.0">
     <error message="Not supported yet." type="java.lang.UnsupportedOperationException">java.lang.UnsupportedOperationException: Not supported yet.
@@ -543,40 +543,40 @@
 	at entity.DatastoreFacadeTest.testDeclineService(DatastoreFacadeTest.java:171)
 </error>
   </testcase>
-  <testcase classname="entity.DatastoreFacadeTest" name="testCreateClient" time="0.032" />
+  <testcase classname="entity.DatastoreFacadeTest" name="testCreateClient" time="0.016" />
+  <testcase classname="entity.DatastoreFacadeTest" name="testValidateUser" time="0.0" />
   <testcase classname="entity.DatastoreFacadeTest" name="testCreateTower" time="0.0">
     <error type="java.lang.NullPointerException">java.lang.NullPointerException
 	at entity.DatastoreFacade.createTower(DatastoreFacade.java:29)
 	at entity.DatastoreFacadeTest.testCreateTower(DatastoreFacadeTest.java:67)
 </error>
   </testcase>
-  <testcase classname="entity.DatastoreFacadeTest" name="testValidateUser" time="0.015" />
   <system-out><![CDATA[createRequest
-requestService
-declineRequest
-Connected database successfully...
-selectServiceByTowerEmail
-selectAllTower
-Connected database successfully...
-java.sql.SQLException: Column 'blocked' not found.
-acceptService
-chargeService
-Connected database successfully...
 acceptRequest
 Connected database successfully...
 Connected database successfully...
+chargeService
+Connected database successfully...
+acceptService
 selectAllService
 Connected database successfully...
+selectAllTower
+Connected database successfully...
+java.sql.SQLException: Column 'blocked' not found.
+selectServiceByTowerEmail
+declineRequest
+Connected database successfully...
+requestService
 declineService
 createClient
 Connected database successfully...
 com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Column 'password' cannot be null
 Connected database successfully...
 com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`qicfixdb`.`client`, CONSTRAINT `fk_email_client` FOREIGN KEY (`email`) REFERENCES `user` (`email`))
-createTower
 validateUser
 Connected database successfully...
 com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'blocked' in 'where clause'
+createTower
 ]]></system-out>
   <system-err><![CDATA[java.text.ParseException: Unparseable date: "2016-02-05 00:00:00.0"
 	at java.text.DateFormat.parse(DateFormat.java:366)

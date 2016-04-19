@@ -141,7 +141,7 @@ public class User {
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT email, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob, block_end FROM user WHERE email='" + email + "' AND password='" + pass + "' AND blocked=''";
+        sql = "SELECT email, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob, blocked FROM user WHERE email='" + email + "' AND password='" + pass + "'  AND (blocked!='' OR blocked is null)";
 
         Database db = Database.getInstance();
         //Database db = new Database();
@@ -281,6 +281,7 @@ public class User {
         obj.setState(rs.getString("state"));
         obj.setZipcode(rs.getString("zipcode"));
         obj.setDob(rs.getString("dob") != null ? rs.getDate("dob") : null);
+        obj.setBlocked(rs.getString("blocked"));
         return obj;
     }
 
