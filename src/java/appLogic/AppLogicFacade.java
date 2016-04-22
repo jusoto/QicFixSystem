@@ -133,7 +133,7 @@ public class AppLogicFacade {
         }
         return list;
     }
-    
+
     public String getAddressByLocation(Location location) {
         String address = "";
 
@@ -183,7 +183,7 @@ public class AppLogicFacade {
         }
         return resp;
     }
-    
+
     public String registrationTower(Tower tower, String token, String email) {
         String message = "false";
         if (authenticator.isAuthTokenValid(token, email)) {
@@ -205,6 +205,28 @@ public class AppLogicFacade {
             }
         }
         return resp;
+    }
+
+    public List<User> selectUserByEmail(String email, String token) {
+        List<User> list = null;
+        if (authenticator.isAuthTokenValid(token, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            list = ds.selectUserByEmail(email);
+        }
+        return list;
+    }
+
+    public List<User> selectAllUser(String email, String token) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<Client> selectClientByEmail(String email, String token) {
+        List<Client> list = null;
+        if (authenticator.isAuthTokenValid(token, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            list = ds.selectClientByEmail(email);
+        }
+        return list;
     }
 
 }

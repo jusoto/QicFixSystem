@@ -5,6 +5,7 @@
  */
 package client.model;
 
+import static client.model.Client.fromJson;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -131,5 +132,23 @@ public class Tower extends User {
         }.getType());
         return list;
     }
+
+    public Tower selectByEmailTower(String token, String email) {
+        Tower tower = null;
+        List<Tower> list;
+        String message;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.TOWER_BY_EMAIL_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", email);
+        parameters.put("token", token);
+        message = conn.getMethod(path, parameters);
+        list = fromJson(message);
+        if(list !=null && list.size()>0){
+            tower = list.get(0);
+        }
+        return tower;
+    }
+    
     
 }

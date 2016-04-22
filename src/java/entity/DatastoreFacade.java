@@ -53,11 +53,14 @@ public class DatastoreFacade {
     }
 
     public List<Service> selectServiceByTowerEmail(String towerEmail) {
-        List<Service> list;
+        List<Service> list = null;
         Service service = new Service();
         Tower tower = new Tower();
         tower.setEmail(towerEmail);
-        list = service.selectServiceByTowerId(tower.getIdByEmail());
+        List<Tower> listTower = tower.selectTowerByEmail(towerEmail);
+        if(listTower!=null && listTower.size()>0){
+            list = service.selectServiceByTowerId(listTower.get(0).getId());
+        }
         return list;
     }
 
@@ -72,21 +75,27 @@ public class DatastoreFacade {
         return payment.charge();
     }
 
-    public boolean declineService(String email, Integer serviceId) {
+    public boolean declineService(String towerEmail, Integer serviceId) {
         HasTower hasTower = new HasTower();
         Tower tower = new Tower();
-        tower.setEmail(email);
-        hasTower.setTowerId(tower.getIdByEmail());
+        tower.setEmail(towerEmail);
+        List<Tower> listTower = tower.selectTowerByEmail(towerEmail);
+        if(listTower!=null && listTower.size()>0){
+            hasTower.setTowerId(listTower.get(0).getId());
+        }
         hasTower.setServiceId(serviceId);
         hasTower.setTowerDeclineDate(new Date());
         return hasTower.cancelRequest();
     }
 
-    public boolean acceptService(String email, Integer serviceId) {
+    public boolean acceptService(String towerEmail, Integer serviceId) {
         HasTower hasTower = new HasTower();
         Tower tower = new Tower();
-        tower.setEmail(email);
-        hasTower.setTowerId(tower.getIdByEmail());
+        tower.setEmail(towerEmail);
+        List<Tower> listTower = tower.selectTowerByEmail(towerEmail);
+        if(listTower!=null && listTower.size()>0){
+            hasTower.setTowerId(listTower.get(0).getId());
+        }
         hasTower.setServiceId(serviceId);
         hasTower.setTowerAcceptDate(new Date());
         return hasTower.acceptRequest();
@@ -126,6 +135,20 @@ public class DatastoreFacade {
             }
         }
         return false;
+    }
+
+    public List<User> selectUserByEmail(String email) {
+        List<User> list;
+        User user = new User();
+        list = user.selectByEmail(email);
+        return list;
+    }
+
+    public List<Client> selectClientByEmail(String email) {
+        List<Client> list;
+        Client client = new Client();
+        list = client.selectClientByEmail(email);
+        return list;
     }
 
 }

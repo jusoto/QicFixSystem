@@ -443,7 +443,7 @@ public class Service {
         return list;
     }
 
-    List<Service> selectServiceByTowerId(Integer towerId) {
+    public List<Service> selectServiceByTowerId(Integer towerId) {
         List<Service> list = new ArrayList<Service>();
         String sql;
         ResultSet rs = null;

@@ -12,6 +12,7 @@
     </head>
     <body>
         <jsp:include page="WEB-INF/menu/menu.jsp" />
+        List Service
         <jsp:include page="WEB-INF/footer/footer.jsp" />
     </body>
 </html>

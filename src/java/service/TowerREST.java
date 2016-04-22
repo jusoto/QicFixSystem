@@ -6,7 +6,6 @@
 package service;
 
 import entity.Tower;
-import entity.User;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

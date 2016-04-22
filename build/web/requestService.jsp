@@ -4,17 +4,20 @@
     Author     : Juan
 --%>
 
+<%@page import="client.controller.ControllerFacade"%>
 <%@page import="client.model.Tower"%>
 <%@page import="client.model.Client"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    ControllerFacade controller = new ControllerFacade();
+    
     List<Tower> listTower = null;
     if (session.getAttribute("email") != null && session.getAttribute("token") != null) {
         String email = session.getAttribute("email").toString();
         String token = session.getAttribute("token").toString();
-        listTower = new Tower().selectAll(token);
+        //listTower = controller.selectListTower(token, email);
     } else {
 
     }
@@ -25,7 +28,7 @@
         <jsp:include page="WEB-INF/head/head.jsp" />
     </head>
     <body>
-        <jsp:include page="WEB-INF/menu/menu.jsp" />
+        <jsp:include page="WEB-INF/menu/menuClient.jsp" />
         <h1>Detail of service</h1>
         <form name="requestServiceForm" action="serviceStatus.jsp" method="POST">
             <table>
@@ -129,5 +132,6 @@
                 </tr>
             </table>
         </form>
+                        <jsp:include page="WEB-INF/footer/footer.jsp" />
     </body>
 </html>

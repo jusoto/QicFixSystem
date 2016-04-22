@@ -73,7 +73,7 @@ public class Tower extends User {
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, t.latitude, t.longitude, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, tower t"
+        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, t.latitude, t.longitude, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.blocked FROM user u, tower t"
                 + " WHERE t.email=u.email";
 
         Database db = new Database();
@@ -148,8 +148,8 @@ this.setUserTypeId(2);
         ResultSet rs = null;
         Tower obj = null;
 
-        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, tower t"
-                + " WHERE t.email=u.email AND where t.id=" + towerId;
+        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.blocked FROM user u, tower t"
+                + " WHERE t.email=u.email AND t.id=" + towerId;
 
         //Database db = new Database();
         Database db = Database.getInstance();
@@ -207,7 +207,7 @@ this.setUserTypeId(2);
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, t.latitude, t.longitude, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, tower t"
+        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, t.latitude, t.longitude, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.blocked FROM user u, tower t"
                 + " WHERE t.email=u.email";
         
 
@@ -240,7 +240,79 @@ this.setUserTypeId(2);
         return list;
     }
 
-    public Integer getIdByEmail() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Integer getIdByEmail(String email) {
+        String sql;
+        ResultSet rs = null;
+        Tower obj = null;
+
+        sql = "SELECT t.id, t.email, t.company_name, t.permit_number, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.blocked FROM user u, tower t"
+                + " WHERE t.email=u.email AND u.email='" + email + "'";
+
+        //Database db = new Database();
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setStatement();
+            rs = db.ExecuteQuery(sql);
+            if (rs.next()) {
+                obj = readResult(rs);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex.toString());
+                }
+            }
+            try {
+                db.Close();
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+
+        return obj.id;
+    }
+    
+    public List<Tower> selectTowerByEmail(String email) {
+        List<Tower> list = new ArrayList<Tower>();
+        String sql;
+        ResultSet rs = null;
+        Tower obj = null;
+
+        sql = "SELECT c.id, c.email, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.blocked FROM user u, client c"
+                + " WHERE c.email=u.email AND u.email='" + email + "'";
+
+        //Database db = new Database();
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setStatement();
+            rs = db.ExecuteQuery(sql);
+            while (rs.next()) {
+                obj = readResult(rs);
+                list.add(obj);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex.toString());
+                }
+            }
+            try {
+                db.Close();
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+
+        return list;
     }
 }

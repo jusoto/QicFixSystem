@@ -1,6 +1,6 @@
 <%-- 
-    Document   : listTower
-    Created on : Apr 18, 2016, 1:58:58 PM
+    Document   : profile
+    Created on : Apr 20, 2016, 11:37:06 PM
     Author     : Juan
 --%>
 
@@ -12,7 +12,7 @@
     </head>
     <body>
         <jsp:include page="WEB-INF/menu/menu.jsp" />
-        <h1>List Tower</h1>
+        <h1>Profile</h1>
         <jsp:include page="WEB-INF/footer/footer.jsp" />
     </body>
 </html>

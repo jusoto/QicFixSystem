@@ -50,10 +50,12 @@ public class Utility {
     public static final String TOWER_CREATE_PATH = "/tower";
     public static final String TOWER_BY_EMAIL_PATH = "/tower/email";
     public static final String USER_CREATE_PATH = "/user";
-    public static final String USER_ID_BY_EMAIL_PATH = "/user/id";
+    //public static final String USER_ID_BY_EMAIL_PATH = "/user/email/id";
     public static final String TOWER_PATH = "/tower";
     public static final String CLIENT_BY_EMAIL_PATH = "/client/email";
     public static final String USER_BY_EMAIL_PATH = "/user/email";
+   // public static final String BASE_URL = "http://localhost:8080/QicFixSystem/api";
+    public static final String BASE_URL = "http://www.qicfixit.com:8080/api";
 
     public static boolean checkSession(String sessionKey) {
         boolean resp;

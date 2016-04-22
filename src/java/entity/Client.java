@@ -75,7 +75,7 @@ public class Client extends User {
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT c.id, c.email, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, client c"
+        sql = "SELECT c.id, c.email, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.blocked FROM user u, client c"
                 + " WHERE c.email=u.email";
 
         //Database db = new Database();
@@ -148,8 +148,8 @@ public class Client extends User {
         ResultSet rs = null;
         Client obj = null;
 
-        sql = "SELECT c.id, c.email, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.block_end FROM user u, client c"
-                + " WHERE c.email=u.email AND where c.id=" + clientId;
+        sql = "SELECT c.id, c.email, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.blocked FROM user u, client c"
+                + " WHERE c.email=u.email AND c.id=" + clientId;
 
         //Database db = new Database();
         Database db = Database.getInstance();
@@ -206,6 +206,45 @@ public class Client extends User {
         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new Utility.JsonDateDeserializer()).create();
         List<Client> list = gson.fromJson(json, new TypeToken<List<Client>>() {
         }.getType());
+        return list;
+    }
+
+    public List<Client> selectClientByEmail(String email) {
+        List<Client> list = new ArrayList<Client>();
+        String sql;
+        ResultSet rs = null;
+        Client obj = null;
+
+        sql = "SELECT c.id, c.email, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.blocked FROM user u, client c"
+                + " WHERE c.email=u.email AND u.email='" + email + "'";
+
+        //Database db = new Database();
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setStatement();
+            rs = db.ExecuteQuery(sql);
+            while (rs.next()) {
+                obj = readResult(rs);
+                list.add(obj);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex.toString());
+                }
+            }
+            try {
+                db.Close();
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+
         return list;
     }
 

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : listTower
-    Created on : Apr 18, 2016, 1:58:58 PM
+    Document   : terms
+    Created on : Apr 21, 2016, 9:53:50 AM
     Author     : Juan
 --%>
 
@@ -11,8 +11,7 @@
         <jsp:include page="WEB-INF/head/head.jsp" />
     </head>
     <body>
-        <jsp:include page="WEB-INF/menu/menu.jsp" />
-        <h1>List Tower</h1>
+        <h1>Terms and Conditions</h1>
         <jsp:include page="WEB-INF/footer/footer.jsp" />
     </body>
 </html>

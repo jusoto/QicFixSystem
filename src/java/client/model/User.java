@@ -5,7 +5,7 @@
  */
 package client.model;
 
-import com.google.common.reflect.TypeToken;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -168,9 +168,10 @@ public class User {
         String path = Utility.USER_BY_EMAIL_PATH;
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("email", email);
+        parameters.put("token", token);
         message = conn.getMethod(path, parameters);
         list = fromJsonUser(message);
-        if(list.size()>0){
+        if(list !=null && list.size()>0){
             user = list.get(0);
         }
         return user;

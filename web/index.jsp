@@ -17,17 +17,7 @@
         <jsp:include page="WEB-INF/head/head.jsp" />
     </head>
     <body>
-        <%
-            if (session.getAttribute("client_id") != null) {
-        %>
-        <jsp:include page="WEB-INF/menu/menuClient.jsp" />
-        <%
-            } else {
-        %>
-        <jsp:include page="WEB-INF/menu/menuTower.jsp" />
-        <%
-            }
-        %>
+        <jsp:include page="WEB-INF/menu/menu.jsp" />
         <div>
             <span>
                 Logged as <%=session.getAttribute("name")%>

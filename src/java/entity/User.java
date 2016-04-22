@@ -221,7 +221,7 @@ public class User {
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT email, password, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob FROM user";
+        sql = "SELECT email, password, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob, blocked FROM user";
 
         Database db = new Database();
         try {
@@ -297,7 +297,7 @@ public class User {
         String sql;
         ResultSet rs = null;
 
-        sql = "SELECT email, password, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob"
+        sql = "SELECT email, password, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob, blocked"
                 + " FROM user"
                 + " WHERE email='"+email+"'";
 
@@ -358,5 +358,9 @@ public class User {
 
         return resp;
     }
+
+    /*public Integer selectIdByEmail(String email) {
+        return null;
+    }*/
 
 }

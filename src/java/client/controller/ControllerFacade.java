@@ -5,27 +5,50 @@
  */
 package client.controller;
 
+import client.model.Client;
 import client.model.ModelFacade;
+import client.model.Tower;
+import client.model.User;
 
 /**
  *
  * @author Juan
  */
 public class ControllerFacade {
-    
-    public ControllerFacade(){
+
+    public ControllerFacade() {
     }
-    
-    public String login(String email, String password){
+
+    public String login(String email, String password) {
         String key;
         ModelFacade ds = new ModelFacade();
         key = ds.login(email, password);
         return key;
     }
-    
-    public void blockAccount(String email){
+
+    public void blockAccount(String email) {
         ModelFacade ds = new ModelFacade();
         ds.blockAccount(email);
     }
+
+    public User selectUserByEmail(String token, String email) {
+        User user = new User();
+        user.setEmail(email);
+        return user.selectByEmail(token, email);
+    }
+
+    public Client selectClientByEmail(String token, String email) {
+        Client client = new Client();
+        client.setEmail(email);
+        client = client.selectByEmailClient(token, email);
+        return client;
+    }
     
+    public Tower selectTowerByEmail(String token, String email) {
+        Tower obj = new Tower();
+        obj.setEmail(email);
+        obj = obj.selectByEmailTower(token, email);
+        return obj;
+    }
+
 }

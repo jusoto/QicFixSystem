@@ -45,7 +45,7 @@ public class Client extends User {
         return message!=null;
     }
 
-    public Integer selectIdByEmail(String token){
+    /*public Integer selectIdByEmail(String token){
         Integer id = -1;
         String message;
         RESTConnection conn = RESTConnection.getInstance();
@@ -62,7 +62,7 @@ public class Client extends User {
             //TODO: Handle error NaN
         }
         return id;
-    }
+    }*/
  
     public Client selectByEmailClient(String token){
         List<Client> list = null;
@@ -95,5 +95,22 @@ public class Client extends User {
         List<Client> list = gson.fromJson(json, new TypeToken<List<Client>>() {
         }.getType());
         return list;
+    }
+
+    public Client selectByEmailClient(String token, String email) {
+        Client client = null;
+        List<Client> list;
+        String message;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.CLIENT_BY_EMAIL_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", email);
+        parameters.put("token", token);
+        message = conn.getMethod(path, parameters);
+        list = fromJson(message);
+        if(list !=null && list.size()>0){
+            client = list.get(0);
+        }
+        return client;
     }
 }

@@ -6,7 +6,8 @@
 package service;
 
 import appLogic.AppLogicFacade;
-import javax.security.auth.login.LoginException;
+import entity.User;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -29,49 +30,51 @@ public class UserREST {
 
     public UserREST() {
     }
-
+    
     /**
-     * Retrieves representation of an instance of service.BancoREST
+     * Retrieves representation of an instance of UserREST
      *
-     * @param _email
-     * @param _password
+     * @param email
+     * @param token
      * @return an instance of java.lang.String
      */
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String login(@QueryParam("email") String _email, @QueryParam("password") String _password) {
-        String token;
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<User> findAll(@QueryParam("email") String email, @QueryParam("token") String token) {
+        List<User> list;
         AppLogicFacade obj = new AppLogicFacade();
-        try {
-            token = obj.login(_email, _password);
-        } catch (LoginException ex) {
-            token = "";
-        }
-        System.out.println("Email: " + _email + ", Pass: " + _password);
-        return token;
+        list = obj.selectAllUser(email, token);
+        return list;
     }
-
+    
     /**
-     * PUT method for updating or creating an instance of BancoREST
+     * Retrieves representation of an instance of UserREST
      *
-     * @param content representation for the resource
+     * @param email
+     * @param token
+     * @return an instance of java.lang.String
      */
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(String content) {
+    @Path("email")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<User> findUserByEmail(@QueryParam("email") String email, @QueryParam("token") String token) {
+        List<User> list;
+        AppLogicFacade obj = new AppLogicFacade();
+        list = obj.selectUserByEmail(email, token);
+        return list;
     }
 
     /**
-     * POST method for updating or creating an instance of BancoREST
+     * PUT method for updating or creating an instance of UserREST
      *
-     * @param _email
+     * @param email
      */
     @Path("block")
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public void block(@QueryParam("email") String _email) {
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void block(@QueryParam("email") String email) {
         AppLogicFacade obj = new AppLogicFacade();
-        obj.blockUser(_email);
+        obj.blockUser(email);
     }
 
 }

@@ -8,7 +8,6 @@ package service;
 import appLogic.AppLogicFacade;
 import entity.Client;
 import java.util.List;
-import javax.security.auth.login.LoginException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -45,6 +44,21 @@ public class ClientREST {
     public List<Client> findAll() {
         Client obj = new Client();
         return obj.selectAll();
+    }
+    
+    /**
+     * Retrieves representation of an instance of service.ClientREST
+     *
+     * @return an instance of java.lang.String
+     */
+    @Path("email")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Client> findUserByEmail(@QueryParam("email") String email, @QueryParam("token") String token) {
+        List<Client> list;
+        AppLogicFacade obj = new AppLogicFacade();
+        list = obj.selectClientByEmail(email, token);
+        return list;
     }
 
     /**
