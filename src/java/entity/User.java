@@ -265,7 +265,7 @@ public class User {
         db.getPreparedStatement().setString(++parameterIndex, this.getCity());
         db.getPreparedStatement().setString(++parameterIndex, this.getState());
         db.getPreparedStatement().setString(++parameterIndex, this.getZipcode());
-        db.getPreparedStatement().setDate(++parameterIndex, dob!=null? (java.sql.Date) this.getDob():null);
+        db.getPreparedStatement().setDate(++parameterIndex, dob != null ? (java.sql.Date) this.getDob() : null);
     }
 
     private User readResult(ResultSet rs) throws SQLException {
@@ -299,7 +299,7 @@ public class User {
 
         sql = "SELECT email, password, user_type_id, fname, lname, phone, street_address, city, state, zipcode, dob, blocked"
                 + " FROM user"
-                + " WHERE email='"+email+"'";
+                + " WHERE email='" + email + "'";
 
         Database db = new Database();
         try {
@@ -362,5 +362,4 @@ public class User {
     /*public Integer selectIdByEmail(String email) {
         return null;
     }*/
-
 }

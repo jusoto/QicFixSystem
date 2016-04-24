@@ -8,6 +8,7 @@ package entity;
 import util.Location;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -113,7 +114,7 @@ public class Tower extends User {
 
         String sql = "INSERT INTO tower (email, comany_name, permit_number, latitude, longitude)"
                 + " VALUES (?,?,?,?,?)";
-this.setUserTypeId(2);
+        this.setUserTypeId(2);
         if (createUser()) {
 
             Database db = Database.getInstance();
@@ -123,8 +124,8 @@ this.setUserTypeId(2);
                 db.getPreparedStatement().setString(++parameterIndex, this.getEmail());
                 db.getPreparedStatement().setString(++parameterIndex, this.getCompanyName());
                 db.getPreparedStatement().setString(++parameterIndex, this.getPermitNumber());
-                db.getPreparedStatement().setDouble(++parameterIndex, this.getLatitude());
-                db.getPreparedStatement().setDouble(++parameterIndex, this.getLongitude());
+                db.getPreparedStatement().setDouble(++parameterIndex, this.getLatitude()!=null?this.getLatitude():Types.DOUBLE);
+                db.getPreparedStatement().setDouble(++parameterIndex, this.getLongitude()!=null?this.getLongitude():Types.DOUBLE);
                 id = db.ExecuteNonQuery();
                 resp = true;
             } catch (SQLException ex) {
@@ -186,8 +187,8 @@ this.setUserTypeId(2);
         obj.setEmail(rs.getString("email"));
         obj.setCompanyName(rs.getString("company_name"));
         obj.setPermitNumber(rs.getString("permit_number"));
-        obj.setLatitude(rs.getString("latitude")!=null?rs.getDouble("latitude"):null);
-        obj.setLongitude(rs.getString("longitude")!=null?rs.getDouble("longitude"):null);
+        obj.setLatitude(rs.getString("latitude") != null ? rs.getDouble("latitude") : Types.DOUBLE);
+        obj.setLongitude(rs.getString("longitude") != null ? rs.getDouble("longitude") : Types.DOUBLE);
         obj.setFname(rs.getString("fname"));
         obj.setLname(rs.getString("lname"));
         obj.setPhone(rs.getString("phone"));
@@ -195,11 +196,11 @@ this.setUserTypeId(2);
         obj.setCity(rs.getString("city"));
         obj.setState(rs.getString("state"));
         obj.setZipcode(rs.getString("zipcode"));
-        obj.setDob(rs.getString("dob")!=null?rs.getDate("dob"):null);
+        obj.setDob(rs.getString("dob") != null ? rs.getDate("dob") : null);
         obj.setBlocked(rs.getString("blocked"));
         return obj;
     }
-    
+
     //order 1: orders by Nearest Tower related to the user
     //order 2: orders by Best Rated Tower
     public List<Tower> selectAllOrdered(Location location, Integer order) {
@@ -209,7 +210,6 @@ this.setUserTypeId(2);
 
         sql = "SELECT t.id, t.email, t.company_name, t.permit_number, t.latitude, t.longitude, u.phone, u.user_type_id, u.fname, u.lname, u.street_address, u.city, u.state, u.zipcode, u.dob, u.blocked FROM user u, tower t"
                 + " WHERE t.email=u.email";
-        
 
         Database db = Database.getInstance();
         try {
@@ -276,7 +276,7 @@ this.setUserTypeId(2);
 
         return obj.id;
     }
-    
+
     public List<Tower> selectTowerByEmail(String email) {
         List<Tower> list = new ArrayList<Tower>();
         String sql;

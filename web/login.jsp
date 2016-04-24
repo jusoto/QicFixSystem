@@ -84,6 +84,18 @@
                 </div>
                 <button class="btn btn-primary btn-block btn-lg btn-signin" type="submit">Sign in</button>
             </form><a href="#" class="forgot-password">Forgot your password?</a></div>
+            <div class="login-card">
+                <div>
+                <form class="form-signin" name="register_client_form" action="registerClient.jsp" method="POST">
+                    <button class="btn btn-primary btn-block btn-lg btn-signin" type="submit">Register Client</button>
+                </form>
+                </div>
+                <div>
+                <form class="form-signin" name="register_tower_form" action="registerTower.jsp" method="POST">
+                    <button class="btn btn-primary btn-block btn-lg btn-signin" type="submit">Register Tower</button>
+                </form>
+                </div>
+            </div>
         <div>Login tries count: <%=errorCount%></div>
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>

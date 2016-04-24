@@ -4,6 +4,9 @@
     Author     : Juan
 --%>
 
+<%@page import="client.controller.ControllerFacade"%>
+<%@page import="util.Utility"%>
+<%@page import="client.model.Client"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,11 +15,26 @@
     </head>
     <body>
     <jsp:include page="WEB-INF/menu/menu.jsp" />
-        <h1>Register Customer</h1>
+    <%
+        if(session.getAttribute("email")!=null && session.getAttribute("password")!=null){
+        Client client = new Client();
+        client.setFname(session.getAttribute("fname").toString());
+        client.setLname(session.getAttribute("lname").toString());
+        client.setDob(Utility.StringToDate(session.getAttribute("dob").toString()));
+        client.setPhone(session.getAttribute("phone").toString());
+        client.setStreetAddress(session.getAttribute("street_address").toString());
+        client.setCity(session.getAttribute("city").toString());
+        client.setState(session.getAttribute("state").toString());
+        client.setZipcode(session.getAttribute("zipcode").toString());
+        client.setEmail(session.getAttribute("email").toString());
+        client.setPassword(session.getAttribute("password").toString());
+        ControllerFacade controler = new ControllerFacade();
+        }
+    %>
             <div class="row register-form">
   <div class="col-md-8 col-md-offset-2">
-    <form class="form-horizontal custom-form" action="createCustomer" method="POST">
-      <h1>Register Form</h1>
+    <form class="form-horizontal custom-form" action="registerClient" method="POST">
+      <h1>Register Client Form</h1>
       <div class="form-group">
         <div class="col-sm-4 label-column">
           <label class="control-label" for="name-input-field">First Name </label>
@@ -38,7 +56,7 @@
           <label class="control-label" for="name-input-field">Date of Birth</label>
         </div>
         <div class="col-sm-6 input-column">
-          <input class="form-control" type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" name="dob">
+            <input class="form-control" type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" alt="MM/DD/YYYY" name="dob">
         </div>
       </div>
       <div class="form-group">
@@ -168,56 +186,6 @@
     </form>
   </div>
 </div>
-        <form>
-        <table>
-            <tr>
-                <td>
-                    <label for="name">Name</label>
-                </td>
-                <td>
-                    <input type="text" name="name">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="email">Email</label>
-                </td>
-                <td>
-                    <input type="text" name="email"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="password">Password</label>
-                </td>
-                <td>
-                    <input type="text" name="password"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="address">Address</label>
-                </td>
-                <td>
-                    <input type="text" name="address"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="dob">DOB</label>
-                </td>
-                <td>
-                    <input type="text" name="dob"/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <span><input type="submit" value="Create Customer"/></span>
-                    <span><input type="button" value="Cancel"/></span>
-                </td>
-            </tr>
-        </table>
-        </form>
         <jsp:include page="WEB-INF/footer/footer.jsp" />
     </body>
 </html>

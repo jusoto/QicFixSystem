@@ -63,7 +63,11 @@ public class DatastoreFacadeTest {
     @Test
     public void testCreateTower() {
         System.out.println("createTower");
-        Tower tower = null;
+        Tower tower = new Tower();
+        tower.setFname("Juan");
+        tower.setLname("Sotomayor");
+        tower.setCompanyName("Tow Company");
+        tower.setPermitNumber("123457894");
         DatastoreFacade instance = new DatastoreFacade();
         instance.createTower(tower);
         // TODO review the generated test code and remove the default call to fail.
@@ -236,6 +240,36 @@ public class DatastoreFacadeTest {
         boolean expResult = false;
         boolean result = instance.requestService(content, email, location);
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of selectUserByEmail method, of class DatastoreFacade.
+     */
+    @Test
+    public void testSelectUserByEmail() {
+        System.out.println("selectUserByEmail");
+        String email = "";
+        DatastoreFacade instance = new DatastoreFacade();
+        List<User> expResult = null;
+        List<User> result = instance.selectUserByEmail(email);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of selectClientByEmail method, of class DatastoreFacade.
+     */
+    @Test
+    public void testSelectClientByEmail() {
+        System.out.println("selectClientByEmail");
+        String email = "";
+        DatastoreFacade instance = new DatastoreFacade();
+        List<Client> expResult = null;
+        List<Client> result = instance.selectClientByEmail(email);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
     
 }

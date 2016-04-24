@@ -7,6 +7,7 @@ package entity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -92,7 +93,7 @@ public class Payment {
             db.setPreparedStatement(sql);
             db.getPreparedStatement().setInt(++parameterIndex, this.getIdservice());
             db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getDate());
-            db.getPreparedStatement().setDouble(++parameterIndex, this.getAmount());
+            db.getPreparedStatement().setDouble(++parameterIndex, this.getAmount()!=null?this.getAmount():Types.DOUBLE);
             db.getPreparedStatement().setString(++parameterIndex, this.getCreditCardLast());
             db.getPreparedStatement().setString(++parameterIndex, this.getPaypalAuto());
             db.ExecuteNonQuery();
@@ -130,7 +131,7 @@ public class Payment {
                 payment.setIdpayment(rs.getString("idpayment")!=null?rs.getInt("idpayment"):null);
                 payment.setIdservice(rs.getString("idservice")!=null?rs.getInt("idservice"):null);
                 payment.setDate(rs.getString("date")!=null?(java.sql.Date)Utility.StringToDate(rs.getString("date")):null);
-                payment.setAmount(rs.getString("amount")!=null?rs.getDouble("amount"):null);
+                payment.setAmount(rs.getString("amount")!=null?rs.getDouble("amount"):Types.DOUBLE);
                 payment.setCreditCardLast(rs.getString("credit_card_last"));
                 payment.setPaypalAuto(rs.getString("paypal_auto"));
                 list.add(payment);
