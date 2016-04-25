@@ -40,18 +40,6 @@ public class UtilityTest {
     }
 
     /**
-     * Test of checkSession method, of class Utility.
-     */
-    @Test
-    public void testCheckSession() {
-        System.out.println("checkSession");
-        String sessionKey = "";
-        boolean expResult = false;
-        boolean result = Utility.checkSession(sessionKey);
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of StringToDate method, of class Utility.
      */
     @Test
@@ -100,17 +88,6 @@ public class UtilityTest {
     }
 
     /**
-     * Test of generateToken method, of class Utility.
-     */
-    @Test
-    public void testGenerateToken() {
-        System.out.println("generateToken");
-        String expResult = "";
-        String result = Utility.generateToken();
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of getLocationFromAddress method, of class Utility.
      */
     @Test
@@ -144,6 +121,25 @@ public class UtilityTest {
         Response.ResponseBuilder expResult = null;
         Response.ResponseBuilder result = Utility.getNoCacheResponseBuilder(status);
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of distanceWithHeight method, of class Utility.
+     */
+    @Test
+    public void testDistanceWithHeight() {
+        System.out.println("distanceWithHeight");
+        double lat1 = 0.0;
+        double lat2 = 0.0;
+        double lon1 = 0.0;
+        double lon2 = 0.0;
+        double el1 = 0.0;
+        double el2 = 0.0;
+        double expResult = 0.0;
+        double result = Utility.distanceWithHeight(lat1, lat2, lon1, lon2, el1, el2);
+        assertEquals(expResult, result, 0.0);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
     
 }

@@ -5,7 +5,6 @@
  */
 package client.model;
 
-import static client.model.Client.fromJson;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,6 +25,7 @@ public class Tower extends User {
     private String permitNumber;
     private Double latitude;
     private Double longitude;
+    private Double priceMile;
 
     public Tower() {
     }
@@ -70,13 +70,21 @@ public class Tower extends User {
         this.longitude = longitude;
     }
 
-    public boolean create(String token) {
+    public Double getPriceMile() {
+        return priceMile;
+    }
+
+    public void setPriceMile(Double priceMile) {
+        this.priceMile = priceMile;
+    }
+
+    public boolean create() {
         String message;
         RESTConnection conn = RESTConnection.getInstance();
         String path = Utility.TOWER_CREATE_PATH;
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("email", getEmail());
-        parameters.put("token", token);
+        //parameters.put("token", token);
         message = conn.getMethod(path, parameters);
         return message!=null;
     }

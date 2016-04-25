@@ -3,13 +3,18 @@
     Created on : Feb 4, 2016, 11:25:52 PM
     Author     : Juan
 --%>
+<%@page import="appLogic.Authenticator"%>
 <%@page import="util.Utility"%>
 <%@page import="entity.User"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    if (session.getAttribute("email") != null) {
-        if (Utility.checkSession(session.getAttribute("email").toString())) {
+    //Authenticator authenticator = Authenticator.getInstance();
+    if (session.getAttribute("email") == null) {
+        response.setStatus(response.SC_MOVED_TEMPORARILY);
+        response.setHeader("Location", "login.jsp");
+    } else {
+        //if (authenticator.isEmailValid(session.getAttribute("email").toString())) {
 %>
 <!DOCTYPE html>
 <html>
@@ -34,14 +39,9 @@
                 <input type="submit" id="btnTowService" value="Request New Tow Service" >Tow service</button>
             </form>
         </div>
-
-        <%
-                }
-            } else {
-                response.setStatus(response.SC_MOVED_TEMPORARILY);
-                response.setHeader("Location", "login.jsp");
-            }
-        %>
         <jsp:include page="WEB-INF/footer/footer.jsp" />
     </body>
 </html>
+<%
+    }
+%>

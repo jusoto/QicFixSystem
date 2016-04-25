@@ -7,9 +7,6 @@ package client.model;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import javax.ws.rs.core.MultivaluedMap;
 import util.Utility;
 
 /**
@@ -23,42 +20,35 @@ public class ModelFacade {
 
     public String login(String email, String password) {
         String key;
-        RESTConnection conn = RESTConnection.getInstance();
-        String path = Utility.LOGIN_PATH;
-
-        HashMap<String, String> parameters = new HashMap<String, String>();
-        parameters.put("email", email);
-        parameters.put("password", password);
-
-        key = conn.getMethod(path, parameters);
-
+        User user = new User();
+        key = user.login(email, password);
         return key;
     }
 
-    public void createClient(String token, Client client) {
-        client.create(token);
+    public boolean createClient(Client client) {
+        return client.create();
     }
 
-    public void createTower(String token, Tower tower) {
-        tower.create(token);
+    public boolean createTower(Tower tower) {
+        return tower.create();
     }
 
-    public void createRequest(String token, Service service, List<Tower> listTower) {
-        service.create(token, listTower);
+    public boolean createRequest(String token, Service service, List<Tower> listTower) {
+        return service.create(token, listTower);
     }
 
-    public void acceptRequest(String token, Integer serviceId, Integer towerId) {
+    public void acceptRequest(String token, String email, Integer serviceId, Integer towerId) {
         HasTower hasTower = new HasTower();
         hasTower.setServiceId(serviceId);
         hasTower.setTowerId(towerId);
-        //hasTower.acceptRequest(token);
+        hasTower.acceptRequest(token, email);
     }
 
-    public void declineRequest(Integer serviceId, Integer towerId) {
+    public void declineRequest(String token, String email, Integer serviceId, Integer towerId) {
         HasTower hasTower = new HasTower();
         hasTower.setServiceId(serviceId);
         hasTower.setTowerId(towerId);
-        //hasTower.cancelRequest();
+        hasTower.cancelRequest(token, email);
     }
 
     public User getUserByEmail(String token, String email) {

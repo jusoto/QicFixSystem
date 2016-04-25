@@ -19,12 +19,12 @@ public class ControllerFacade {
     public ControllerFacade() {
     }
 
-    public String login(String email, String password) {
+    /*public String login(String email, String password) {
         String key;
         ModelFacade ds = new ModelFacade();
         key = ds.login(email, password);
         return key;
-    }
+    }*/
 
     public void blockAccount(String email) {
         ModelFacade ds = new ModelFacade();
@@ -49,6 +49,10 @@ public class ControllerFacade {
         obj.setEmail(email);
         obj = obj.selectByEmailTower(token, email);
         return obj;
+    }
+    
+    public boolean registerClient(Client client){
+        return true;
     }
 
 }

@@ -41,9 +41,9 @@ public class UserREST {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> findAll(@QueryParam("email") String email, @QueryParam("token") String token) {
-        List<User> list;
-        AppLogicFacade obj = new AppLogicFacade();
-        list = obj.selectAllUser(email, token);
+        List<User> list = null;
+        /*AppLogicFacade obj = new AppLogicFacade();
+        list = obj.selectAllUser(email, token);*/
         return list;
     }
     

@@ -9,6 +9,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,15 +34,18 @@ public class Client extends User {
         this.id = id;
     }
 
-    public boolean create(String token) {
+    public boolean create() {
         //Response response;
         String message;
+        String body;
+        List<Client> list = new ArrayList<Client>();
         RESTConnection conn = RESTConnection.getInstance();
-        String path = Utility.USER_CREATE_PATH;
+        String path = Utility.CLIENT_CREATE_PATH;
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("email", getEmail());
-        parameters.put("token", token);
-        message = conn.getMethod(path, parameters);
+        list.add(this);
+        body = toJson(list);
+        message = conn.postMethod(path, parameters, body);
         return message!=null;
     }
 

@@ -31,15 +31,9 @@ public class AppLogicFacade {
         authenticator = Authenticator.getInstance();
     }
 
-    public String requestService(String content, String authToken, String email, Location location) {
-        String message = "false";
-        if (authenticator.isAuthTokenValid(authToken, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
-            if (ds.requestService(content, email, location)) {
-                message = "true";
-            }
-        }
-        return message;
+    public String requestService(String content, String token, String email, Location location) {
+        ServiceLogic obj = new ServiceLogic();
+        return obj.createService(content, token, email, location);
     }
 
     public List<Tower> listTower(String authToken, String email, String pickup, Integer order) {
@@ -57,21 +51,20 @@ public class AppLogicFacade {
     }
 
     public String login(String email, String password) throws LoginException {
-        String token;
-
-        token = authenticator.login(email, password);
-
-        return token;
+        LoginLogic logic = new LoginLogic();
+        return logic.login(email, password);
     }
 
-    public void logout(String authToken, String email) {
-        if (authenticator.isAuthTokenValid(authToken, email)) {
+    public void logout(String email) {
+        /*if (authenticator.isAuthTokenValid(authToken, email)) {
             try {
                 authenticator.logout(authToken);
             } catch (GeneralSecurityException ex) {
                 Logger.getLogger(AppLogicFacade.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        }*/
+        LogoutLogic logic = new LogoutLogic();
+        logic.logout(email);
     }
 
     public Location getLocationByAddress(String address) {
@@ -171,40 +164,12 @@ public class AppLogicFacade {
             user = list.get(0);
         }
         user.setBlocked(UUID.randomUUID().toString());
-        user.update();
+        user.block();
     }
 
-    public boolean registrationClient(Client client, String token, String email) {
-        boolean resp = false;
-        if (authenticator.isAuthTokenValid(token, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
-            ds.createClient(client);
-            resp = true;
-        }
-        return resp;
-    }
-
-    public String registrationTower(Tower tower, String token, String email) {
-        String message = "false";
-        if (authenticator.isAuthTokenValid(token, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
-            ds.createTower(tower);
-        }
-        return message;
-    }
-
-    public boolean createClient(String content, String token, String email) {
-        boolean resp = false;
-        if (authenticator.isAuthTokenValid(token, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
-            Client client = new Client();
-            List<Client> list = client.fromJson(content);
-            if (list.size() > 0) {
-                ds.createClient(list.get(0));
-                resp = true;
-            }
-        }
-        return resp;
+    public boolean registerClient(String content) {
+        RegistrationLogic logic = new RegistrationLogic();
+        return logic.registerClient(content);
     }
 
     public List<User> selectUserByEmail(String email, String token) {
@@ -216,10 +181,6 @@ public class AppLogicFacade {
         return list;
     }
 
-    public List<User> selectAllUser(String email, String token) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public List<Client> selectClientByEmail(String email, String token) {
         List<Client> list = null;
         if (authenticator.isAuthTokenValid(token, email)) {
@@ -227,6 +188,36 @@ public class AppLogicFacade {
             list = ds.selectClientByEmail(email);
         }
         return list;
+    }
+
+    public List<Tower> getTowerList(String token, String email, String address, Integer order) {
+        ListTowerLogic logic = new ListTowerLogic();
+        return logic.getTowerList(token, email, address, order);
+    }
+
+    public boolean updateTower(String content, String email, String token) {
+        EditProfileLogic editProfile = new EditProfileLogic();
+        return editProfile.updateTower(content, email, token);
+    }
+
+    public boolean registerTower(String content) {
+        RegistrationLogic registration = new RegistrationLogic();
+        return registration.registerTower(content);
+    }
+
+    public List<Tower> getTowerById(String token, String email, Integer id) {
+        EditProfileLogic editProfile = new EditProfileLogic();
+        return editProfile.getTowerById(email, token, id);
+    }
+
+    public boolean updateClient(String content, String token, String email) {
+        EditProfileLogic editProfile = new EditProfileLogic();
+        return editProfile.updateClient(content, email, token);
+    }
+
+    public List<Client> getClientById(String token, String email, Integer id) {
+        EditProfileLogic editProfile = new EditProfileLogic();
+        return editProfile.getClientById(email, token, id);
     }
 
 }

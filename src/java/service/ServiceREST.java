@@ -46,22 +46,25 @@ public class ServiceREST {
     /**
      * PUT method for updating or creating an instance of ServiceREST
      * @param content representation for the resource
+     * @param token
+     * @param email
+     * @param locationString
      * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.TEXT_PLAIN})
-    public String putJson(String content, @QueryParam("token") String authToken, @QueryParam("email") String email, @QueryParam("location") String locationString) {
+    public String putJson(String content, @QueryParam("token") String token, @QueryParam("email") String email, @QueryParam("location") String locationString) {
         String message = "";
         Location location = null;
-        if(authToken!=null && email !=null){
+        if(token!=null && email !=null){
             if(locationString.split(",").length > 0){
                 Double latitude = Double.parseDouble(locationString.split(",")[0].trim());
                 Double longitude = Double.parseDouble(locationString.split(",")[1].trim());
                 location = new Location(latitude, longitude);
             }
         AppLogicFacade obj = new AppLogicFacade();
-        message = obj.requestService(content, authToken, email, location);
+        message = obj.requestService(content, token, email, location);
         }
         return message;
     }
@@ -70,12 +73,12 @@ public class ServiceREST {
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.TEXT_PLAIN})
-    public String charge(String content, @QueryParam("token") String authToken, @QueryParam("email") String email, @QueryParam("serviceId") Integer serviceId) {
+    public String charge(String content, @QueryParam("token") String token, @QueryParam("email") String email, @QueryParam("serviceId") Integer serviceId) {
         String message = "";
         Location location = null;
-        if (authToken != null && email != null) {
+        if (token != null && email != null) {
             AppLogicFacade obj = new AppLogicFacade();
-            message = obj.chargeService(content, authToken, email, serviceId);
+            message = obj.chargeService(content, token, email, serviceId);
         }
         return message;
     }
@@ -83,9 +86,9 @@ public class ServiceREST {
     @Path("active")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Service> findByTowerId(@QueryParam("token") String authToken, @QueryParam("email") String email) {
+    public List<Service> findByTowerId(@QueryParam("token") String token, @QueryParam("email") String email) {
         AppLogicFacade obj = new AppLogicFacade();
-        return obj.selectServiceByTowerEmail(authToken, email);
+        return obj.selectServiceByTowerEmail(token, email);
     }
     
     

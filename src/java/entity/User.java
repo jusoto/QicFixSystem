@@ -136,6 +136,7 @@ public class User {
         this.phone = phone;
     }
 
+    //TRUE if email and password matches one registry in DB
     public boolean validateUser(String email, String pass) {
         boolean respuesta = false;
         String sql;
@@ -185,6 +186,7 @@ public class User {
         return respuesta;
     }
 
+    //TRUE if User was created successfully
     public boolean createUser() {
 
         boolean resp = false;
@@ -216,6 +218,7 @@ public class User {
         return resp;
     }
 
+    //Returns all existing users in DB
     public List<User> SelectAll() {
         List<User> list = new ArrayList<User>();
         String sql;
@@ -252,10 +255,11 @@ public class User {
         return list;
     }
 
+    //add all values present in User Object
     private void addValues(Database db) throws SQLException {
         Integer parameterIndex = 0;
         //email, password, user_type_id, phone, fname, lname, street_address, city, state, zipcode, dob
-        db.getPreparedStatement().setString(++parameterIndex, this.getEmail());
+        db.getPreparedStatement().setString(++parameterIndex, this.getEmail().trim());
         db.getPreparedStatement().setString(++parameterIndex, this.getPassword());
         db.getPreparedStatement().setInt(++parameterIndex, this.getUserTypeId());
         db.getPreparedStatement().setString(++parameterIndex, this.getPhone());
@@ -265,9 +269,10 @@ public class User {
         db.getPreparedStatement().setString(++parameterIndex, this.getCity());
         db.getPreparedStatement().setString(++parameterIndex, this.getState());
         db.getPreparedStatement().setString(++parameterIndex, this.getZipcode());
-        db.getPreparedStatement().setDate(++parameterIndex, dob != null ? (java.sql.Date) this.getDob() : null);
+        db.getPreparedStatement().setDate(++parameterIndex, this.getDob() != null ? (java.sql.Date) this.getDob() : null);
     }
 
+    //Returns User with information in ResultSet
     private User readResult(ResultSet rs) throws SQLException {
         User obj = new User();
         obj.setEmail(rs.getString("email"));
@@ -292,6 +297,7 @@ public class User {
         return list;
     }
 
+    //Select a list of users that match email
     public List<User> selectByEmail(String email) {
         List<User> list = new ArrayList<User>();
         String sql;
@@ -330,7 +336,8 @@ public class User {
         return list;
     }
 
-    public boolean update() {
+    //Blocks user
+    public boolean block() {
         boolean resp = false;
         int parameterIndex = 0;
 
@@ -341,6 +348,45 @@ public class User {
             db.Connect();
             db.setPreparedStatement(sql);
             db.getPreparedStatement().setString(++parameterIndex, this.getBlocked());
+            db.getPreparedStatement().setString(++parameterIndex, this.getEmail());
+            db.ExecuteNonQuery();
+            resp = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (db != null) {
+                try {
+                    db.Close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        return resp;
+    }
+
+    //Blocks updates User information
+    public boolean update() {
+        boolean resp = false;
+        int parameterIndex = 0;
+
+        String sql = "UPDATE user SET fname=?, lname=?, phone=?, street_address=?, city=?, state=?, zipcode=?, dob=? WHERE email=?";
+
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setPreparedStatement(sql);
+            db.getPreparedStatement().setString(++parameterIndex, this.getFname());
+            db.getPreparedStatement().setString(++parameterIndex, this.getLname());
+            db.getPreparedStatement().setString(++parameterIndex, this.getPhone());
+            db.getPreparedStatement().setString(++parameterIndex, this.getStreetAddress());
+            db.getPreparedStatement().setString(++parameterIndex, this.getCity());
+            db.getPreparedStatement().setString(++parameterIndex, this.getState());
+            db.getPreparedStatement().setString(++parameterIndex, this.getCity());
+            db.getPreparedStatement().setString(++parameterIndex, this.getState());
+            db.getPreparedStatement().setString(++parameterIndex, this.getZipcode());
+            db.getPreparedStatement().setDate(++parameterIndex, this.getDob() != null ? (java.sql.Date) this.getDob() : null);
             db.getPreparedStatement().setString(++parameterIndex, this.getEmail());
             db.ExecuteNonQuery();
             resp = true;

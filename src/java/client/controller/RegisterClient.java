@@ -5,20 +5,21 @@
  */
 package client.controller;
 
-import entity.Client;
+import client.model.Client;
+import client.model.ModelFacade;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import util.Utility;
 
 /**
  *
  * @author Juan
  */
-public class createClient extends HttpServlet {
+public class RegisterClient extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,18 +32,26 @@ public class createClient extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        ModelFacade model = new ModelFacade();
         Client obj = new Client();
-        obj.setFname(request.getParameter("fname").toString());
-        obj.setLname(request.getParameter("lname").toString());
-        obj.setEmail(request.getParameter("email").toString());
-        obj.setPassword(request.getParameter("password").toString());
-        obj.setStreetAddress(request.getParameter("street_address").toString());
-        obj.setCity(request.getParameter("city").toString());
-        obj.setState(request.getParameter("state").toString());
-        obj.setZipcode(request.getParameter("zipcode").toString());
-        obj.setDob(Utility.StringToDate(request.getParameter("dob").toString()));
-        obj.create();
-        response.sendRedirect("registerCustomer.jsp");
+        obj.setFname(request.getParameter("fname").trim());
+        obj.setLname(request.getParameter("lname").trim());
+        obj.setEmail(request.getParameter("email").trim());
+        obj.setPassword(request.getParameter("password").trim());
+        obj.setStreetAddress(request.getParameter("street_address").trim());
+        obj.setCity(request.getParameter("city").trim());
+        obj.setState(request.getParameter("state").trim());
+        obj.setZipcode(request.getParameter("zipcode").trim());
+        obj.setDob(Utility.StringToDate(request.getParameter("dob")));
+        if (model.createClient(obj)) {
+            session.setAttribute("email", obj.getEmail());
+            session.setAttribute("name", obj.getFname() + " " + obj.getLname());
+            response.sendRedirect("index.jsp");
+        }else{
+            session.setAttribute("errorMessage", "There was an error. Action couldn't be performed.");
+            response.sendRedirect("errorMessage.jsp");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

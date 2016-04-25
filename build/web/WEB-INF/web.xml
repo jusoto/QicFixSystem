@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <servlet>
-        <servlet-name>createCustomer</servlet-name>
-        <servlet-class>client.controller.createClient</servlet-class>
+        <servlet-name>login</servlet-name>
+        <servlet-class>client.controller.Login</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>createServiceman</servlet-name>
-        <servlet-class>client.controller.createTower</servlet-class>
+        <servlet-name>registerClient</servlet-name>
+        <servlet-class>client.controller.RegisterClient</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>registerTower</servlet-name>
+        <servlet-class>client.controller.RegisterTower</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>requestService</servlet-name>
         <servlet-class>client.controller.requestService</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>createCustomer</servlet-name>
-        <url-pattern>/createCustomer</url-pattern>
+        <servlet-name>login</servlet-name>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>createServiceman</servlet-name>
-        <url-pattern>/createServiceman</url-pattern>
+        <servlet-name>registerClient</servlet-name>
+        <url-pattern>/registerClient</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>registerTower</servlet-name>
+        <url-pattern>/registerTower</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>requestService</servlet-name>

@@ -5,19 +5,21 @@
  */
 package client.controller;
 
-import entity.Tower;
+import client.model.ModelFacade;
+import client.model.Tower;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import util.Utility;
 
 /**
  *
  * @author Juan
  */
-public class createTower extends HttpServlet {
+public class RegisterTower extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,27 +32,43 @@ public class createTower extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        ModelFacade model = new ModelFacade();
         Tower obj = new Tower();
+
+        //Set Initial Location with Attribute Location
         Double latitude = 0.;
         Double longitude = 0.;
-        String location = request.getAttribute("location").toString();
-        latitude = Double.parseDouble(location.split(",")[0]);
-        longitude = Double.parseDouble(location.split(",")[1]);
-        
-        obj.setFname(request.getParameter("fname").toString());
-        obj.setLname(request.getParameter("lname").toString());
-        obj.setEmail(request.getParameter("email").toString());
-        obj.setPassword(request.getParameter("password").toString());
-        obj.setStreetAddress(request.getParameter("street_address").toString());
-        obj.setCity(request.getParameter("city").toString());
-        obj.setState(request.getParameter("state").toString());
-        obj.setZipcode(request.getParameter("zipcode").toString());
-        obj.setDob(Utility.StringToDate(request.getParameter("dob").toString()));
+        if (request.getAttribute("location") != null) {
+            String location = request.getAttribute("location").toString();
+            latitude = Double.parseDouble(location.split(",")[0]);
+            longitude = Double.parseDouble(location.split(",")[1]);
+        }
+
+        //Set object values with form values
+        obj.setFname(request.getParameter("fname").trim());
+        obj.setLname(request.getParameter("lname").trim());
+        obj.setEmail(request.getParameter("email").trim());
+        obj.setPassword(request.getParameter("password").trim());
+        obj.setStreetAddress(request.getParameter("street_address").trim());
+        obj.setCity(request.getParameter("city").trim());
+        obj.setState(request.getParameter("state").trim());
+        obj.setZipcode(request.getParameter("zipcode").trim());
+        obj.setDob(Utility.StringToDate(request.getParameter("dob")));
+        obj.setPermitNumber(request.getParameter("permit_number").trim());
+        if (request.getParameter("price_mile") != null) {
+            obj.setPriceMile(Double.parseDouble(request.getParameter("price_mile")));
+        }
         obj.setLatitude(latitude);
         obj.setLongitude(longitude);
-        obj.create();
-        request.setAttribute("msgCreateServiceman", "Serviceman was created.");
-        response.sendRedirect("registerServiceman.jsp");
+        if (model.createTower(obj)) {
+            session.setAttribute("email", obj.getEmail());
+            session.setAttribute("name", obj.getFname() + " " + obj.getLname());
+            response.sendRedirect("index.jsp");
+        } else {
+            session.setAttribute("errorMessage", "There was an error. Action couldn't be performed.");
+            response.sendRedirect("errorMessage.jsp");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

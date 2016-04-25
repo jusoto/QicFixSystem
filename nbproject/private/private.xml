@@ -3,28 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/web/WEB-INF/head/head.jsp</file>
             <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/web/login.jsp</file>
+            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/service/ServiceREST.java</file>
             <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/util/Utility.java</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/web/logout.jsp</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/web/js/script.js</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/entity/Service.java</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/entity/DatastoreFacade.java</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/service/ClientREST.java</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/web/profile.jsp</file>
+            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/service/TowerREST.java</file>
+            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/client/controller/Login.java</file>
+            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/appLogic/RegistrationLogic.java</file>
+            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/client/controller/RegisterTower.java</file>
+            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/client/controller/RegisterClient.java</file>
             <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/appLogic/AppLogicFacade.java</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/entity/Client.java</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/client/model/Tower.java</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/client/model/User.java</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/client/controller/ControllerFacade.java</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/client/model/Client.java</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/web/index.jsp</file>
+            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/entity/Database.java</file>
             <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/web/registerClient.jsp</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/web/terms.jsp</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/service/UserREST.java</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/web/WEB-INF/footer/footer.jsp</file>
+            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/client/controller/ControllerFacade.java</file>
+            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/entity/User.java</file>
+            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/client/controller/requestService.java</file>
             <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/entity/Tower.java</file>
-            <file>file:/C:/Users/Juan/Documents/Proyectos/QicFixSystem/src/java/client/model/RESTConnection.java</file>
         </group>
     </open-files>
 </project-private>

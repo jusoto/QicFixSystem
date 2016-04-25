@@ -21,16 +21,16 @@ public class DatastoreFacade {
     public DatastoreFacade() {
     }
 
-    public void createClient(Client client) {
-        client.create();
+    public boolean createClient(Client client) {
+        return client.create();
     }
 
-    public void createTower(Tower tower) {
-        tower.create();
+    public boolean createTower(Tower tower) {
+        return tower.create();
     }
 
-    public void createRequest(Service service, List<Tower> listTower) {
-        service.create(listTower);
+    public boolean createRequest(Service service, List<Tower> listTower) {
+        return service.create(listTower);
     }
 
     public void acceptRequest(Integer serviceId, Integer towerId) {
@@ -113,29 +113,10 @@ public class DatastoreFacade {
         return list;
     }
 
-    public boolean requestService(String content, String email, Location location) {
-        String pickup;
-        String destination;
-        List<Tower> listTower = null;
-        List<Service> list = Service.fromJson(content);
-        for (int i = 0; i < list.size(); i++) {
-            try {
-                Service service = list.get(i);
-                pickup = service.getStreetAddressPickup() + ", " + service.getCityPickup() + " " + service.getStatePickup() + ", " + service.getZipcodePickup();
-                destination = service.getStreetAddressDestination() + ", " + service.getCityDestination() + " " + service.getStateDestination() + ", " + service.getZipcodeDestination();
-                Location locationPickup = Utility.getLocationFromAddress(pickup);
-                Location locationDestination = Utility.getLocationFromAddress(destination);
-                service.setLatitudePickup(locationPickup.getLatitude());
-                service.setLongitudePickup(locationPickup.getLongitude());
-                service.setLatitudeDestination(locationDestination.getLatitude());
-                service.setLongitudeDestination(locationDestination.getLongitude());
-                return service.create(listTower);
-            } catch (Exception ex) {
-                Logger.getLogger(DatastoreFacade.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return false;
-    }
+    /*public boolean requestService(String content, String email, Location location) {
+        Service service = new Service();
+        return service.create(null);
+    }*/
 
     public List<User> selectUserByEmail(String email) {
         List<User> list;
@@ -149,6 +130,54 @@ public class DatastoreFacade {
         Client client = new Client();
         list = client.selectClientByEmail(email);
         return list;
+    }
+
+    public List<Tower> selectTowerByAddress(String address) {
+        List<Tower> list = null;
+        List<Tower> listAux;
+        Tower tower = new Tower();
+        listAux = tower.selectAll();
+        for(int i=0; i<listAux.size();i++){
+            list.add(listAux.get(i));
+            for(int j=0;i<list.size();i++){
+                
+            }
+        }
+        return list;
+    }
+
+    public List<Tower> selectTowerByAddress(Location location, String city, String state) {
+        List<Tower> list;
+        Tower tower = new Tower();
+        tower.setCity(city);
+        tower.setState(state);
+        list = tower.SelectByStateCity(location);
+        
+        return list;
+    }
+
+    public List<Tower> selectTowerByRating(String city, String state) {
+        List<Tower> list = null;
+        Tower tower = new Tower();
+        tower.setCity(city);
+        tower.setState(state);
+        list = tower.SelectByRating();
+        
+        return list;
+    }
+
+    public List<Tower> selectTowerByPrice(String city, String state) {
+        List<Tower> list = null;
+        Tower tower = new Tower();
+        tower.setCity(city);
+        tower.setState(state);
+        list = tower.SelectByPrice();
+        
+        return list;
+    }
+
+    public void updateClient(Client client) {
+        client.create();
     }
 
 }

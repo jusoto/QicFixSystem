@@ -146,6 +146,7 @@ public class User {
         return list;
     }
     
+    //If the user account was blocked return true
     public boolean block(String email){
         String message;
         RESTConnection conn = RESTConnection.getInstance();
@@ -160,6 +161,7 @@ public class User {
         }
     }
 
+    //Selects a single User by Email
     public User selectByEmail(String token, String email) {
         User user = null;
         List<User> list;
@@ -175,6 +177,22 @@ public class User {
             user = list.get(0);
         }
         return user;
+    }
+
+    //Creates the HTTP conection to the API Server
+    //returns 'true' if email and password matches in Server
+    public String login(String email, String password) {
+        String key;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.LOGIN_PATH;
+
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", email);
+        parameters.put("password", password);
+
+        key = conn.getMethod(path, parameters);
+
+        return key;
     }
 
 }

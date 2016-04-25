@@ -9,6 +9,7 @@ import appLogic.AppLogicFacade;
 import entity.DatastoreFacade;
 import entity.User;
 import java.security.GeneralSecurityException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -47,9 +48,9 @@ public final class Authenticator {
     }
 
     public static Authenticator getInstance() {
-        /*if (authenticator == null) {
+        if (authenticator == null) {
             authenticator = new Authenticator();
-        }*/
+        }
 
         return authenticator;
     }
@@ -95,18 +96,27 @@ public final class Authenticator {
 
         return false;
     }
-
-    public void logout(String authToken) throws GeneralSecurityException {
-
-        if (authorizationTokensStorage.containsKey(authToken)) {
+    
+    public boolean isEmailValid(String email){
+        boolean resp = authorizationTokensStorage.containsValue(email);
+        return resp;
+    }
+    
+    //Remove all the value pairs that matches with value == email
+    public void logout(String email) throws GeneralSecurityException {
+        if(authorizationTokensStorage.containsValue(email)){
+            authorizationTokensStorage.values().removeAll(Collections.singleton(email));
+            return;
+        }
+        /*if (authorizationTokensStorage.containsKey(authToken)) {
 
             /**
              * When a client logs out, the authentication token will be remove
              * and will be made invalid.
-             */
+             *
             authorizationTokensStorage.remove(authToken);
             return;
-        }
+        }*/
 
         throw new GeneralSecurityException("Invalid service key and authorization token match.");
     }

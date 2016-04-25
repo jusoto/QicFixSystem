@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.Location;
 import util.Utility;
 import util.Utility.JsonDateDeserializer;
 
@@ -220,7 +221,6 @@ public class Service {
     }
 
     public boolean create(List<Tower> listTower) {
-
         boolean resp = false;
         int parameterIndex = 0;
         int serviceId;

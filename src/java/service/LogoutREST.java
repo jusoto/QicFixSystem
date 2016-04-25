@@ -6,11 +6,6 @@
 package service;
 
 import appLogic.AppLogicFacade;
-import appLogic.Authenticator;
-import com.google.gson.Gson;
-import java.security.GeneralSecurityException;
-import javax.security.auth.login.LoginException;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -42,7 +37,7 @@ public class LogoutREST {
     public Response logout(@Context HttpHeaders httpHeaders, @QueryParam("token") String authToken, @QueryParam("email") String email) {
         AppLogicFacade appLogic = new AppLogicFacade();
         //String authToken = httpHeaders.getHeaderString("token");
-        appLogic.logout(authToken, email);
+        appLogic.logout(email);
         return getNoCacheResponseBuilder(Response.Status.NO_CONTENT).build();
     }
 

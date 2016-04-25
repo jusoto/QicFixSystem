@@ -5,10 +5,28 @@
  */
 package appLogic;
 
+import java.security.GeneralSecurityException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Juan
  */
 public class LogoutLogic {
+    
+     Authenticator authenticator;
+
+    public LogoutLogic() {
+        authenticator = Authenticator.getInstance();
+    }
+    
+    public void logout(String email){
+         try {
+             authenticator.logout(email);
+         } catch (GeneralSecurityException ex) {
+             Logger.getLogger(LogoutLogic.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
     
 }

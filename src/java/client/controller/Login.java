@@ -5,7 +5,9 @@
  */
 package client.controller;
 
+import client.model.Client;
 import client.model.ModelFacade;
+import client.model.Tower;
 import client.model.User;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -13,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -32,14 +35,57 @@ public class Login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //response.setContentType("text/html;charset=UTF-8");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String key;
-        ModelFacade ds = new ModelFacade();
-        key = ds.login(email, password);
-        User user = ds.getUserByEmail(key, email);
-        response.sendRedirect("index.jsp");
+        HttpSession session = request.getSession();
+        ControllerFacade controller = new ControllerFacade();
+        Integer errorCount = 0;
+
+        if (session.getAttribute("errorCount") != null) {
+            errorCount = Integer.parseInt(session.getAttribute("errorCount").toString());
+            if (errorCount >= 5) {
+                controller.blockAccount(session.getAttribute("errorAccount").toString());
+                session.setAttribute("error_message", "Too many login fails.");
+                response.setHeader("Location", "error.jsp");
+            }
+        }
+
+        if ((request.getParameter("user") != null) && (request.getParameter("pass") != null)) {
+
+            String email = request.getParameter("user");
+            String pass = request.getParameter("pass");
+            String token = null;
+            ModelFacade ds = new ModelFacade();
+
+            try {
+                //token = controller.login(email, pass);
+                token = ds.login(email, pass);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+
+            }
+
+            if (token != null) {
+                User user = controller.selectUserByEmail(token, email);
+                session.setAttribute("email", email);
+                session.setAttribute("name", user.getFname() + " " + user.getLname());
+                if (user != null && user.getUserTypeId() == 1) {
+                    Client client = controller.selectClientByEmail(token, email);
+                    //TODO Load Menu for Application List
+                    session.setAttribute("client_id", client.getId());
+                }
+                if (user != null && user.getUserTypeId() == 2) {
+                    Tower tower = controller.selectTowerByEmail(token, email);
+                    //TODO Load Menu for Application List
+                    session.setAttribute("tower_id", tower.getId());
+                }
+                response.setStatus(response.SC_MOVED_TEMPORARILY);
+                response.setHeader("Location", "index.jsp");
+            } else {
+                errorCount++;
+                session.setAttribute("errorCount", errorCount);
+                session.setAttribute("errorAccount", email);
+            }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

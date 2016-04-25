@@ -10,9 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.Utility;
 
 /**
  *
@@ -103,6 +105,32 @@ public class HasTower {
 
     public void setTowerDeclineDate(Date towerDeclineDate) {
         this.towerDeclineDate = towerDeclineDate;
+    }
+    
+    public boolean acceptRequest(String token, String email) {
+        String message;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.ACCEPT_REQUEST_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", email);
+        parameters.put("token", token);
+        parameters.put("serviceId", getServiceId().toString());
+        parameters.put("towerId", getTowerId().toString());
+        message = conn.getMethod(path, parameters);
+        return message.equals("true");
+    }
+    
+    public boolean cancelRequest(String token, String email) {
+        String message;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.DECLINE_REQUEST_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", email);
+        parameters.put("token", token);
+        parameters.put("serviceId", getServiceId().toString());
+        parameters.put("towerId", getTowerId().toString());
+        message = conn.getMethod(path, parameters);
+        return message.equals("true");
     }
 
     

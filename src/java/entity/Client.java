@@ -43,7 +43,7 @@ public class Client extends User {
         int parameterIndex = 0;
 
         String sql = "INSERT INTO client (email) VALUES (?)";
-        
+
         this.setUserTypeId(1);
 
         if (createUser()) {
@@ -190,18 +190,18 @@ public class Client extends User {
         obj.setCity(rs.getString("city"));
         obj.setState(rs.getString("state"));
         obj.setZipcode(rs.getString("zipcode"));
-        obj.setDob(rs.getString("dob")!=null?rs.getDate("dob"):null);
+        obj.setDob(rs.getString("dob") != null ? rs.getDate("dob") : null);
         obj.setBlocked(rs.getString("blocked"));
         return obj;
     }
-    
+
     public static String toJson(List<Client> list) {
         Gson gson = new GsonBuilder().setDateFormat(Utility.DATE_FORMAT_STRING_SHORT).create();
         String gsonString = gson.toJson(list, new TypeToken<List<Client>>() {
         }.getType());
         return gsonString;
     }
-    
+
     public static List<Client> fromJson(String json) throws JsonSyntaxException {
         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new Utility.JsonDateDeserializer()).create();
         List<Client> list = gson.fromJson(json, new TypeToken<List<Client>>() {
@@ -246,6 +246,11 @@ public class Client extends User {
         }
 
         return list;
+    }
+    
+    //Inherits 
+    public boolean updateClient() {
+        return update();
     }
 
 }

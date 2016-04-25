@@ -37,18 +37,23 @@ public class ClientREST {
     /**
      * Retrieves representation of an instance of service.ClientREST
      *
+     * @param token
+     * @param email
+     * @param id
      * @return an instance of java.lang.String
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Client> findAll() {
-        Client obj = new Client();
-        return obj.selectAll();
+    public List<Client> findById(@QueryParam("token") String token, @QueryParam("email") String email, @QueryParam("id") Integer id) {
+        AppLogicFacade obj = new AppLogicFacade();
+        return obj.getClientById(token, email, id);
     }
     
     /**
      * Retrieves representation of an instance of service.ClientREST
      *
+     * @param email
+     * @param token
      * @return an instance of java.lang.String
      */
     @Path("email")
@@ -77,7 +82,7 @@ public class ClientREST {
             @QueryParam("token") String token) {
         AppLogicFacade appLogic = new AppLogicFacade();
         String message = "false";
-        if (appLogic.createClient(content, token, email)) {
+        if (appLogic.updateClient(content, token, email)) {
             return getNoCacheResponseBuilder(Response.Status.OK).entity(message).build();
         } else {
             return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(message).build();
@@ -95,18 +100,15 @@ public class ClientREST {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response postJson(String content,
-            @QueryParam("email") String email,
-            @QueryParam("token") String token) {
+    public Response postJson(String content, @QueryParam("email") String email) {
         AppLogicFacade appLogic = new AppLogicFacade();
         String message = "false";
-        List<Client> list = Client.fromJson(content);
-        if (list.size() > 0) {
-            if (appLogic.registrationClient(list.get(0), email, token)) {
+        
+   
+            if (appLogic.registerClient(content)) {
+                message = "true";
                 return getNoCacheResponseBuilder(Response.Status.OK).entity(message).build();
-            } else {
-                return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(message).build();
-            }
+
         } else {
             return getNoCacheResponseBuilder(Response.Status.NO_CONTENT).entity(message).build();
         }

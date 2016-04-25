@@ -228,21 +228,6 @@ public class DatastoreFacadeTest {
     }
 
     /**
-     * Test of requestService method, of class DatastoreFacade.
-     */
-    @Test
-    public void testRequestService() {
-        System.out.println("requestService");
-        String content = "";
-        String email = "";
-        Location location = null;
-        DatastoreFacade instance = new DatastoreFacade();
-        boolean expResult = false;
-        boolean result = instance.requestService(content, email, location);
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of selectUserByEmail method, of class DatastoreFacade.
      */
     @Test
