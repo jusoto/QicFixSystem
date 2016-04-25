@@ -12,7 +12,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     ControllerFacade controller = new ControllerFacade();
-    
+
     List<Tower> listTower = null;
     if (session.getAttribute("email") != null && session.getAttribute("token") != null) {
         String email = session.getAttribute("email").toString();
@@ -30,108 +30,191 @@
     <body>
         <jsp:include page="WEB-INF/menu/menuClient.jsp" />
         <h1>Detail of service</h1>
-        <form name="requestServiceForm" action="serviceStatus.jsp" method="POST">
-            <table>
-                <tr>
-                    <td>
-                        <label>Id Customer</label>
-                    </td>
-                    <td>
-                        <input type="text" name="client_id" value="<%=session.getAttribute("client_id")%>"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Start Date</label>
-                    </td>
-                    <td>
-                        <input type="text" name="startDate"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Address</label>
-                    </td>
-                    <td>
-                        <input type="text" name="street_address"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>City</label>
-                    </td>
-                    <td>
-                        <input type="text" name="city"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>State</label>
-                    </td>
-                    <td>
-                        <input type="text" name="state"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Zip code</label>
-                    </td>
-                    <td>
-                        <input type="text" name="zipcode"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Address</label>
-                    </td>
-                    <td>
-                        <input type="text" name="address"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Description</label>
-                    </td>
-                    <td>
-                        <input type="text" name="customerDescription"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                <tr>
-                    <td>
-                        <label>Tower</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table>
-                            <%
-                                if (listTower != null) {
-                                    for (int i = 0; i < listTower.size(); i++) {
-                            %>
-                            <tr>
-                                <td>
-                                    <input type="checkbox" name="chkTower" value="<%=listTower.get(i).getId()%>"/>
-                                </td>
-                                <td>
-                                    <label><%=listTower.get(i).getFname()+" "+listTower.get(i).getLname()%></label>
-                                </td>
-                            </tr>
-                            <%
-                                    }
-                                }
-                            %>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="submit" name="btnRequestService" value="Request Service"/>
-                    </td>
-                </tr>
-            </table>
-        </form>
-                        <jsp:include page="WEB-INF/footer/footer.jsp" />
+        <div class="row register-form">
+            <div class="col-md-8 col-md-offset-2">
+                <form class="form-horizontal custom-form" action="requestService" method="POST">
+                    <h1>Register Client Form</h1>
+                    <div class="form-group">
+                        <div class="col-sm-4 label-column">
+                            <label class="control-label" for="street_address_pickup-input-field">Pickup Address </label>
+                        </div>
+                        <div class="col-sm-6 input-column">
+                            <input class="form-control" type="text" name="street_address_pickup">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 label-column">
+                            <label class="control-label" for="city_pickup-input-field">Pickup City</label>
+                        </div>
+                        <div class="col-sm-6 input-column">
+                            <input class="form-control" type="text" name="city_pickup">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 label-column">
+                            <label class="control-label" for="state_pickup-input-field">Pickup State</label>
+                        </div>
+                        <div class="col-sm-6 input-column">
+                            <div class="dropdown">
+                                <select name="state_pickup">
+                                    <option value="AL">Alabama</option>
+                                    <option value="AK">Alaska</option>
+                                    <option value="AZ">Arizona</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="CA">California</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="CT">Connecticut</option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="DC">District Of Columbia</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="HI">Hawaii</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA">Massachusetts</option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">Mississippi</option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="NH">New Hampshire</option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="ND">North Dakota</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="RI">Rhode Island</option>
+                                    <option value="SC">South Carolina</option>
+                                    <option value="SD">South Dakota</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="UT">Utah</option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WA">Washington</option>
+                                    <option value="WV">West Virginia</option>
+                                    <option value="WI">Wisconsin</option>
+                                    <option value="WY">Wyoming</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 label-column">
+                            <label class="control-label" for="zipcode_pickup-input-field">Pickup Zipcode</label>
+                        </div>
+                        <div class="col-sm-6 input-column">
+                            <input class="form-control" type="text" name="zipcode_pickup">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 label-column">
+                            <label class="control-label" for="street_address_destination-input-field">Destination Address </label>
+                        </div>
+                        <div class="col-sm-6 input-column">
+                            <input class="form-control" type="text" name="street_address_destination">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 label-column">
+                            <label class="control-label" for="city_destination-input-field">Destination City</label>
+                        </div>
+                        <div class="col-sm-6 input-column">
+                            <input class="form-control" type="text" name="city_destination">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 label-column">
+                            <label class="control-label" for="state_destination-input-field">Destination State</label>
+                        </div>
+                        <div class="col-sm-6 input-column">
+                            <div class="dropdown">
+                                <select name="state_destination">
+                                    <option value="AL">Alabama</option>
+                                    <option value="AK">Alaska</option>
+                                    <option value="AZ">Arizona</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="CA">California</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="CT">Connecticut</option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="DC">District Of Columbia</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="HI">Hawaii</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA">Massachusetts</option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">Mississippi</option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="NH">New Hampshire</option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="ND">North Dakota</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="RI">Rhode Island</option>
+                                    <option value="SC">South Carolina</option>
+                                    <option value="SD">South Dakota</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="UT">Utah</option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WA">Washington</option>
+                                    <option value="WV">West Virginia</option>
+                                    <option value="WI">Wisconsin</option>
+                                    <option value="WY">Wyoming</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 label-column">
+                            <label class="control-label" for="zipcode_destination-input-field">Destination Zipcode</label>
+                        </div>
+                        <div class="col-sm-6 input-column">
+                            <input class="form-control" type="text" name="zipcode_destination">
+                        </div>
+                    </div>
+                    <div>List of Towers Available</div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="tower1">Tower 1</label>
+                        <label><input type="checkbox" name="tower2">Tower 2</label>
+                    </div>
+                    <input class="btn btn-default submit-button" type="submit" value="Request Service">
+                </form>
+            </div>
+        </div>
+        <jsp:include page="WEB-INF/footer/footer.jsp" />
     </body>
 </html>

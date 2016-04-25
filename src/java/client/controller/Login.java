@@ -64,16 +64,16 @@ public class Login extends HttpServlet {
 
             }
 
-            if (token != null) {
+            if (token != null && !token.equals("")) {
                 User user = controller.selectUserByEmail(token, email);
                 session.setAttribute("email", email);
                 session.setAttribute("name", user.getFname() + " " + user.getLname());
-                if (user != null && user.getUserTypeId() == 1) {
+                if (user.getUserTypeId() == 1) {
                     Client client = controller.selectClientByEmail(token, email);
                     //TODO Load Menu for Application List
                     session.setAttribute("client_id", client.getId());
                 }
-                if (user != null && user.getUserTypeId() == 2) {
+                if (user.getUserTypeId() == 2) {
                     Tower tower = controller.selectTowerByEmail(token, email);
                     //TODO Load Menu for Application List
                     session.setAttribute("tower_id", tower.getId());
@@ -84,6 +84,7 @@ public class Login extends HttpServlet {
                 errorCount++;
                 session.setAttribute("errorCount", errorCount);
                 session.setAttribute("errorAccount", email);
+                response.setHeader("Location", "login.jsp");
             }
         }
     }

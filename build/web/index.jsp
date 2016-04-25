@@ -39,6 +39,10 @@
                 <input type="submit" id="btnTowService" value="Request New Tow Service" >Tow service</button>
             </form>
         </div>
+        <h1>Active Services</h1>
+        <div>
+            <div>Service 1</div>
+        </div>
         <jsp:include page="WEB-INF/footer/footer.jsp" />
     </body>
 </html>

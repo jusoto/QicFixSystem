@@ -104,7 +104,6 @@ public class ClientREST {
         AppLogicFacade appLogic = new AppLogicFacade();
         String message = "false";
         
-   
             if (appLogic.registerClient(content)) {
                 message = "true";
                 return getNoCacheResponseBuilder(Response.Status.OK).entity(message).build();
