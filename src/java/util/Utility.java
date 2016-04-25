@@ -55,8 +55,8 @@ public class Utility {
     public static final String TOWER_PATH = "/tower";
     public static final String CLIENT_BY_EMAIL_PATH = "/client/email";
     public static final String USER_BY_EMAIL_PATH = "/user/email";
-    public static final String BASE_URL = "http://localhost:8080/QicFixSystem/api";
-    //public static final String BASE_URL = "http://www.qicfixit.com:8080/api";
+    //public static final String BASE_URL = "http://localhost:8080/QicFixSystem/api";
+    public static final String BASE_URL = "http://www.qicfixit.com:8080/api";
     public static final String ACCEPT_REQUEST_PATH = "/hasTower/accept";
     public static final String DECLINE_REQUEST_PATH = "/hasTower/decline";
     public static final String CLIENT_CREATE_PATH = "/client";
