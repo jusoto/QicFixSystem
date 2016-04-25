@@ -57,10 +57,10 @@ public class DatastoreFacade {
         Service service = new Service();
         Tower tower = new Tower();
         tower.setEmail(towerEmail);
-        List<Tower> listTower = tower.selectTowerByEmail(towerEmail);
-        if(listTower!=null && listTower.size()>0){
-            list = service.selectServiceByTowerId(listTower.get(0).getId());
-        }
+        //List<Tower> listTower = tower.selectTowerByEmail(towerEmail);
+        //if(listTower!=null && listTower.size()>0){
+        list = service.selectServiceByEmail(towerEmail);
+        //}
         return list;
     }
 

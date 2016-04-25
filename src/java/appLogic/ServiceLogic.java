@@ -26,7 +26,7 @@ public class ServiceLogic {
         authenticator = Authenticator.getInstance();
     }
 
-    String createService(String content, String token, String email, Location location) {
+    String createService(String content, String token, String email) {
         String message = "false";
         if (authenticator.isAuthTokenValid(token, email)) {
             DatastoreFacade ds = new DatastoreFacade();

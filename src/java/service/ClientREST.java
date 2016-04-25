@@ -94,7 +94,6 @@ public class ClientREST {
      *
      * @param content representation for the resource
      * @param email
-     * @param token
      * @return
      */
     @POST

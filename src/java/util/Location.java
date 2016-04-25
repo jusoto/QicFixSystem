@@ -11,8 +11,8 @@ package util;
  */
 public class Location {
     
-    private final double latitude;
-    private final double longitude;
+    private double latitude;
+    private double longitude;
     
     public Location(double latitude, double longitude){
         this.latitude=latitude;

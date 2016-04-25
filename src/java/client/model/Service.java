@@ -9,6 +9,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -233,10 +234,14 @@ public class Service {
         String message;
         RESTConnection conn = RESTConnection.getInstance();
         String path = Utility.SERVICE_CREATE_PATH;
+        List<Service> list = new ArrayList<Service>();
+        list.add(this);
+        String body = toJson(list);
+        body += Tower.toJson(listTower);
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("client_id", clientId.toString());
         parameters.put("token", token);
-        message = conn.getMethod(path, parameters);
+        message = conn.postMethod(path, parameters, body);
         if(message!=null){
             return true;
         }else{

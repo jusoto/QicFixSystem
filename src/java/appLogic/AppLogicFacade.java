@@ -31,9 +31,9 @@ public class AppLogicFacade {
         authenticator = Authenticator.getInstance();
     }
 
-    public String requestService(String content, String token, String email, Location location) {
+    public String requestService(String content, String token, String email) {
         ServiceLogic obj = new ServiceLogic();
-        return obj.createService(content, token, email, location);
+        return obj.createService(content, token, email);
     }
 
     public List<Tower> listTower(String authToken, String email, String pickup, Integer order) {

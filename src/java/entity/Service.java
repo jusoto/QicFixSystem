@@ -487,4 +487,47 @@ public class Service {
         return list;
     }
 
+    List<Service> selectServiceByEmail(String towerEmail) {
+        List<Service> list = new ArrayList<Service>();
+        String sql;
+        ResultSet rs = null;
+
+        sql = "SELECT id, client_id, creation_date, start_date, end_date, cancel_date, cost,"
+                + " latitude_pickup, longitude_pickup, latitude_destination, longitude_destination,"
+                + " street_address_pickup, city_pickup, state_pickup, zipcode_pickup,"
+                + " street_address_destination, city_destination, state_destination, zipcode_destination,"
+                + " client_description, tower_description"
+                + " FROM service s, has_tower ht, tower t"
+                + " WHERE ht.service_id=s.id AND ht.tower_id=t.id AND t.email="+towerEmail;
+
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setStatement();
+            rs = db.ExecuteQuery(sql);
+            //System.out.println("Service: "+sql);
+            while (rs.next()) {
+                Service service = readResulset(rs);
+                list.add(service);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex.toString());
+                }
+            }
+            try {
+                db.Close();
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+
+        return list;
+    }
+
 }

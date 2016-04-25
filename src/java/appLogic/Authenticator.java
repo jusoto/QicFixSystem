@@ -33,6 +33,8 @@ public final class Authenticator {
 
     private Authenticator() {
         // The usersStorage pretty much represents a user table in the database
+        authorizationTokensStorage.put("user1@email.com", "8336ed2d-9ade-4139-993e-55c56094d3be");
+        authorizationTokensStorage.put("user2@email.com", "12c99426-b051-4db1-ba7d-2e7f3de9f7a3");
         //usersStorage.put("username1", "passwordForUser1");
         //usersStorage.put("username2", "passwordForUser2");
         //usersStorage.put("username3", "passwordForUser3");

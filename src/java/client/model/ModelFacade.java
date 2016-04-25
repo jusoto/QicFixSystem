@@ -75,4 +75,9 @@ public class ModelFacade {
         user.block(email);
     }
 
+    public Client getClientIdByEmail(String token, String email) {
+        Client client = new Client();
+        return client.selectByEmailClient(token, email);
+    }
+
 }
