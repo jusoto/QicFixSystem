@@ -305,7 +305,8 @@ public class Service {
                 + " street_address_pickup, city_pickup, state_pickup, zipcode_pickup,"
                 + " street_address_destination, city_destination, state_destination, zipcode_destination,"
                 + " client_description, tower_description"
-                + " FROM service";
+                + " FROM service s"
+                + " WHERE id in ( SELECT service_id FROM has_tower WHERE (tower_accept_date is null) OR (tower_accept_date is not null AND tower_decline_date is not null) )";
 
         Database db = Database.getInstance();
         try {
@@ -498,7 +499,7 @@ public class Service {
                 + " street_address_destination, city_destination, state_destination, zipcode_destination,"
                 + " client_description, tower_description"
                 + " FROM service s, has_tower ht, tower t"
-                + " WHERE ht.service_id=s.id AND ht.tower_id=t.id AND t.email="+towerEmail;
+                + " WHERE ht.service_id=s.id AND ht.tower_id=t.id AND t.email='"+towerEmail+"'";
 
         Database db = Database.getInstance();
         try {

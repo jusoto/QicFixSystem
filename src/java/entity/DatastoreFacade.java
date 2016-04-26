@@ -180,4 +180,9 @@ public class DatastoreFacade {
         client.create();
     }
 
+    public List<Application> selectApplication(Integer userTypeId) {
+        Application app = new Application();
+        return app.selectByUserTypeId(userTypeId);
+    }
+
 }

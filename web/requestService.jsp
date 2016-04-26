@@ -28,12 +28,11 @@
         <jsp:include page="WEB-INF/head/head.jsp" />
     </head>
     <body>
-        <jsp:include page="WEB-INF/menu/menuClient.jsp" />
-        <h1>Detail of service</h1>
+        <jsp:include page="WEB-INF/menu/menu.jsp" />
         <div class="row register-form">
             <div class="col-md-8 col-md-offset-2">
                 <form class="form-horizontal custom-form" action="requestService" method="POST">
-                    <h1>Register Client Form</h1>
+                    <h1>Request New Service</h1>
                     <div class="form-group">
                         <div class="col-sm-4 label-column">
                             <label class="control-label" for="street_address_pickup-input-field">Pickup Address </label>

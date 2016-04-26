@@ -6,6 +6,7 @@
 package service;
 
 import appLogic.AppLogicFacade;
+import entity.Application;
 import util.Location;
 import entity.Service;
 import java.util.List;
@@ -43,22 +44,19 @@ public class ServiceREST {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Service> findAll(@QueryParam("token") String authToken, @QueryParam("email") String email) {
         AppLogicFacade obj = new AppLogicFacade();
-        return obj.selectServiceByTowerEmail(authToken, email);
+        return obj.selectAllService(authToken, email);
     }
 
     /**
      * PUT method for updating or creating an instance of ServiceREST
      *
      * @param content representation for the resource
-     * @param token
-     * @param email
-     * @param locationString
      * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.TEXT_PLAIN})
-    public String putJson(String content, @QueryParam("token") String token, @QueryParam("email") String email, @QueryParam("location") String locationString) {
+    public String putJson(String content) {
         String message = "not implemented yet";
         return message;
     }
@@ -73,7 +71,7 @@ public class ServiceREST {
      * @return an HTTP response with content of the updated or created resource.
      */
     @POST
-    @Consumes({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.TEXT_PLAIN})
     @Produces({MediaType.TEXT_PLAIN})
     public String postJson(String content, @QueryParam("token") String token, @QueryParam("email") String email) {
         String message = "";

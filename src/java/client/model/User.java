@@ -195,4 +195,27 @@ public class User {
         return key;
     }
 
+    boolean logout(String token, String email) {
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.LOGOUT_PATH;
+
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", email);
+        parameters.put("token", token);
+
+        return conn.getMethod(path, parameters).contains("true");
+    }
+
+    public boolean findByEmail() {
+        User user = null;
+        List<User> list;
+        String message;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.USER_EMAIL_EXISTS_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", email);
+        message = conn.getMethod(path, parameters);
+        return message.contains("true");
+    }
+
 }

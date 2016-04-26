@@ -16,6 +16,10 @@
             <div class="col-md-8 col-md-offset-2">
                 <form class="form-horizontal custom-form" action="registerClient" method="POST">
                     <h1>Register Client Form</h1>
+                    <% if(session.getAttribute("registerClientMessage")!=null)
+                    {%><div style="color:red"><%=session.getAttribute("registerClientMessage")%></div>
+                    <% session.setAttribute("registerClientMessage",null);
+                    }%>
                     <div class="form-group">
                         <div class="col-sm-4 label-column">
                             <label class="control-label" for="name-input-field">First Name </label>

@@ -13,6 +13,7 @@
     </head>
 
     <body>
+        <jsp:include page="WEB-INF/menu/menu.jsp" />
         <div class="login-card"><img src="assets/img/avatar_2x.png" class="profile-img-card">
             <p class="profile-name-card"> </p>
             <form class="form-signin" name="login_form" action="login" method="POST"><span class="reauth-email"> </span>
@@ -25,7 +26,8 @@
                     </div>
                 </div>
                 <button class="btn btn-primary btn-block btn-lg btn-signin" type="submit">Sign in</button>
-            </form><a href="forgot.jsp" class="forgot-password">Forgot your password?</a></div>
+            </form><div style="color:red"><%=session.getAttribute("errorCount")!=null?"Login error tries: "+session.getAttribute("errorCount"):""%></div>
+            <a href="forgot.jsp" class="forgot-password">Forgot your password?</a></div>
             <div class="login-card">
                 <div>
                 <form class="form-signin" name="register_client_form" action="registerClient.jsp" method="POST">
@@ -38,7 +40,6 @@
                 </form>
                 </div>
             </div>
-        <div>Login tries count: <%=session.getAttribute("errorCount")%></div>
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     </body>

@@ -81,13 +81,13 @@ public class requestService extends HttpServlet {
             }
 
             //Create Service in System
-            if (!model.createRequest(token, obj, listTower)) {
+            if (!model.createRequest(token, email, obj, listTower)) {
                 //Display error message if service could not be created
                 request.setAttribute("errorMessage", "Service could not be created.");
-                response.setStatus(response.SC_MOVED_TEMPORARILY);
-                response.setHeader("Location", "errorMessage.jsp");
+                response.sendRedirect("index.jsp");
             } else {
                 //request.setAttribute("msgCreateServiceman", "Serviceman was created.");
+                //response.setStatus(response.SC_MOVED_TEMPORARILY);
                 response.sendRedirect("index.jsp");
             }
         }

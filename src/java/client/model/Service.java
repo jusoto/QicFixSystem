@@ -230,7 +230,7 @@ public class Service {
         return list;
     }
 
-    public boolean create(String token, List<Tower> listTower) {
+    public boolean create(String token, String email, List<Tower> listTower) {
         String message;
         RESTConnection conn = RESTConnection.getInstance();
         String path = Utility.SERVICE_CREATE_PATH;
@@ -241,12 +241,9 @@ public class Service {
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("client_id", clientId.toString());
         parameters.put("token", token);
-        message = conn.postMethod(path, parameters, body);
-        if(message!=null){
-            return true;
-        }else{
-            return false;
-        }
+        parameters.put("email", email);
+        message = conn.postMethodText(path, parameters, body);
+        return message!=null && !"".equals(message);
     }
 
 }

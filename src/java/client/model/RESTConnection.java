@@ -88,12 +88,11 @@ public class RESTConnection {
         return message;
     }
     
-    //Handles all PUT Methods
-    public String putMethod(String path, HashMap<String, String> parameters, String id, String body) {
+    public String postMethodText(String path, HashMap<String, String> parameters, String body) {
         Response response = null;
         String message = null;
         Client obj = ClientBuilder.newClient();
-        WebTarget target = obj.target(BASE_URL + path + "/" + id);
+        WebTarget target = obj.target(BASE_URL + path);
 
         for (String key : parameters.keySet()) {
             String value = parameters.get(key);
@@ -101,7 +100,34 @@ public class RESTConnection {
         }
 
         try {
-            response = target.request(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN).put(Entity.entity(body,MediaType.TEXT_PLAIN));
+            response = target.request(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN).post(Entity.entity(body,MediaType.TEXT_PLAIN));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (response != null) {
+            if (response.getStatus() == 200) {
+                message = response.readEntity(String.class);
+            }
+        }
+
+        return message;
+    }
+    
+    //Handles all PUT Methods
+    public String putMethod(String path, HashMap<String, String> parameters, String id, String body) {
+        Response response = null;
+        String message = null;
+        Client obj = ClientBuilder.newClient();
+        WebTarget target = obj.target(BASE_URL + path);
+
+        for (String key : parameters.keySet()) {
+            String value = parameters.get(key);
+            target = target.queryParam(key, value);
+        }
+
+        try {
+            response = target.request(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN).put(Entity.entity(body,MediaType.APPLICATION_JSON));
         } catch (Exception e) {
             e.printStackTrace();
         }

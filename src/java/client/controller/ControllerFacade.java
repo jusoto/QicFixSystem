@@ -5,10 +5,13 @@
  */
 package client.controller;
 
+import client.model.Application;
 import client.model.Client;
 import client.model.ModelFacade;
 import client.model.Tower;
 import client.model.User;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -53,6 +56,11 @@ public class ControllerFacade {
     
     public boolean registerClient(Client client){
         return true;
+    }
+
+    public String getMenu(Integer userTypeId) {
+        ModelFacade model = new ModelFacade();
+        return model.getMenu(userTypeId);
     }
 
 }

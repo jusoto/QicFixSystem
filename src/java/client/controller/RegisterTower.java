@@ -62,6 +62,7 @@ public class RegisterTower extends HttpServlet {
         obj.setLatitude(latitude);
         obj.setLongitude(longitude);
         if (model.createTower(obj)) {
+            session.setAttribute("userTypeId", obj.getUserTypeId());
             session.setAttribute("email", obj.getEmail());
             session.setAttribute("name", obj.getFname() + " " + obj.getLname());
             response.sendRedirect("index.jsp");

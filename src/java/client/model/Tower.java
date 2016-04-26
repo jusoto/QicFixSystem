@@ -160,6 +160,20 @@ public class Tower extends User {
         }
         return tower;
     }
+
+    boolean update(String token) {
+        String message;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.TOWER_CREATE_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", getEmail());
+        parameters.put("token", token);
+        List<Tower> list = new ArrayList<Tower>();
+        list.add(this);
+        String content = toJson(list);
+        message = conn.postMethod(path, parameters, content);
+        return message!=null;
+    }
     
     
 }

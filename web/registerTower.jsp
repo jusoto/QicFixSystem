@@ -15,7 +15,7 @@
         <div class="row register-form">
             <div class="col-md-8 col-md-offset-2">
                 <form class="form-horizontal custom-form" action="registerTower" method="POST">
-                    <h1>Register Client Form</h1>
+                    <h1>Register Tower Form</h1>
                     <div class="form-group">
                         <div class="col-sm-4 label-column">
                             <label class="control-label" for="name-input-field">First Name </label>

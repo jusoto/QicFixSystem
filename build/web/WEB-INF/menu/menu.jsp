@@ -4,22 +4,28 @@
     Author     : Juan
 --%>
 
+<%@page import="client.controller.ControllerFacade"%>
+<%@page import="java.util.HashMap"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <div id="pageheader">
     <div id='cssmenu'>
         <ul>
             <li><a href='index.jsp'>Home</a></li>
-            <li class='has-sub'><a href='profile.jsp'>Profile</a>
-            </li>
-            <li class='has-sub'><a href='#'>Service</a>
-                <ul>
-                    <li><a href="requestService.jsp">Create Service</a></li>
-                    <li><a href='listTower.jsp'>List Tower</a></li>
-                    <li><a href="listService.jsp">List Service</a></li>
-                </ul>
-            </li>
+            <%=session.getAttribute("menu")!=null?session.getAttribute("menu"):""%>
             <li><a href='about.jsp'>About</a></li>
         </ul>
+            <% if (session.getAttribute("name")!=null){%>
+        <div style="float:right; margin-right: 50px">
+            <span>
+                Logged as <%=session.getAttribute("name")%>
+            </span>
+            <span>
+                <form name="logout" action="Logout" method="POST">
+                    <input type="submit" name="btnLogout" value="Logout"/>
+                </form>
+            </span>
+        </div>
+            <%}%>
     </div>
 </div>

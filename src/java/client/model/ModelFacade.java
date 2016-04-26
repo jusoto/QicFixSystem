@@ -33,8 +33,8 @@ public class ModelFacade {
         return tower.create();
     }
 
-    public boolean createRequest(String token, Service service, List<Tower> listTower) {
-        return service.create(token, listTower);
+    public boolean createRequest(String token, String email, Service service, List<Tower> listTower) {
+        return service.create(token, email, listTower);
     }
 
     public void acceptRequest(String token, String email, Integer serviceId, Integer towerId) {
@@ -78,6 +78,37 @@ public class ModelFacade {
     public Client getClientIdByEmail(String token, String email) {
         Client client = new Client();
         return client.selectByEmailClient(token, email);
+    }
+
+    public boolean logout(String email, String token) {
+        User user = new User();
+        return user.logout(token, email);
+    }
+
+    public String getMenu(Integer userTypeId) {
+        String menu = "";
+        Application app = new Application();
+        List<Application> list = app.getApplicationByUserTypeId(userTypeId);
+        if (list != null) {
+            for (int i = 0; i < list.size(); i++) {
+                menu += "<li><a href='" + list.get(i).getUrl() + "'>" + list.get(i).getName() + "</a>";
+            }
+        }
+        return menu;
+    }
+
+    public boolean updateTower(Tower obj, String token) {
+        return obj.update(token);
+    }
+
+    public boolean updateClient(Client obj, String token) {
+        return obj.update(token);
+    }
+
+    public boolean EmailNotExist(String email) {
+        User user = new User();
+        user.setEmail(email);
+        return user.findByEmail();
     }
 
 }

@@ -117,4 +117,19 @@ public class Client extends User {
         }
         return client;
     }
+
+    boolean update(String token) {
+        String message;
+        String body;
+        List<Client> list = new ArrayList<Client>();
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.CLIENT_CREATE_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", getEmail());
+        parameters.put("token", token);
+        list.add(this);
+        body = toJson(list);
+        message = conn.putMethod(path, parameters, getId().toString() ,body);
+        return message!=null;
+    }
 }

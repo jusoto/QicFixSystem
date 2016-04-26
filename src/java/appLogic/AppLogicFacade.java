@@ -5,6 +5,7 @@
  */
 package appLogic;
 
+import entity.Application;
 import entity.Client;
 import entity.DatastoreFacade;
 import entity.Service;
@@ -217,6 +218,16 @@ public class AppLogicFacade {
     public List<Client> getClientById(String token, String email, Integer id) {
         EditProfileLogic editProfile = new EditProfileLogic();
         return editProfile.getClientById(email, token, id);
+    }
+
+    public List<Application> selectApplication(Integer userTypeId) {
+        DatastoreFacade ds = new DatastoreFacade();
+        return ds.selectApplication(userTypeId);
+    }
+
+    public boolean findUserByEmail(String email) {
+         DatastoreFacade ds = new DatastoreFacade();
+        return ds.selectUserByEmail(email).isEmpty();
     }
 
 }

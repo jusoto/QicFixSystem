@@ -44,13 +44,19 @@ public class RegisterClient extends HttpServlet {
         obj.setState(request.getParameter("state").trim());
         obj.setZipcode(request.getParameter("zipcode").trim());
         obj.setDob(Utility.StringToDate(request.getParameter("dob")));
-        if (model.createClient(obj)) {
-            session.setAttribute("email", obj.getEmail());
-            session.setAttribute("name", obj.getFname() + " " + obj.getLname());
-            response.sendRedirect("index.jsp");
-        }else{
-            session.setAttribute("errorMessage", "There was an error. Action couldn't be performed.");
-            response.sendRedirect("errorMessage.jsp");
+        if (model.EmailNotExist(obj.getEmail())) {
+            if (model.createClient(obj)) {
+                session.setAttribute("email", obj.getEmail());
+                session.setAttribute("name", obj.getFname() + " " + obj.getLname());
+                session.setAttribute("userTypeId", obj.getUserTypeId());
+                response.sendRedirect("index.jsp");
+            } else {
+                session.setAttribute("errorMessage", "There was an error. Action couldn't be performed.");
+                response.sendRedirect("errorMessage.jsp");
+            }
+        } else {
+            session.setAttribute("registerClientMessage", "The email address is already registered.");
+            response.sendRedirect("registerClient.jsp");
         }
     }
 

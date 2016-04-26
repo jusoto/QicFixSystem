@@ -67,29 +67,37 @@ public class Login extends HttpServlet {
             if (token != null && !token.equals("")) {
                 User user = controller.selectUserByEmail(token, email);
                 session.setAttribute("email", email);
+                session.setAttribute("token", token);
                 session.setAttribute("name", user.getFname() + " " + user.getLname());
+                session.setAttribute("userTypeId", user.getUserTypeId());
+                session.setAttribute("menu", controller.getMenu(user.getUserTypeId()));
                 if (user.getUserTypeId() == 1) {
                     Client client = controller.selectClientByEmail(token, email);
-                    //TODO Load Menu for Application List
+                    if(client!=null){
+                    session.setAttribute("client", client);
                     session.setAttribute("client_id", client.getId());
+                    }
                 }
                 if (user.getUserTypeId() == 2) {
                     Tower tower = controller.selectTowerByEmail(token, email);
-                    //TODO Load Menu for Application List
+                    if(tower!=null){
+                    session.setAttribute("tower", tower);
                     session.setAttribute("tower_id", tower.getId());
+                    }
                 }
-                response.setStatus(response.SC_MOVED_TEMPORARILY);
-                response.setHeader("Location", "index.jsp");
+                //response.setStatus(response.SC_MOVED_TEMPORARILY);
+                response.sendRedirect("index.jsp");
             } else {
                 errorCount++;
                 session.setAttribute("errorCount", errorCount);
                 session.setAttribute("errorAccount", email);
-                response.setHeader("Location", "login.jsp");
+                //response.setStatus(response.SC_MOVED_TEMPORARILY);
+                response.sendRedirect("login.jsp");
             }
         } else {
-            response.setStatus(response.SC_MOVED_TEMPORARILY);
+            //response.setStatus(response.SC_MOVED_TEMPORARILY);
             session.setAttribute("errorMessage", "General Error");
-            response.setHeader("Location", "errorMessage.jsp");
+            response.sendRedirect("errorMessage.jsp");
         }
     }
 

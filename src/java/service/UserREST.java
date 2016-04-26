@@ -63,6 +63,25 @@ public class UserREST {
         list = obj.selectUserByEmail(email, token);
         return list;
     }
+    
+    /**
+     * Retrieves representation of an instance of UserREST
+     *
+     * @param email
+     * @param token
+     * @return an instance of java.lang.String
+     */
+    @Path("exists")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String findByEmail(@QueryParam("email") String email) {
+        String message = "false";
+        AppLogicFacade obj = new AppLogicFacade();
+        if(obj.findUserByEmail(email)){
+            message = "true";
+        }
+        return message;
+    }
 
     /**
      * PUT method for updating or creating an instance of UserREST

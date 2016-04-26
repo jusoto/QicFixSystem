@@ -10,7 +10,7 @@
     <div id='cssmenu'>
         <ul>
             <li><a href='index.jsp'>Home</a></li>
-            <li class='has-sub'><a href='profile.jsp'>Profile</a>
+            <li><a href='profile.jsp'>Profile</a>
             </li>
             <li class='has-sub'><a href='#'>Service</a>
                 <ul>

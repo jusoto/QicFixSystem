@@ -60,6 +60,9 @@ public class Utility {
     public static final String ACCEPT_REQUEST_PATH = "/hasTower/accept";
     public static final String DECLINE_REQUEST_PATH = "/hasTower/decline";
     public static final String CLIENT_CREATE_PATH = "/client";
+    public static final String LOGOUT_PATH = "/logout";
+    public static final String APPLICATION_PATH = "/application";
+    public static final String USER_EMAIL_EXISTS_PATH = "/user/exists";
     
     //Parse a String to Date
     public static Date StringToDate(String strDate) {
