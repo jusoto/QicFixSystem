@@ -46,16 +46,16 @@ public class RegisterTower extends HttpServlet {
         }
 
         //Set object values with form values
-        obj.setFname(request.getParameter("fname").trim());
-        obj.setLname(request.getParameter("lname").trim());
-        obj.setEmail(request.getParameter("email").trim());
-        obj.setPassword(request.getParameter("password").trim());
-        obj.setStreetAddress(request.getParameter("street_address").trim());
-        obj.setCity(request.getParameter("city").trim());
-        obj.setState(request.getParameter("state").trim());
-        obj.setZipcode(request.getParameter("zipcode").trim());
+        obj.setFname(request.getParameter("fname"));
+        obj.setLname(request.getParameter("lname"));
+        obj.setEmail(request.getParameter("email"));
+        obj.setPassword(request.getParameter("password"));
+        obj.setStreetAddress(request.getParameter("street_address"));
+        obj.setCity(request.getParameter("city"));
+        obj.setState(request.getParameter("state"));
+        obj.setZipcode(request.getParameter("zipcode"));
         obj.setDob(Utility.StringToDate(request.getParameter("dob")));
-        obj.setPermitNumber(request.getParameter("permit_number").trim());
+        obj.setPermitNumber(request.getParameter("permit_number"));
         if (request.getParameter("price_mile") != null) {
             obj.setPriceMile(Double.parseDouble(request.getParameter("price_mile")));
         }

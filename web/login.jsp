@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <button class="btn btn-primary btn-block btn-lg btn-signin" type="submit">Sign in</button>
-            </form><a href="#" class="forgot-password">Forgot your password?</a></div>
+            </form><a href="forgot.jsp" class="forgot-password">Forgot your password?</a></div>
             <div class="login-card">
                 <div>
                 <form class="form-signin" name="register_client_form" action="registerClient.jsp" method="POST">

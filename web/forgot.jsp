@@ -13,6 +13,10 @@
     <body>
         <jsp:include page="WEB-INF/menu/menu.jsp" />
         <h1>Forgot</h1>
+        <form action="index.jsp" method="POST">
+        <div>Email: <input type="text" name="email"/></div>
+        <input type="submit"/>
+        </form>
         <jsp:include page="WEB-INF/footer/footer.jsp" />
     </body>
 </html>

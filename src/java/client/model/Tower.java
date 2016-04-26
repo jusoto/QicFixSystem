@@ -9,6 +9,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -84,8 +85,10 @@ public class Tower extends User {
         String path = Utility.TOWER_CREATE_PATH;
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("email", getEmail());
-        //parameters.put("token", token);
-        message = conn.getMethod(path, parameters);
+        List<Tower> list = new ArrayList<Tower>();
+        list.add(this);
+        String content = toJson(list);
+        message = conn.postMethod(path, parameters, content);
         return message!=null;
     }
     

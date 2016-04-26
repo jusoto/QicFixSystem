@@ -89,8 +89,6 @@ public class TowerREST {
     /**
      * POST method for updating or creating an instance of BancoREST
      * @param content representation for the resource
-     * @param token
-     * @param email
      * @return 
      */
     @POST

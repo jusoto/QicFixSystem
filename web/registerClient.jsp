@@ -150,14 +150,6 @@
                             <input class="form-control" type="password" name="password">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-sm-4 label-column">
-                            <label class="control-label" for="repeat-pawssword-input-field">Repeat Password </label>
-                        </div>
-                        <div class="col-sm-6 input-column">
-                            <input class="form-control" type="password">
-                        </div>
-                    </div>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox">

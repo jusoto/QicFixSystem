@@ -37,7 +37,7 @@ public class LogoutREST {
     public Response logout(@Context HttpHeaders httpHeaders, @QueryParam("token") String authToken, @QueryParam("email") String email) {
         AppLogicFacade appLogic = new AppLogicFacade();
         //String authToken = httpHeaders.getHeaderString("token");
-        appLogic.logout(email);
+        appLogic.logout(authToken, email);
         return getNoCacheResponseBuilder(Response.Status.NO_CONTENT).build();
     }
 

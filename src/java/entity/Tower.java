@@ -128,9 +128,11 @@ public class Tower extends User {
         int parameterIndex = 0;
         int id;
 
-        String sql = "INSERT INTO tower (email, comany_name, permit_number, latitude, longitude, price_mile)"
+        String sql = "INSERT INTO tower (email, company_name, permit_number, latitude, longitude, price_mile)"
                 + " VALUES (?,?,?,?,?,?)";
+        
         this.setUserTypeId(2);
+        
         if (createUser()) {
 
             Database db = Database.getInstance();

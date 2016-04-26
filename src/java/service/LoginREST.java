@@ -6,6 +6,7 @@
 package service;
 
 import appLogic.AppLogicFacade;
+import appLogic.AppLogicFacade;
 import javax.security.auth.login.LoginException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -36,8 +37,7 @@ public class LoginREST {
     
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public Response login(@Context HttpHeaders httpHeaders,
-            @QueryParam("email") String email,
+    public Response login(@Context HttpHeaders httpHeaders, @QueryParam("email") String email,
             @QueryParam("password") String password) {
         //System.out.println("RESTResource: "+email+password);
         AppLogicFacade appLogic = new AppLogicFacade();

@@ -67,7 +67,9 @@ public class Utility {
         Date date = null;
 
         try {
+            if(!strDate.equals("")){
             date = format.parse(strDate);
+            }
         } catch (ParseException ex) {
             ex.printStackTrace();
         }

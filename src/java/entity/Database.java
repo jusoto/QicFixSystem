@@ -50,7 +50,7 @@ public class Database {
 
     public void setPreparedStatement(String sql) throws SQLException {
         if (this.conn != null) {
-            this.preparedStatement = conn.prepareStatement(sql);
+            this.preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         }
     }
 
@@ -103,9 +103,11 @@ public class Database {
         Integer resp = -1;
         try {
             this.preparedStatement.executeUpdate();
-            this.conn.commit();
+            //this.conn.commit();
             this.generatedKeys = this.preparedStatement.getGeneratedKeys();
+            resp = 1;
             if(this.generatedKeys.next()){
+                resp = 1;
                 resp = this.generatedKeys.getInt(0);
             }
         } catch (SQLException e) {

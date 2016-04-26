@@ -12,7 +12,6 @@ import entity.Tower;
 import entity.User;
 import java.util.List;
 import util.Location;
-import java.security.GeneralSecurityException;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,8 +24,8 @@ import util.Utility;
  */
 public class AppLogicFacade {
 
-    Authenticator authenticator;
-
+    private Authenticator authenticator;
+    
     public AppLogicFacade() {
         authenticator = Authenticator.getInstance();
     }
@@ -55,7 +54,7 @@ public class AppLogicFacade {
         return logic.login(email, password);
     }
 
-    public void logout(String email) {
+    public void logout(String token, String email) {
         /*if (authenticator.isAuthTokenValid(authToken, email)) {
             try {
                 authenticator.logout(authToken);
@@ -64,7 +63,7 @@ public class AppLogicFacade {
             }
         }*/
         LogoutLogic logic = new LogoutLogic();
-        logic.logout(email);
+        logic.logout(token, email);
     }
 
     public Location getLocationByAddress(String address) {

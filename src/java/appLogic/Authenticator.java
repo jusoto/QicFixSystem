@@ -5,11 +5,8 @@
  */
 package appLogic;
 
-import appLogic.AppLogicFacade;
 import entity.DatastoreFacade;
-import entity.User;
 import java.security.GeneralSecurityException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -19,7 +16,7 @@ import javax.security.auth.login.LoginException;
  *
  * @author Juan
  */
-public final class Authenticator {
+public class Authenticator {
 
     private static Authenticator authenticator = new Authenticator();
 
@@ -29,12 +26,12 @@ public final class Authenticator {
     // A service key storage which stores <service_key, username>
     //private final Map<String, String> serviceKeysStorage = new HashMap();
     // An authentication token storage which stores <service_key, auth_token>.
-    private static final Map<String, String> authorizationTokensStorage = new HashMap();
+    private static Map<String, String> authorizationTokensStorage = new HashMap<String, String>();
 
     private Authenticator() {
         // The usersStorage pretty much represents a user table in the database
-        authorizationTokensStorage.put("user1@email.com", "8336ed2d-9ade-4139-993e-55c56094d3be");
-        authorizationTokensStorage.put("user2@email.com", "12c99426-b051-4db1-ba7d-2e7f3de9f7a3");
+        //authorizationTokensStorage.put("8336ed2d-9ade-4139-993e-55c56094d3be", "user1@email.com");
+        //authorizationTokensStorage.put("12c99426-b051-4db1-ba7d-2e7f3de9f7a3", "user2@email.com");
         //usersStorage.put("username1", "passwordForUser1");
         //usersStorage.put("username2", "passwordForUser2");
         //usersStorage.put("username3", "passwordForUser3");
@@ -50,9 +47,9 @@ public final class Authenticator {
     }
 
     public static Authenticator getInstance() {
-        if (authenticator == null) {
+        /*if (authenticator == null) {
             authenticator = new Authenticator();
-        }
+        }*/
 
         return authenticator;
     }
@@ -85,7 +82,7 @@ public final class Authenticator {
      * The method that pre-validates if the client which invokes the REST API is
      * from a authorized and authenticated source.
      *
-     * @param serviceKey The service key
+     * @param email
      * @param authToken The authorization token generated after login
      * @return TRUE for acceptance and FALSE for denied.
      */
@@ -100,25 +97,24 @@ public final class Authenticator {
     }
     
     public boolean isEmailValid(String email){
-        boolean resp = authorizationTokensStorage.containsValue(email);
-        return resp;
+        return authorizationTokensStorage.containsValue(email);
     }
     
     //Remove all the value pairs that matches with value == email
-    public void logout(String email) throws GeneralSecurityException {
-        if(authorizationTokensStorage.containsValue(email)){
-            authorizationTokensStorage.values().removeAll(Collections.singleton(email));
+    public void logout(String authToken, String email) throws GeneralSecurityException {
+        /*if(authorizationTokensStorage.containsValue(email)){
+            //authorizationTokensStorage.values().removeAll(email);
             return;
-        }
-        /*if (authorizationTokensStorage.containsKey(authToken)) {
+        }*/
+        if (authorizationTokensStorage.containsKey(authToken)) {
 
             /**
              * When a client logs out, the authentication token will be remove
              * and will be made invalid.
-             *
+             */
             authorizationTokensStorage.remove(authToken);
             return;
-        }*/
+        }
 
         throw new GeneralSecurityException("Invalid service key and authorization token match.");
     }

@@ -86,6 +86,10 @@ public class Login extends HttpServlet {
                 session.setAttribute("errorAccount", email);
                 response.setHeader("Location", "login.jsp");
             }
+        } else {
+            response.setStatus(response.SC_MOVED_TEMPORARILY);
+            session.setAttribute("errorMessage", "General Error");
+            response.setHeader("Location", "errorMessage.jsp");
         }
     }
 

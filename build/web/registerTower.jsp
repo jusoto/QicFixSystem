@@ -14,7 +14,7 @@
         <jsp:include page="WEB-INF/menu/menu.jsp" />
         <div class="row register-form">
             <div class="col-md-8 col-md-offset-2">
-                <form class="form-horizontal custom-form" action="registerClient" method="POST">
+                <form class="form-horizontal custom-form" action="registerTower" method="POST">
                     <h1>Register Client Form</h1>
                     <div class="form-group">
                         <div class="col-sm-4 label-column">
@@ -148,14 +148,6 @@
                         </div>
                         <div class="col-sm-6 input-column">
                             <input class="form-control" type="password" name="password">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-4 label-column">
-                            <label class="control-label" for="repeat-pawssword-input-field">Repeat Password </label>
-                        </div>
-                        <div class="col-sm-6 input-column">
-                            <input class="form-control" type="password">
                         </div>
                     </div>
                     <div class="form-group">

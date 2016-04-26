@@ -5,15 +5,13 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:template>
-    <jsp:attribute name="header">
-    </jsp:attribute>
-    <jsp:attribute name="footer">
-    </jsp:attribute>
-    <jsp:body>
-        <h1>Error</h1>
-        <p>${errorMessage}</p>
-    </jsp:body>
-</t:template>
+<html>
+    <head>
+        <jsp:include page="WEB-INF/head/head.jsp" />
+    </head>
+    <body>
+        <%=session.getAttribute("errorMessage")%>
+        <jsp:include page="WEB-INF/footer/footer.jsp" />
+    </body>
+</html>

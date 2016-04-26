@@ -3,9 +3,6 @@
     Created on : Feb 4, 2016, 11:25:52 PM
     Author     : Juan
 --%>
-<%@page import="appLogic.Authenticator"%>
-<%@page import="util.Utility"%>
-<%@page import="entity.User"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
