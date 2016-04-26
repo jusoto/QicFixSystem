@@ -195,7 +195,7 @@ public class User {
         return key;
     }
 
-    boolean logout(String token, String email) {
+    public boolean logout(String token, String email) {
         RESTConnection conn = RESTConnection.getInstance();
         String path = Utility.LOGOUT_PATH;
 
@@ -215,7 +215,11 @@ public class User {
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("email", email);
         message = conn.getMethod(path, parameters);
-        return message.contains("true");
+        if(message!=null){
+            return message.contains("true");
+        }else{
+            return false;
+        }
     }
 
 }

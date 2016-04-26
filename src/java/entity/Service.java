@@ -275,7 +275,7 @@ public class Service {
             db.Connect();
             db.setPreparedStatement(sql);
             db.getPreparedStatement().setString(++parameterIndex, this.getTowerDescription());
-            db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getEndDate());
+            db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getEndDate().getTime()));
             db.getPreparedStatement().setDouble(++parameterIndex, this.getCost()!=null?this.getCost():Types.DOUBLE);
             db.getPreparedStatement().setInt(++parameterIndex, this.getId());
             db.ExecuteNonQuery();
@@ -342,10 +342,10 @@ public class Service {
         Service service = new Service();
         service.setId(rs.getString("id") != null ? rs.getInt("id") : null);
         service.setClientId(rs.getString("client_id") != null ? rs.getInt("client_id") : null);
-        service.setStartDate(rs.getString("creation_date") != null ? (java.sql.Date) Utility.StringToDate(rs.getString("creation_date")) : null);
-        service.setStartDate(rs.getString("start_date") != null ? (java.sql.Date) Utility.StringToDate(rs.getString("start_date")) : null);
-        service.setStartDate(rs.getString("end_date") != null ? (java.sql.Date) Utility.StringToDate(rs.getString("end_date")) : null);
-        service.setStartDate(rs.getString("cancel_date") != null ? (java.sql.Date) Utility.StringToDate(rs.getString("cancel_date")) : null);
+        service.setStartDate(rs.getString("creation_date") != null ? Utility.StringToDate(rs.getString("creation_date")) : null);
+        service.setStartDate(rs.getString("start_date") != null ? Utility.StringToDate(rs.getString("start_date")) : null);
+        service.setStartDate(rs.getString("end_date") != null ? Utility.StringToDate(rs.getString("end_date")) : null);
+        service.setStartDate(rs.getString("cancel_date") != null ? Utility.StringToDate(rs.getString("cancel_date")) : null);
         service.setLatitudePickup(rs.getString("latitude_pickup") != null ? rs.getDouble("latitude_pickup") : Types.DOUBLE);
         service.setLongitudePickup(rs.getString("longitude_pickup") != null ? rs.getDouble("longitude_pickup") : Types.DOUBLE);
         service.setLatitudePickup(rs.getString("latitude_destination") != null ? rs.getDouble("latitude_destination") : Types.DOUBLE);
@@ -364,10 +364,10 @@ public class Service {
     private void prepareStatement(Database db) throws SQLException {
         Integer parameterIndex = 0;
         db.getPreparedStatement().setInt(++parameterIndex, this.getClientId());
-        db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getCreationDate());
-        db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getStartDate());
-        db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getEndDate());
-        db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getCancelDate());
+        db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getCreationDate().getTime()));
+        db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getStartDate().getTime()));
+        db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getEndDate().getTime()));
+        db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getCancelDate().getTime()));
         db.getPreparedStatement().setDouble(++parameterIndex, this.getLatitudePickup()!=null?this.getLatitudePickup():Types.DOUBLE);
         db.getPreparedStatement().setDouble(++parameterIndex, this.getLongitudePickup()!=null?this.getLongitudePickup():Types.DOUBLE);
         db.getPreparedStatement().setDouble(++parameterIndex, this.getLatitudeDestination()!=null?this.getLatitudeDestination():Types.DOUBLE);

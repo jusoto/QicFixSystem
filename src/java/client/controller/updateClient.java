@@ -53,30 +53,14 @@ public class updateClient extends HttpServlet {
         if (model.updateClient(obj, token)) {
             session.setAttribute("email", obj.getEmail());
             session.setAttribute("name", obj.getFname() + " " + obj.getLname());
+            session.setAttribute("userTypeId", obj.getUserTypeId());
+            
             session.setAttribute("indexMessage", "Profile Updated");
             response.sendRedirect("index.jsp");
         }else{
             session.setAttribute("errorMessage", "There was an error. Action couldn't be performed.");
             response.sendRedirect("errorMessage.jsp");
         }
-        //session.setAttribute("indexMessage", "Profile Updated");
-        //response.setStatus(response.SC_MOVED_TEMPORARILY);
-        //response.sendRedirect("index.jsp");
-        /*PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. 
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Update Profile</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Update Profile</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
-        }*/
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

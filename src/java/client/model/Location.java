@@ -5,8 +5,6 @@
  */
 package client.model;
 
-import entity.*;
-
 /**
  *
  * @author Juan

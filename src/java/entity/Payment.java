@@ -92,7 +92,7 @@ public class Payment {
             db.Connect();
             db.setPreparedStatement(sql);
             db.getPreparedStatement().setInt(++parameterIndex, this.getIdservice());
-            db.getPreparedStatement().setDate(++parameterIndex, (java.sql.Date) this.getDate());
+            db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getDate().getTime()));
             db.getPreparedStatement().setDouble(++parameterIndex, this.getAmount()!=null?this.getAmount():Types.DOUBLE);
             db.getPreparedStatement().setString(++parameterIndex, this.getCreditCardLast());
             db.getPreparedStatement().setString(++parameterIndex, this.getPaypalAuto());
@@ -130,7 +130,7 @@ public class Payment {
                 Payment payment = new Payment();
                 payment.setIdpayment(rs.getString("idpayment")!=null?rs.getInt("idpayment"):null);
                 payment.setIdservice(rs.getString("idservice")!=null?rs.getInt("idservice"):null);
-                payment.setDate(rs.getString("date")!=null?(java.sql.Date)Utility.StringToDate(rs.getString("date")):null);
+                payment.setDate(rs.getString("date")!=null?new java.sql.Date(Utility.StringToDate(rs.getString("date")).getTime()):null);
                 payment.setAmount(rs.getString("amount")!=null?rs.getDouble("amount"):Types.DOUBLE);
                 payment.setCreditCardLast(rs.getString("credit_card_last"));
                 payment.setPaypalAuto(rs.getString("paypal_auto"));

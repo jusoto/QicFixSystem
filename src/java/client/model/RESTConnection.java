@@ -115,7 +115,7 @@ public class RESTConnection {
     }
     
     //Handles all PUT Methods
-    public String putMethod(String path, HashMap<String, String> parameters, String id, String body) {
+    public String putMethod(String path, HashMap<String, String> parameters, Integer id, String body) {
         Response response = null;
         String message = null;
         Client obj = ClientBuilder.newClient();

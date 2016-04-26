@@ -61,14 +61,21 @@ public class RegisterTower extends HttpServlet {
         }
         obj.setLatitude(latitude);
         obj.setLongitude(longitude);
-        if (model.createTower(obj)) {
-            session.setAttribute("userTypeId", obj.getUserTypeId());
-            session.setAttribute("email", obj.getEmail());
-            session.setAttribute("name", obj.getFname() + " " + obj.getLname());
-            response.sendRedirect("index.jsp");
+        if (model.EmailNotExist(obj.getEmail())) {
+            if (model.createTower(obj)) {
+                String token = model.login(obj.getEmail(), obj.getPassword());
+                session.setAttribute("token", token);
+                session.setAttribute("userTypeId", 2);
+                session.setAttribute("email", obj.getEmail());
+                session.setAttribute("name", obj.getFname() + " " + obj.getLname());
+                response.sendRedirect("index.jsp");
+            } else {
+                session.setAttribute("errorMessage", "There was an error. Action couldn't be performed.");
+                response.sendRedirect("errorMessage.jsp");
+            }
         } else {
-            session.setAttribute("errorMessage", "There was an error. Action couldn't be performed.");
-            response.sendRedirect("errorMessage.jsp");
+            session.setAttribute("registerClientMessage", "The email address is already registered.");
+            response.sendRedirect("registerClient.jsp");
         }
     }
 

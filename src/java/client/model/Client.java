@@ -129,7 +129,7 @@ public class Client extends User {
         parameters.put("token", token);
         list.add(this);
         body = toJson(list);
-        message = conn.putMethod(path, parameters, getId().toString() ,body);
+        message = conn.putMethod(path, parameters, getId(), body);
         return message!=null;
     }
 }

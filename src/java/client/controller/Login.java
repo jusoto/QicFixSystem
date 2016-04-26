@@ -53,11 +53,11 @@ public class Login extends HttpServlet {
             String email = request.getParameter("user");
             String pass = request.getParameter("pass");
             String token = null;
-            ModelFacade ds = new ModelFacade();
+            ModelFacade mf = new ModelFacade();
 
             try {
                 //token = controller.login(email, pass);
-                token = ds.login(email, pass);
+                token = mf.login(email, pass);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {

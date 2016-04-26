@@ -8,7 +8,6 @@ package client.controller;
 import client.model.ModelFacade;
 import client.model.Tower;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +69,7 @@ public class updateTower extends HttpServlet {
         if (model.updateTower(obj, token)) {
             session.setAttribute("email", obj.getEmail());
             session.setAttribute("name", obj.getFname() + " " + obj.getLname());
+            session.setAttribute("userTypeId", obj.getUserTypeId());
             response.sendRedirect("index.jsp");
         } else {
             session.setAttribute("errorMessage", "There was an error. Action couldn't be performed.");

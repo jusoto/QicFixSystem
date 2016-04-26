@@ -46,9 +46,11 @@ public class RegisterClient extends HttpServlet {
         obj.setDob(Utility.StringToDate(request.getParameter("dob")));
         if (model.EmailNotExist(obj.getEmail())) {
             if (model.createClient(obj)) {
+                String token = model.login(obj.getEmail(), obj.getPassword());
+                session.setAttribute("token", token);
                 session.setAttribute("email", obj.getEmail());
                 session.setAttribute("name", obj.getFname() + " " + obj.getLname());
-                session.setAttribute("userTypeId", obj.getUserTypeId());
+                session.setAttribute("userTypeId", 1);
                 response.sendRedirect("index.jsp");
             } else {
                 session.setAttribute("errorMessage", "There was an error. Action couldn't be performed.");

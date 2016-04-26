@@ -269,7 +269,7 @@ public class User {
         db.getPreparedStatement().setString(++parameterIndex, this.getCity());
         db.getPreparedStatement().setString(++parameterIndex, this.getState());
         db.getPreparedStatement().setString(++parameterIndex, this.getZipcode());
-        db.getPreparedStatement().setDate(++parameterIndex, this.getDob() != null ? (java.sql.Date) this.getDob() : null);
+        db.getPreparedStatement().setDate(++parameterIndex, this.getDob() != null ? new java.sql.Date(this.getDob().getTime()) : null);
     }
 
     //Returns User with information in ResultSet
@@ -386,7 +386,7 @@ public class User {
             db.getPreparedStatement().setString(++parameterIndex, this.getCity());
             db.getPreparedStatement().setString(++parameterIndex, this.getState());
             db.getPreparedStatement().setString(++parameterIndex, this.getZipcode());
-            db.getPreparedStatement().setDate(++parameterIndex, this.getDob() != null ? (java.sql.Date) this.getDob() : null);
+            db.getPreparedStatement().setDate(++parameterIndex, this.getDob() != null ? new java.sql.Date(this.getDob().getTime()) : null);
             db.getPreparedStatement().setString(++parameterIndex, this.getEmail());
             db.ExecuteNonQuery();
             resp = true;
