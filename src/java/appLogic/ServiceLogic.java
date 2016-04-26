@@ -46,8 +46,8 @@ public class ServiceLogic {
             for (int i = 0; i < list.size(); i++) {
                 try {
                     service = list.get(i);
-                    pickup = service.getStreetAddressPickup() + ", " + service.getCityPickup() + " " + service.getStatePickup() + ", " + service.getZipcodePickup();
-                    destination = service.getStreetAddressDestination() + ", " + service.getCityDestination() + " " + service.getStateDestination() + ", " + service.getZipcodeDestination();
+                    pickup = service.getStreetAddressPickup() + ", " + service.getCityPickup() + ", " + service.getStatePickup() + " " + service.getZipcodePickup();
+                    destination = service.getStreetAddressDestination() + ", " + service.getCityDestination() + ", " + service.getStateDestination() + " " + service.getZipcodeDestination();
                     Location locationPickup = null;//Utility.getLocationFromAddress(pickup);
                     Location locationDestination = null;//Utility.getLocationFromAddress(destination);
                     if (locationPickup != null) {

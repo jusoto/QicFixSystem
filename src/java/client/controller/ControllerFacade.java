@@ -5,12 +5,11 @@
  */
 package client.controller;
 
-import client.model.Application;
 import client.model.Client;
 import client.model.ModelFacade;
+import client.model.Service;
 import client.model.Tower;
 import client.model.User;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -61,6 +60,16 @@ public class ControllerFacade {
     public String getMenu(Integer userTypeId) {
         ModelFacade model = new ModelFacade();
         return model.getMenu(userTypeId);
+    }
+    
+    public List<Service> selectServices(String email, String token){
+        ModelFacade model = new ModelFacade();
+        return model.selectService(email, token);
+    }
+    
+    public List<Tower> selectTower(String email, String token){
+        ModelFacade model = new ModelFacade();
+        return model.selectTower(email, token);
     }
 
 }

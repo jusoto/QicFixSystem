@@ -340,6 +340,11 @@ public class Service {
 
     private Service readResulset(ResultSet rs) throws SQLException {
         Service service = new Service();
+        /*INSERT INTO service (client_id, creation_date, start_date, end_date, cancel_date, cost,"
+                + " latitude_pickup, longitude_pickup, latitude_destination, longitude_destination,"
+                + " street_address_pickup, city_pickup, state_pickup, zipcode_pickup,"
+                + " street_address_destination, city_destination, state_destination, zipcode_destination,"
+                + " client_description, tower_description)*/
         service.setId(rs.getString("id") != null ? rs.getInt("id") : null);
         service.setClientId(rs.getString("client_id") != null ? rs.getInt("client_id") : null);
         service.setStartDate(rs.getString("creation_date") != null ? Utility.StringToDate(rs.getString("creation_date")) : null);
@@ -358,16 +363,19 @@ public class Service {
         service.setCityDestination(rs.getString("city_destination"));
         service.setStateDestination(rs.getString("state_destination"));
         service.setZipcodeDestination(rs.getString("zipcode_destination"));
+        service.setClientDescription(rs.getString("client_description"));
+        service.setTowerDescription(rs.getString("tower_description"));
         return service;
     }
 
     private void prepareStatement(Database db) throws SQLException {
         Integer parameterIndex = 0;
         db.getPreparedStatement().setInt(++parameterIndex, this.getClientId());
-        db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getCreationDate().getTime()));
-        db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getStartDate().getTime()));
-        db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getEndDate().getTime()));
-        db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getCancelDate().getTime()));
+        db.getPreparedStatement().setDate(++parameterIndex, this.getCreationDate()!=null?new java.sql.Date(this.getCreationDate().getTime()):null);
+        db.getPreparedStatement().setDate(++parameterIndex, this.getStartDate()!=null?new java.sql.Date(this.getStartDate().getTime()):null);
+        db.getPreparedStatement().setDate(++parameterIndex, this.getEndDate()!=null?new java.sql.Date(this.getEndDate().getTime()):null);
+        db.getPreparedStatement().setDate(++parameterIndex, this.getCancelDate()!=null?new java.sql.Date(this.getCancelDate().getTime()):null);
+        db.getPreparedStatement().setDouble(++parameterIndex, this.getCost()!=null?this.getCost():Types.DOUBLE);
         db.getPreparedStatement().setDouble(++parameterIndex, this.getLatitudePickup()!=null?this.getLatitudePickup():Types.DOUBLE);
         db.getPreparedStatement().setDouble(++parameterIndex, this.getLongitudePickup()!=null?this.getLongitudePickup():Types.DOUBLE);
         db.getPreparedStatement().setDouble(++parameterIndex, this.getLatitudeDestination()!=null?this.getLatitudeDestination():Types.DOUBLE);
@@ -488,7 +496,7 @@ public class Service {
         return list;
     }
 
-    List<Service> selectServiceByEmail(String towerEmail) {
+    public List<Service> selectServiceByEmail(String towerEmail) {
         List<Service> list = new ArrayList<Service>();
         String sql;
         ResultSet rs = null;
@@ -500,6 +508,49 @@ public class Service {
                 + " client_description, tower_description"
                 + " FROM service s, has_tower ht, tower t"
                 + " WHERE ht.service_id=s.id AND ht.tower_id=t.id AND t.email='"+towerEmail+"'";
+
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setStatement();
+            rs = db.ExecuteQuery(sql);
+            //System.out.println("Service: "+sql);
+            while (rs.next()) {
+                Service service = readResulset(rs);
+                list.add(service);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex.toString());
+                }
+            }
+            try {
+                db.Close();
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+
+        return list;
+    }
+    
+    public List<Service> selectServiceByClientEmail(String clientEmail) {
+        List<Service> list = new ArrayList<Service>();
+        String sql;
+        ResultSet rs = null;
+
+        sql = "SELECT s.id, s.client_id, s.creation_date, s.start_date, s.end_date, s.cancel_date, s.cost,"
+                + " s.latitude_pickup, s.longitude_pickup, s.latitude_destination, s.longitude_destination,"
+                + " s.street_address_pickup, s.city_pickup, s.state_pickup, s.zipcode_pickup,"
+                + " s.street_address_destination, s.city_destination, s.state_destination, s.zipcode_destination,"
+                + " s.client_description, s.tower_description"
+                + " FROM service s, client c"
+                + " WHERE c.id=s.client_id AND c.email='"+clientEmail+"'";
 
         Database db = Database.getInstance();
         try {

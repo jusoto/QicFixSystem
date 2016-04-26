@@ -54,41 +54,49 @@ public class requestService extends HttpServlet {
             tower2.setId(2);
             listTower.add(tower1);
             listTower.add(tower2);
+            
+            //Retrieve client information to get Id for service
             Client client = model.getClientIdByEmail(token, email);
+            
+            if (client != null) {
+                obj.setClientId(client.getId());
+                obj.setStreetAddressPickup(request.getParameter("street_address_pickup").trim());
+                obj.setCityPickup(request.getParameter("city_pickup").trim());
+                obj.setStatePickup(request.getParameter("state_pickup").trim());
+                obj.setZipcodePickup(request.getParameter("zipcode_pickup").trim());
+                obj.setStreetAddressDestination(request.getParameter("street_address_destination").trim());
+                obj.setCityDestination(request.getParameter("city_destination").trim());
+                obj.setStateDestination(request.getParameter("state_destination").trim());
+                obj.setZipcodeDestination(request.getParameter("zipcode_destination").trim());
 
-            obj.setClientId(client.getId());
-            obj.setStreetAddressPickup(request.getParameter("street_address_pickup").trim());
-            obj.setCityPickup(request.getParameter("city_pickup").trim());
-            obj.setStatePickup(request.getParameter("state_pickup").trim());
-            obj.setZipcodePickup(request.getParameter("zipcode_pickup").trim());
-            obj.setStreetAddressDestination(request.getParameter("street_address_destination").trim());
-            obj.setCityDestination(request.getParameter("city_destination").trim());
-            obj.setStateDestination(request.getParameter("state_destination").trim());
-            obj.setZipcodeDestination(request.getParameter("zipcode_destination").trim());
+                //Retrieve locations
+                try {
+                    String pickupAddress = obj.getStreetAddressPickup() + ", " + obj.getCityPickup() + " " + obj.getStatePickup() + ", " + obj.getZipcodePickup();
+                    String destinationAddress = obj.getStreetAddressDestination() + ", " + obj.getCityDestination() + " " + obj.getStateDestination() + ", " + obj.getZipcodeDestination();;
+                    Location pickupLocation = Utility.getLocationFromAddress(pickupAddress);
+                    Location destinationLocation = Utility.getLocationFromAddress(destinationAddress);
+                    obj.setLatitudePickup(pickupLocation.getLatitude());
+                    obj.setLongitudePickup(pickupLocation.getLatitude());
+                    obj.setLatitudePickup(destinationLocation.getLatitude());
+                    obj.setLongitudePickup(destinationLocation.getLatitude());
+                } catch (Exception ex) {
+                    Logger.getLogger(requestService.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
-            //Retrieve locations
-            try {
-                String pickupAddress = obj.getStreetAddressPickup() + ", " + obj.getCityPickup() + " " + obj.getStatePickup() + ", " + obj.getZipcodePickup();
-                String destinationAddress = obj.getStreetAddressDestination() + ", " + obj.getCityDestination() + " " + obj.getStateDestination() + ", " + obj.getZipcodeDestination();;
-                Location pickupLocation = Utility.getLocationFromAddress(pickupAddress);
-                Location destinationLocation = Utility.getLocationFromAddress(destinationAddress);
-                obj.setLatitudePickup(pickupLocation.getLatitude());
-                obj.setLongitudePickup(pickupLocation.getLatitude());
-                obj.setLatitudePickup(destinationLocation.getLatitude());
-                obj.setLongitudePickup(destinationLocation.getLatitude());
-            } catch (Exception ex) {
-                Logger.getLogger(requestService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            //Create Service in System
-            if (!model.createRequest(token, email, obj, listTower)) {
-                //Display error message if service could not be created
-                request.setAttribute("errorMessage", "Service could not be created.");
-                response.sendRedirect("index.jsp");
-            } else {
-                //request.setAttribute("msgCreateServiceman", "Serviceman was created.");
-                //response.setStatus(response.SC_MOVED_TEMPORARILY);
-                response.sendRedirect("index.jsp");
+                //Create Service in System
+                if (!model.createRequest(token, email, obj, listTower)) {
+                    //Service wasn't created
+                    request.setAttribute("errorMessage", "Service could not be created.");
+                    response.sendRedirect("index.jsp");
+                } else {
+                    //Service was created
+                    request.setAttribute("indexMessage", "Service created successfully.");
+                    response.sendRedirect("index.jsp");
+                }
+            }else{
+                //Client information couldn't be retrieved
+                request.setAttribute("errorMessage", "Client information couldn't be retrieved.");
+                response.sendRedirect("requestService.jsp");
             }
         }
 

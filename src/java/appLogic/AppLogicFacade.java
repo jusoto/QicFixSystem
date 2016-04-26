@@ -26,7 +26,7 @@ import util.Utility;
 public class AppLogicFacade {
 
     private Authenticator authenticator;
-    
+
     public AppLogicFacade() {
         authenticator = Authenticator.getInstance();
     }
@@ -226,8 +226,13 @@ public class AppLogicFacade {
     }
 
     public boolean findUserByEmail(String email) {
-         DatastoreFacade ds = new DatastoreFacade();
+        DatastoreFacade ds = new DatastoreFacade();
         return ds.selectUserByEmail(email).isEmpty();
+    }
+
+    public List<Service> selectAllServiceByClient(String authToken, String email) {
+        DatastoreFacade ds = new DatastoreFacade();
+        return ds.selectUserByClientEmail(email);
     }
 
 }

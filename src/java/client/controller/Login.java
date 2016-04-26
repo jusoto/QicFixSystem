@@ -76,6 +76,7 @@ public class Login extends HttpServlet {
                     if(client!=null){
                     session.setAttribute("client", client);
                     session.setAttribute("client_id", client.getId());
+                    session.setAttribute("activeServicesClient", controller.selectServices(email, token));
                     }
                 }
                 if (user.getUserTypeId() == 2) {

@@ -119,7 +119,7 @@ public class HasTower {
             db.setPreparedStatement(sql);
             db.getPreparedStatement().setInt(++parameterIndex, this.getServiceId());
             db.getPreparedStatement().setInt(++parameterIndex, this.getTowerId());
-            db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getClientApprovedDate().getTime()));
+            db.getPreparedStatement().setDate(++parameterIndex, this.getClientApprovedDate()!=null?new java.sql.Date(this.getClientApprovedDate().getTime()):null);
             db.ExecuteNonQuery();
             resp = true;
         } catch (SQLException ex) {
@@ -153,7 +153,7 @@ public class HasTower {
                 db.setPreparedStatement(sql);
                 //for (int i = 0; i < this.getTowerId().size(); i++) {
                 int parameterIndex = 0;
-                db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getTowerAcceptDate().getTime()));
+                db.getPreparedStatement().setDate(++parameterIndex, this.getTowerAcceptDate()!=null? new java.sql.Date(this.getTowerAcceptDate().getTime()):null);
                 db.getPreparedStatement().setInt(++parameterIndex, this.getServiceId());
                 db.getPreparedStatement().setInt(++parameterIndex, this.getTowerId());
                 db.ExecuteNonQuery();
@@ -186,7 +186,7 @@ public class HasTower {
             db.setPreparedStatement(sql);
             //for (int i = 0; i < this.getTowerId().size(); i++) {
             int parameterIndex = 0;
-            db.getPreparedStatement().setDate(++parameterIndex, new java.sql.Date(this.getTowerDeclineDate().getTime()));
+            db.getPreparedStatement().setDate(++parameterIndex, this.getTowerDeclineDate()!=null? new java.sql.Date(this.getTowerDeclineDate().getTime()):null);
             db.getPreparedStatement().setInt(++parameterIndex, this.getServiceId());
             db.getPreparedStatement().setInt(++parameterIndex, this.getTowerId());
             db.ExecuteNonQuery();

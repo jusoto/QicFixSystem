@@ -111,4 +111,15 @@ public class ModelFacade {
         return user.findByEmail();
     }
 
+    public List<Service> selectService(String email, String token) {
+        Service service = new Service();
+        return service.selectClientService(email, token);
+    }
+
+    public List<Tower> selectTower(String email, String token) {
+        Tower tower = new Tower();
+        tower.setEmail(email);
+        return tower.selectAll(token);
+    }
+
 }

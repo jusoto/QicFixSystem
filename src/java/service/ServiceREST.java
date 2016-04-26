@@ -6,7 +6,6 @@
 package service;
 
 import appLogic.AppLogicFacade;
-import entity.Application;
 import util.Location;
 import entity.Service;
 import java.util.List;
@@ -38,6 +37,7 @@ public class ServiceREST {
      * Retrieves representation of an instance of ServiceREST
      *
      * @param authToken
+     * @param email
      * @return an instance of java.lang.String
      */
     @GET
@@ -45,6 +45,21 @@ public class ServiceREST {
     public List<Service> findAll(@QueryParam("token") String authToken, @QueryParam("email") String email) {
         AppLogicFacade obj = new AppLogicFacade();
         return obj.selectAllService(authToken, email);
+    }
+    
+    /**
+     * Retrieves representation of an instance of ServiceREST
+     *
+     * @param authToken
+     * @param email
+     * @return an instance of java.lang.String
+     */
+    @Path("client")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Service> findAllByClientEmail(@QueryParam("token") String authToken, @QueryParam("email") String email) {
+        AppLogicFacade obj = new AppLogicFacade();
+        return obj.selectAllServiceByClient(authToken, email);
     }
 
     /**
@@ -74,7 +89,7 @@ public class ServiceREST {
     @Consumes({MediaType.TEXT_PLAIN})
     @Produces({MediaType.TEXT_PLAIN})
     public String postJson(String content, @QueryParam("token") String token, @QueryParam("email") String email) {
-        String message = "";
+        String message = "false";
         if (token != null && email != null) {
             AppLogicFacade obj = new AppLogicFacade();
             message = obj.requestService(content, token, email);

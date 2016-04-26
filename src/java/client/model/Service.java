@@ -5,6 +5,7 @@
  */
 package client.model;
 
+import static client.model.Client.fromJson;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -215,14 +216,13 @@ public class Service {
         this.cityDestination = cityDestination;
     }
 
-    
     public static String toJson(List<Service> list) {
         Gson gson = new GsonBuilder().setDateFormat(Utility.DATE_FORMAT_STRING_SHORT).create();
         String gsonString = gson.toJson(list, new TypeToken<List<Service>>() {
         }.getType());
         return gsonString;
     }
-    
+
     public static List<Service> fromJson(String json) throws JsonSyntaxException {
         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new JsonDateDeserializer()).create();
         List<Service> list = gson.fromJson(json, new TypeToken<List<Service>>() {
@@ -239,11 +239,24 @@ public class Service {
         String body = toJson(list);
         body += Tower.toJson(listTower);
         HashMap<String, String> parameters = new HashMap<String, String>();
-        parameters.put("client_id", clientId.toString());
+        parameters.put("client_id", "" + clientId);
         parameters.put("token", token);
         parameters.put("email", email);
         message = conn.postMethodText(path, parameters, body);
-        return message!=null && !"".equals(message);
+        return message != null && !"".equals(message);
+    }
+
+    public List<Service> selectClientService(String email, String token) {
+        List<Service> list;
+        String message;
+        RESTConnection conn = RESTConnection.getInstance();
+        String path = Utility.SERVICE_CLIENT_PATH;
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("email", email);
+        parameters.put("token", token);
+        message = conn.getMethod(path, parameters);
+        list = fromJson(message);
+        return list;
     }
 
 }

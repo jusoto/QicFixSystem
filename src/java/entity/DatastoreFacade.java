@@ -185,4 +185,13 @@ public class DatastoreFacade {
         return app.selectByUserTypeId(userTypeId);
     }
 
+    public List<Service> selectUserByClientEmail(String email) {
+        List<Service> list = null;
+        Service service = new Service();
+        Tower tower = new Tower();
+        tower.setEmail(email);
+        list = service.selectServiceByClientEmail(email);
+        return list;
+    }
+
 }

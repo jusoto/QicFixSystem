@@ -38,7 +38,7 @@ public class Utility {
     private static Pattern pattern;
     private static Matcher matcher;
     public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    public static final String DATE_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss.S";
+    public static final String DATE_FORMAT_STRING = "yyyy-MM-dd HH:mm:ss.S";
     public static final String DATE_FORMAT_STRING_SHORT = "yyyy-MM-dd";
     //public static final String GOOGLE_MAPS_API_KEY = "AIzaSyAhOv2MNrliIM1BrBBOdgzD2Fip1rzUkHQ";
     //public static final String GOOGLE_MAPS_API_KEY = "AIzaSyDplHxaH2ApyLhDUqCzN9gPfHfav7z3ykM";
@@ -63,6 +63,7 @@ public class Utility {
     public static final String LOGOUT_PATH = "/logout";
     public static final String APPLICATION_PATH = "/application";
     public static final String USER_EMAIL_EXISTS_PATH = "/user/exists";
+    public static final String SERVICE_CLIENT_PATH = "/service/client";
     
     //Parse a String to Date
     public static Date StringToDate(String strDate) {

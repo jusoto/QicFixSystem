@@ -107,8 +107,7 @@ public class Database {
             this.generatedKeys = this.preparedStatement.getGeneratedKeys();
             resp = 1;
             if(this.generatedKeys.next()){
-                resp = 1;
-                resp = this.generatedKeys.getInt(0);
+                resp = this.generatedKeys.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println(e.toString());
