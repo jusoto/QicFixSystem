@@ -68,7 +68,6 @@ public class UserREST {
      * Retrieves representation of an instance of UserREST
      *
      * @param email
-     * @param token
      * @return an instance of java.lang.String
      */
     @Path("exists")

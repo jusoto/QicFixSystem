@@ -25,7 +25,7 @@ import util.Utility;
  */
 public class AppLogicFacade {
 
-    private Authenticator authenticator;
+    private final Authenticator authenticator;
 
     public AppLogicFacade() {
         authenticator = Authenticator.getInstance();

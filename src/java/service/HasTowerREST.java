@@ -6,10 +6,8 @@
 package service;
 
 import appLogic.AppLogicFacade;
-import entity.Client;
 import entity.HasTower;
 import util.Location;
-import entity.Service;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

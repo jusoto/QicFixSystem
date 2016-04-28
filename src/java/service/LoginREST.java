@@ -6,7 +6,6 @@
 package service;
 
 import appLogic.AppLogicFacade;
-import appLogic.AppLogicFacade;
 import javax.security.auth.login.LoginException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
