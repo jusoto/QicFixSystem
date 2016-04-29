@@ -5,6 +5,10 @@
  */
 package appLogic;
 
+import entity.DatastoreFacade;
+import entity.User;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.security.auth.login.LoginException;
@@ -15,7 +19,7 @@ import javax.security.auth.login.LoginException;
  */
 public class LoginLogic {
     
-    Authenticator authenticator;
+    private final Authenticator authenticator;
 
     public LoginLogic() {
         authenticator = Authenticator.getInstance();
@@ -31,6 +35,27 @@ public class LoginLogic {
         }
 
         return token;
+    }
+
+    void block(String email) {
+        User user = new User();
+        List<User> list = user.selectByEmail(email);
+        if (list.size() > 0) {
+            user = list.get(0);
+        }
+        user.setBlocked(UUID.randomUUID().toString());
+        DatastoreFacade ds = new DatastoreFacade();
+        ds.block(user);
+    }
+
+    List<User> selectUserByEmail(String email, String token) {
+        
+        List<User> list = null;
+        if (authenticator.isAuthTokenValid(token, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            list = ds.selectUserByEmail(email);
+        }
+        return list;
     }
     
 }

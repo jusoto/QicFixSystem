@@ -17,13 +17,13 @@ import java.util.List;
  */
 public class EditProfileLogic {
     
-    Authenticator authenticator;
+    private final Authenticator authenticator;
 
     public EditProfileLogic() {
         authenticator = Authenticator.getInstance();
     }
     
-    public boolean updateTower(String content, String email, String token) {
+    public boolean updateTower(String content, String email, String token, Integer id) {
         boolean resp = false;
         List<Tower> list;
         Tower tower;
@@ -31,6 +31,7 @@ public class EditProfileLogic {
             list = Tower.fromJson(content);
             if (list != null && list.size() > 0) {
                 tower = list.get(0);
+                tower.setId(id);
                 tower.updateTower();
             }
         }
@@ -79,6 +80,15 @@ public class EditProfileLogic {
             }
         }
         return resp;
+    }
+
+    List<Client> selectClientByEmail(String email, String token) {
+        List<Client> list = null;
+        if (authenticator.isAuthTokenValid(token, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            list = ds.selectClientByEmail(email);
+        }
+        return list;
     }
     
 }

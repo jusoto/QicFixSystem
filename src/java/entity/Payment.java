@@ -79,12 +79,14 @@ public class Payment {
         this.paypalAutho = paypalAuto;
     }
 
-    public boolean registerPayment() {
+    public boolean makePayment(Double amount, Integer serviceId) {
 
         boolean resp = false;
         int parameterIndex = 0;
+        this.setIdservice(serviceId);
+        this.setAmount(amount);
 
-        String sql = "INSERT INTO payment (idservice, date, amount, credit_card_last, paypal_auto)"
+        String sql = "INSERT INTO payment (service_id, date, amount, credit_card_last, paypal_auto)"
                 + " VALUES (?,?,?,?,?)";
 
         Database db = new Database();
@@ -160,5 +162,5 @@ public class Payment {
     public Boolean charge() {
         return true;
     }
-
+    
 }

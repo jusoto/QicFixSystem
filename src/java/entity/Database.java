@@ -99,19 +99,19 @@ public class Database {
         }
     }
 
-    public Integer ExecuteNonQuery() {
+    public Integer ExecuteNonQuery() throws SQLException {
         Integer resp = -1;
-        try {
+        //try {
             this.preparedStatement.executeUpdate();
             //this.conn.commit();
             this.generatedKeys = this.preparedStatement.getGeneratedKeys();
-            resp = 1;
+            //resp = 1;
             if(this.generatedKeys.next()){
                 resp = this.generatedKeys.getInt(1);
             }
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        }
+        //} catch (SQLException e) {
+            //System.out.println(e.toString());
+        //}
         return resp;
     }
 

@@ -92,7 +92,9 @@ public class ServiceREST {
         String message = "false";
         if (token != null && email != null) {
             AppLogicFacade obj = new AppLogicFacade();
-            message = obj.requestService(content, token, email);
+            if(obj.requestService(content, token, email)){
+                message = "true";
+            }
         }
         return message;
     }
@@ -102,11 +104,12 @@ public class ServiceREST {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.TEXT_PLAIN})
     public String charge(String content, @QueryParam("token") String token, @QueryParam("email") String email, @QueryParam("serviceId") Integer serviceId) {
-        String message = "";
-        Location location = null;
+        String message = "false";
         if (token != null && email != null) {
             AppLogicFacade obj = new AppLogicFacade();
-            message = obj.chargeService(content, token, email, serviceId);
+            if(obj.chargeClient(content, token, email, serviceId)){
+                message = "true";
+            }
         }
         return message;
     }

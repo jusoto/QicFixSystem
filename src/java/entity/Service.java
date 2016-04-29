@@ -582,4 +582,63 @@ public class Service {
         return list;
     }
 
+    boolean updatePickup(String address, Integer serviceId) {
+        boolean resp = false;
+        int parameterIndex = 0;
+
+        String sql = "UPDATE service SET street_address_pickup=? WHERE id=?";
+
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setPreparedStatement(sql);
+            db.getPreparedStatement().setString(++parameterIndex, this.getStreetAddressPickup());
+            db.getPreparedStatement().setInt(++parameterIndex, this.getId());
+            db.ExecuteNonQuery();
+            resp = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (db != null) {
+                try {
+                    db.Close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        return resp;
+    }
+
+    boolean updateDestination(String address, Integer serviceId) {
+        boolean resp = false;
+        int parameterIndex = 0;
+        
+
+        String sql = "UPDATE service SET street_address_destination=? WHERE id=?";
+
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setPreparedStatement(sql);
+            db.getPreparedStatement().setString(++parameterIndex, address);
+            db.getPreparedStatement().setInt(++parameterIndex, this.getId());
+            db.ExecuteNonQuery();
+            resp = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (db != null) {
+                try {
+                    db.Close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        return resp;
+    }
+
 }

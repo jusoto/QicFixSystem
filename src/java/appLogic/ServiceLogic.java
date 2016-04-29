@@ -23,14 +23,14 @@ import util.Utility;
  */
 public class ServiceLogic {
 
-    Authenticator authenticator;
+    private final Authenticator authenticator;
 
     public ServiceLogic() {
         authenticator = Authenticator.getInstance();
     }
 
-    String createService(String content, String token, String email) {
-        String message = "false";
+    public Boolean createService(String content, String token, String email) {
+        Boolean resp = false;
         if (authenticator.isAuthTokenValid(token, email)) {
             DatastoreFacade ds = new DatastoreFacade();
             String pickup;
@@ -65,10 +65,10 @@ public class ServiceLogic {
             }
             //return false;
             if (ds.createRequest(service, listTower)) {
-                message = "true";
+                resp = true;
             }
         }
-        return message;
+        return resp;
     }
 
     //Splits objects between [Object1] [Object2] [Object3]
@@ -86,6 +86,107 @@ public class ServiceLogic {
             stringArray[i] = "[" + stringArray[i] + "]";
         }
         return stringArray;
+    }
+
+    public List<Service> selectServiceByTowerEmail(String authToken, String towerEmail) {
+        List<Service> list = null;
+        if (authenticator.isAuthTokenValid(authToken, towerEmail)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            list = ds.selectServiceByTowerEmail(towerEmail);
+        }
+        return list;
+    }
+
+    public boolean chargeClient(String content, String authToken, String email, Integer serviceId) {
+        if (authenticator.isAuthTokenValid(authToken, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            return ds.chargeService(email, serviceId);
+        }
+        return false;
+    }
+
+    public boolean declineService(String content, String authToken, String email, Integer serviceId) {
+        if (authenticator.isAuthTokenValid(authToken, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            return ds.declineService(email, serviceId);
+        }
+        return false;
+    }
+
+    public List<Tower> listTower(String authToken, String email, String pickup, Integer order) {
+        if (authenticator.isAuthTokenValid(authToken, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            Location location = null;
+            try {
+                location = Utility.getLocationFromAddress(pickup);
+            } catch (Exception ex) {
+                Logger.getLogger(AppLogicFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return ds.selectAllTower(location, order);
+        }
+        return null;
+    }
+
+    public List<Service> selectAllService(String authToken, String email) {
+        if (authenticator.isAuthTokenValid(authToken, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            return ds.selectAllService();
+        }
+        return null;
+    }
+
+    public boolean acceptService(String content, String authToken, String email, Integer serviceId) {
+        if (authenticator.isAuthTokenValid(authToken, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            if (ds.acceptService(email, serviceId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean updatePickup(String token, String email, Integer serviceId, String pickup) {
+        boolean resp = false;
+        if (authenticator.isAuthTokenValid(token, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            if (ds.updatePickup(email, serviceId)) {
+                resp = true;
+            }
+        }
+        return resp;
+    }
+
+    public boolean updateDestination(String token, String email, Integer serviceId, String destination) {
+        boolean resp = false;
+        if (authenticator.isAuthTokenValid(token, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            if (ds.updateDestination(destination, serviceId)) {
+                resp = true;
+            }
+        }
+        return resp;
+    }
+
+    public boolean makePayment(String token, String email, Integer serviceId, Double payment) {
+        boolean resp = false;
+        if (authenticator.isAuthTokenValid(token, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            if (ds.makePayment(payment, serviceId)) {
+                resp = true;
+            }
+        }
+        return resp;
+    }
+
+    public boolean rateTower(String token, String email, Integer serviceId, Integer towerId, Integer rate) {
+        boolean resp = false;
+        if (authenticator.isAuthTokenValid(token, email)) {
+            DatastoreFacade ds = new DatastoreFacade();
+            if (ds.rateTower(towerId, serviceId, rate)) {
+                resp = true;
+            }
+        }
+        return resp;
     }
 
 }

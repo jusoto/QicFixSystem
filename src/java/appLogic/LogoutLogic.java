@@ -15,18 +15,20 @@ import java.util.logging.Logger;
  */
 public class LogoutLogic {
     
-    private Authenticator authenticator;
+    private final Authenticator authenticator;
 
     public LogoutLogic() {
         authenticator = Authenticator.getInstance();
     }
     
-    public void logout(String token, String email){
+    public boolean logout(String token, String email){
          try {
              authenticator.logout(token, email);
+             return true;
          } catch (GeneralSecurityException ex) {
              Logger.getLogger(LogoutLogic.class.getName()).log(Level.SEVERE, null, ex);
          }
+         return false;
     }
     
 }

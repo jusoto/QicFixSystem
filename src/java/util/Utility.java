@@ -9,6 +9,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,6 +18,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ws.rs.core.CacheControl;
@@ -55,8 +58,8 @@ public class Utility {
     public static final String TOWER_PATH = "/tower";
     public static final String CLIENT_BY_EMAIL_PATH = "/client/email";
     public static final String USER_BY_EMAIL_PATH = "/user/email";
-    //public static final String BASE_URL = "http://localhost:8080/QicFixSystem/api";
-    public static final String BASE_URL = "http://www.qicfixit.com:8080/api";
+    public static final String BASE_URL = "http://localhost:8080/QicFixSystem/api";
+    //public static final String BASE_URL = "http://www.qicfixit.com:8080/api";
     public static final String ACCEPT_REQUEST_PATH = "/hasTower/accept";
     public static final String DECLINE_REQUEST_PATH = "/hasTower/decline";
     public static final String CLIENT_CREATE_PATH = "/client";
@@ -149,6 +152,40 @@ public class Utility {
             }
         }
         return null;
+    }
+
+    public static String getAddressByLocation(Location location) {
+        try {
+            int responseCode = 0;
+            String api = "http://maps.googleapis.com/maps/api/geocode/xml?location=" + URLEncoder.encode(location.getLatitude() +","+ location.getLongitude(), "UTF-8") + "&sensor=true&key=" + GOOGLE_MAPS_API_KEY;
+            URL url = new URL(api);
+            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            httpConnection.connect();
+            responseCode = httpConnection.getResponseCode();
+            if (responseCode == 200) {
+                DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                Document document = (Document) builder.parse(httpConnection.getInputStream());
+                XPathFactory xPathfactory = XPathFactory.newInstance();
+                XPath xpath = xPathfactory.newXPath();
+                XPathExpression expr = xpath.compile("/GeocodeResponse/status");
+                String status = (String) expr.evaluate(document, XPathConstants.STRING);
+                if (status.equals("OK")) {
+                    expr = xpath.compile("//geometry/location/lat");
+                    String latitude = (String) expr.evaluate(document, XPathConstants.STRING);
+                    expr = xpath.compile("//geometry/location/lng");
+                    String longitude = (String) expr.evaluate(document, XPathConstants.STRING);
+                    return latitude+","+longitude;
+                } else {
+                    throw new Exception("Error from the API - response status: " + status);
+                }
+            }
+            return null;
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Utility.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(Utility.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
     }
     
     //Deserializer of Type Date in Json

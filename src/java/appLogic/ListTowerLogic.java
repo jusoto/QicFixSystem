@@ -20,7 +20,7 @@ import util.Utility;
  */
 public class ListTowerLogic {
     
-    Authenticator authenticator;
+    private final Authenticator authenticator;
 
     public ListTowerLogic() {
         authenticator = Authenticator.getInstance();

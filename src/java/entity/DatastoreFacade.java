@@ -8,9 +8,6 @@ package entity;
 import util.Location;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import util.Utility;
 
 /**
  *
@@ -192,6 +189,31 @@ public class DatastoreFacade {
         tower.setEmail(email);
         list = service.selectServiceByClientEmail(email);
         return list;
+    }
+
+    public void block(User user) {
+        user.block();
+    }
+
+    public boolean updatePickup(String address, Integer serviceId) {
+        Service service = new Service();
+        return service.updatePickup(address, serviceId);
+    }
+
+    public boolean updateDestination(String address, Integer serviceId) {
+        Service service = new Service();
+        return service.updateDestination(address, serviceId);
+    }
+
+    public boolean makePayment(Double amount, Integer serviceId) {
+        Payment payment = new Payment();
+        return payment.makePayment(amount, serviceId);
+    }
+
+    public boolean rateTower(Integer towerId, Integer serviceId, Integer rating) {
+        HasTower hasTower = new HasTower();
+        return hasTower.rateTower(towerId, serviceId, rating);
+        
     }
 
 }

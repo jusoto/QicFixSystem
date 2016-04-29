@@ -18,7 +18,7 @@ import javax.security.auth.login.LoginException;
  */
 public class Authenticator {
 
-    private static Authenticator authenticator = new Authenticator();
+    private static final Authenticator authenticator = new Authenticator();
 
     // A user storage which stores <username, password>
     //private final Map<String, String> usersStorage = new HashMap();

@@ -306,4 +306,37 @@ public class HasTower {
         return list;
     }
 
+    boolean rateTower(Integer towerId, Integer serviceId, Integer rating) {
+        boolean resp = false;
+        this.setTowerDeclineDate(new Date());
+
+        String sql = "UPDATE has_tower SET tower_rating=? WHERE service_id=? AND tower_id=?";
+
+        Database db = Database.getInstance();
+        try {
+            db.Connect();
+            db.setPreparedStatement(sql);
+            //for (int i = 0; i < this.getTowerId().size(); i++) {
+            int parameterIndex = 0;
+            db.getPreparedStatement().setInt(++parameterIndex, rating);
+            db.getPreparedStatement().setInt(++parameterIndex, this.getServiceId());
+            db.getPreparedStatement().setInt(++parameterIndex, this.getTowerId());
+            db.ExecuteNonQuery();
+            //}
+            resp = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (db != null) {
+                try {
+                    db.Close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        return resp;
+    }
+
 }

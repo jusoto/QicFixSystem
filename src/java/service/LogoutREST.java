@@ -36,8 +36,10 @@ public class LogoutREST {
     @Produces(MediaType.TEXT_PLAIN)
     public Response logout(@Context HttpHeaders httpHeaders, @QueryParam("token") String authToken, @QueryParam("email") String email) {
         AppLogicFacade appLogic = new AppLogicFacade();
-        appLogic.logout(authToken, email);
-        return getNoCacheResponseBuilder(Response.Status.OK).entity("true").build();
+        if(appLogic.logout(authToken, email)){
+            return getNoCacheResponseBuilder(Response.Status.OK).entity("true").build();
+        }
+        return getNoCacheResponseBuilder(Response.Status.INTERNAL_SERVER_ERROR).entity("false").build();
     }
 
     private Response.ResponseBuilder getNoCacheResponseBuilder(Response.Status status) {

@@ -55,11 +55,13 @@ public class HasTowerREST {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.TEXT_PLAIN})
     public String accept(String content, @QueryParam("token") String authToken, @QueryParam("email") String email, @QueryParam("serviceId") Integer serviceId) {
-        String message = "";
+        String message = "false";
         Location location = null;
         if (authToken != null && email != null) {
             AppLogicFacade obj = new AppLogicFacade();
-            message = obj.acceptService(content, authToken, email, serviceId);
+            if(obj.acceptService(content, authToken, email, serviceId)){
+                message = "true";
+            }
         }
         return message;
     }
@@ -69,11 +71,13 @@ public class HasTowerREST {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.TEXT_PLAIN})
     public String decline(String content, @QueryParam("token") String authToken, @QueryParam("email") String email, @QueryParam("serviceId") Integer serviceId) {
-        String message = "";
+        String message = "false";
         Location location = null;
         if (authToken != null && email != null) {
             AppLogicFacade obj = new AppLogicFacade();
-            message = obj.declineService(content, authToken, email, serviceId);
+            if(obj.declineService(content, authToken, email, serviceId)){
+                message = "true";
+            }
         }
         return message;
     }

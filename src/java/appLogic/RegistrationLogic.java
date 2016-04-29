@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class RegistrationLogic {
 
-    Authenticator authenticator;
+    private final Authenticator authenticator;
 
     public RegistrationLogic() {
         authenticator = Authenticator.getInstance();

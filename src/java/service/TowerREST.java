@@ -71,15 +71,16 @@ public class TowerREST {
      * @param content representation for the resource
      * @param token
      * @param email
+     * @param id
      * @return 
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String putJson(String content, @QueryParam("token") String token, @QueryParam("email") String email) {
+    public String putJson(String content, @QueryParam("token") String token, @QueryParam("email") String email, @QueryParam("id") Integer id) {
         String message = "false";
         AppLogicFacade obj = new AppLogicFacade();
-        if(obj.updateTower(content, email, token)){
+        if(obj.updateTower(content, email, token, id)){
             message = "true";
         }
         return message;
