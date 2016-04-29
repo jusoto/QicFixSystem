@@ -12,8 +12,6 @@ import entity.Service;
 import entity.Tower;
 import entity.User;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.security.auth.login.LoginException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -21,6 +19,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import util.Location;
 import static org.mockito.Mockito.*;
@@ -113,7 +112,6 @@ public class AppLogicFacadeTest {
         tower3.setFname("Gregory");
         tower3.setLname("Jean-Baptiste");
         tokenTower3 = authenticator.login(tower3.getEmail(), tower3.getPassword());
-
     }
 
     @After
@@ -134,6 +132,14 @@ public class AppLogicFacadeTest {
         String expResult = tokenClient1;
         String result = instance.login(email, password);
         assertEquals(expResult, result);
+        /*
+        String content = "[{\"email\":\"juan@email.com\",\"password\":\"juan01\",\"fname\":\"juan 01\",\"lname\":\"juan\"}]";
+        Client client = Client.fromJson(content).get(0);
+        boolean result;
+        result = instance.registerTower(content);
+        when(datastoreFacade.createClient(client)).thenReturn(Boolean.TRUE);
+        assertTrue(result);
+        verify(datastoreFacade).createClient(client);*/
     }
 
     /**
@@ -158,11 +164,10 @@ public class AppLogicFacadeTest {
         System.out.println("registerClient");
         String content = "[{\"email\":\"juan@email.com\",\"password\":\"juan01\",\"fname\":\"juan 01\",\"lname\":\"juan\"}]";
         Client client = Client.fromJson(content).get(0);
-        boolean result;
-        result = instance.registerTower(content);
-        when(datastoreFacade.createClient(client)).thenReturn(Boolean.TRUE);
+        when(datastoreFacade.createClient((Client) Matchers.anyObject())).thenReturn(Boolean.TRUE);
+        boolean result = instance.registerTower(content);
         assertTrue(result);
-        verify(datastoreFacade).createClient(client);
+        verify(datastoreFacade).createClient((Client) Matchers.anyObject());
     }
 
     /**
@@ -173,11 +178,10 @@ public class AppLogicFacadeTest {
         System.out.println("registerTower");
         String content = "[{\"email\":\"juan@email.com\",\"password\":\"juan01\",\"fname\":\"juan 01\",\"lname\":\"juan\"}]";
         Tower tower = Tower.fromJson(content).get(0);
-        boolean result;
-        result = instance.registerTower(content);
-        when(datastoreFacade.createTower(tower)).thenReturn(Boolean.TRUE);
+        when(datastoreFacade.createTower((Tower) Matchers.anyObject())).thenReturn(Boolean.TRUE);
+        boolean result = instance.registerTower(content);
         assertTrue(result);
-        verify(datastoreFacade).createTower(tower);
+        verify(datastoreFacade).createTower((Tower) Matchers.anyObject());
     }
 
     /**

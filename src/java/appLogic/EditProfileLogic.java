@@ -16,23 +16,29 @@ import java.util.List;
  * @author Juan
  */
 public class EditProfileLogic {
-    
-    private final Authenticator authenticator;
+
+    private Authenticator authenticator;
+    private DatastoreFacade ds;
 
     public EditProfileLogic() {
         authenticator = Authenticator.getInstance();
+        ds = new DatastoreFacade();
     }
-    
+
+    public void setDatastoreFacade(DatastoreFacade ds) {
+        this.ds = ds;
+    }
+
     public boolean updateTower(String content, String email, String token, Integer id) {
         boolean resp = false;
-        List<Tower> list;
-        Tower tower;
         if (authenticator.isAuthTokenValid(token, email)) {
+            List<Tower> list;
+            Tower tower;
             list = Tower.fromJson(content);
             if (list != null && list.size() > 0) {
                 tower = list.get(0);
                 tower.setId(id);
-                tower.updateTower();
+                resp = ds.updateTower(tower);
             }
         }
         return resp;
@@ -40,43 +46,29 @@ public class EditProfileLogic {
 
     public List<Tower> getTowerById(String email, String token, Integer id) {
         List<Tower> list = new ArrayList<Tower>();
-        Tower tower = new Tower();
         if (authenticator.isAuthTokenValid(token, email)) {
-            list.add(tower.selectById(id));
+            list.add(ds.getTowerById(id));
         }
         return list;
     }
 
     public List<Client> getClientById(String email, String token, Integer id) {
         List<Client> list = new ArrayList<Client>();
-        Client client = new Client();
+        
         if (authenticator.isAuthTokenValid(token, email)) {
-            list.add(client.selectById(id));
+            list.add(ds.getClientById(id));
         }
         return list;
     }
-    
+
     public boolean updateClient(String content, String email, String token) {
-        /*boolean resp = false;
-        List<Client> list;
-        Client client;
-        if (authenticator.isAuthTokenValid(token, email)) {
-            list = Client.fromJson(content);
-            if (list != null && list.size() > 0) {
-                client = list.get(0);
-                client.updateClient();
-            }
-        }
-        return resp;*/
-        
         boolean resp = false;
         if (authenticator.isAuthTokenValid(token, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             Client client = new Client();
             List<Client> list = client.fromJson(content);
             if (list.size() > 0) {
-                ds.updateClient(list.get(0));
-                resp = true;
+                resp = ds.updateClient(list.get(0));
             }
         }
         return resp;
@@ -85,10 +77,10 @@ public class EditProfileLogic {
     List<Client> selectClientByEmail(String email, String token) {
         List<Client> list = null;
         if (authenticator.isAuthTokenValid(token, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             list = ds.selectClientByEmail(email);
         }
         return list;
     }
-    
+
 }

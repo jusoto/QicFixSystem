@@ -77,7 +77,7 @@ public class DatastoreFacade {
         Tower tower = new Tower();
         tower.setEmail(towerEmail);
         List<Tower> listTower = tower.selectTowerByEmail(towerEmail);
-        if(listTower!=null && listTower.size()>0){
+        if (listTower != null && listTower.size() > 0) {
             hasTower.setTowerId(listTower.get(0).getId());
         }
         hasTower.setServiceId(serviceId);
@@ -90,7 +90,7 @@ public class DatastoreFacade {
         Tower tower = new Tower();
         tower.setEmail(towerEmail);
         List<Tower> listTower = tower.selectTowerByEmail(towerEmail);
-        if(listTower!=null && listTower.size()>0){
+        if (listTower != null && listTower.size() > 0) {
             hasTower.setTowerId(listTower.get(0).getId());
         }
         hasTower.setServiceId(serviceId);
@@ -114,7 +114,6 @@ public class DatastoreFacade {
         Service service = new Service();
         return service.create(null);
     }*/
-
     public List<User> selectUserByEmail(String email) {
         List<User> list;
         User user = new User();
@@ -134,10 +133,10 @@ public class DatastoreFacade {
         List<Tower> listAux;
         Tower tower = new Tower();
         listAux = tower.selectAll();
-        for(int i=0; i<listAux.size();i++){
+        for (int i = 0; i < listAux.size(); i++) {
             list.add(listAux.get(i));
-            for(int j=0;i<list.size();i++){
-                
+            for (int j = 0; i < list.size(); i++) {
+
             }
         }
         return list;
@@ -149,7 +148,7 @@ public class DatastoreFacade {
         tower.setCity(city);
         tower.setState(state);
         list = tower.SelectByStateCity(location);
-        
+
         return list;
     }
 
@@ -159,7 +158,7 @@ public class DatastoreFacade {
         tower.setCity(city);
         tower.setState(state);
         list = tower.SelectByRating();
-        
+
         return list;
     }
 
@@ -169,12 +168,12 @@ public class DatastoreFacade {
         tower.setCity(city);
         tower.setState(state);
         list = tower.SelectByPrice();
-        
+
         return list;
     }
 
-    public void updateClient(Client client) {
-        client.create();
+    public boolean updateClient(Client client) {
+        return client.update();
     }
 
     public List<Application> selectApplication(Integer userTypeId) {
@@ -213,7 +212,22 @@ public class DatastoreFacade {
     public boolean rateTower(Integer towerId, Integer serviceId, Integer rating) {
         HasTower hasTower = new HasTower();
         return hasTower.rateTower(towerId, serviceId, rating);
-        
+
     }
+
+    public boolean updateTower(Tower tower) {
+       return tower.update();
+    }
+
+    public Tower getTowerById(Integer id) {
+        Tower tower = new Tower();
+        return tower.selectById(id);
+    }
+
+    public Client getClientById(Integer id) {
+        Client client = new Client();
+        return client.selectById(id);
+    }
+
 
 }

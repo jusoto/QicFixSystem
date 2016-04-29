@@ -24,15 +24,21 @@ import util.Utility;
 public class ServiceLogic {
 
     private final Authenticator authenticator;
+    private DatastoreFacade ds;
 
     public ServiceLogic() {
         authenticator = Authenticator.getInstance();
+        ds = new DatastoreFacade();
+    }
+    
+    public void setDatastoreFacade(DatastoreFacade ds){
+        this.ds = ds;
     }
 
     public Boolean createService(String content, String token, String email) {
         Boolean resp = false;
         if (authenticator.isAuthTokenValid(token, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             String pickup;
             String destination;
             String[] array = getObjects(content);
@@ -91,7 +97,7 @@ public class ServiceLogic {
     public List<Service> selectServiceByTowerEmail(String authToken, String towerEmail) {
         List<Service> list = null;
         if (authenticator.isAuthTokenValid(authToken, towerEmail)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             list = ds.selectServiceByTowerEmail(towerEmail);
         }
         return list;
@@ -99,7 +105,7 @@ public class ServiceLogic {
 
     public boolean chargeClient(String content, String authToken, String email, Integer serviceId) {
         if (authenticator.isAuthTokenValid(authToken, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             return ds.chargeService(email, serviceId);
         }
         return false;
@@ -107,7 +113,7 @@ public class ServiceLogic {
 
     public boolean declineService(String content, String authToken, String email, Integer serviceId) {
         if (authenticator.isAuthTokenValid(authToken, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             return ds.declineService(email, serviceId);
         }
         return false;
@@ -115,10 +121,10 @@ public class ServiceLogic {
 
     public List<Tower> listTower(String authToken, String email, String pickup, Integer order) {
         if (authenticator.isAuthTokenValid(authToken, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             Location location = null;
             try {
-                location = Utility.getLocationFromAddress(pickup);
+                location = null;//Utility.getLocationFromAddress(pickup);
             } catch (Exception ex) {
                 Logger.getLogger(AppLogicFacade.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -129,7 +135,7 @@ public class ServiceLogic {
 
     public List<Service> selectAllService(String authToken, String email) {
         if (authenticator.isAuthTokenValid(authToken, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             return ds.selectAllService();
         }
         return null;
@@ -137,7 +143,7 @@ public class ServiceLogic {
 
     public boolean acceptService(String content, String authToken, String email, Integer serviceId) {
         if (authenticator.isAuthTokenValid(authToken, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             if (ds.acceptService(email, serviceId)) {
                 return true;
             }
@@ -148,7 +154,7 @@ public class ServiceLogic {
     public boolean updatePickup(String token, String email, Integer serviceId, String pickup) {
         boolean resp = false;
         if (authenticator.isAuthTokenValid(token, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             if (ds.updatePickup(email, serviceId)) {
                 resp = true;
             }
@@ -159,7 +165,7 @@ public class ServiceLogic {
     public boolean updateDestination(String token, String email, Integer serviceId, String destination) {
         boolean resp = false;
         if (authenticator.isAuthTokenValid(token, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             if (ds.updateDestination(destination, serviceId)) {
                 resp = true;
             }
@@ -170,7 +176,7 @@ public class ServiceLogic {
     public boolean makePayment(String token, String email, Integer serviceId, Double payment) {
         boolean resp = false;
         if (authenticator.isAuthTokenValid(token, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             if (ds.makePayment(payment, serviceId)) {
                 resp = true;
             }
@@ -181,7 +187,7 @@ public class ServiceLogic {
     public boolean rateTower(String token, String email, Integer serviceId, Integer towerId, Integer rate) {
         boolean resp = false;
         if (authenticator.isAuthTokenValid(token, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             if (ds.rateTower(towerId, serviceId, rate)) {
                 resp = true;
             }

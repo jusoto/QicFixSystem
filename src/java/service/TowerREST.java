@@ -47,9 +47,6 @@ public class TowerREST {
     public List<Tower> findAll(@QueryParam("token") String token, @QueryParam("email") String email, @QueryParam("address") String address, @QueryParam("order") Integer order) {
         AppLogicFacade obj = new AppLogicFacade();
         return obj.getTowerList(token, email, address, order);
-        /*Tower tower = new Tower();
-        List<Tower> list= tower.selectAll();
-        return tower.toJson(list);*/
     }
     
     /**

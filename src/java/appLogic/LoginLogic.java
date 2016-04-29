@@ -18,16 +18,21 @@ import javax.security.auth.login.LoginException;
  * @author Juan
  */
 public class LoginLogic {
-    
+
     private final Authenticator authenticator;
+    private DatastoreFacade ds;
 
     public LoginLogic() {
         authenticator = Authenticator.getInstance();
+        ds = new DatastoreFacade();
+    }
+
+    public void setDatastoreFacade(DatastoreFacade ds) {
+        this.ds = ds;
     }
 
     String login(String email, String password) {
         String token = "";
-
         try {
             token = authenticator.login(email, password);
         } catch (LoginException ex) {
@@ -37,25 +42,24 @@ public class LoginLogic {
         return token;
     }
 
-    void block(String email) {
+    public void block(String email) {
         User user = new User();
         List<User> list = user.selectByEmail(email);
         if (list.size() > 0) {
             user = list.get(0);
         }
         user.setBlocked(UUID.randomUUID().toString());
-        DatastoreFacade ds = new DatastoreFacade();
+        //DatastoreFacade ds = new DatastoreFacade();
         ds.block(user);
     }
 
-    List<User> selectUserByEmail(String email, String token) {
-        
+    public List<User> selectUserByEmail(String email, String token) {
         List<User> list = null;
         if (authenticator.isAuthTokenValid(token, email)) {
-            DatastoreFacade ds = new DatastoreFacade();
+            //DatastoreFacade ds = new DatastoreFacade();
             list = ds.selectUserByEmail(email);
         }
         return list;
     }
-    
+
 }

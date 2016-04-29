@@ -16,14 +16,18 @@ import java.util.List;
  */
 public class RegistrationLogic {
 
-    private final Authenticator authenticator;
+    private DatastoreFacade ds;
 
     public RegistrationLogic() {
-        authenticator = Authenticator.getInstance();
+        ds = new DatastoreFacade();
+    }
+    
+    public void setDatastoreFacade(DatastoreFacade ds){
+        this.ds = ds;
     }
 
-    boolean registerTower(String content) {
-        DatastoreFacade ds = new DatastoreFacade();
+    public boolean registerTower(String content) {
+        //DatastoreFacade ds = new DatastoreFacade();
         List<Tower> list;
         Tower tower = null;
         list = Tower.fromJson(content);
@@ -33,13 +37,13 @@ public class RegistrationLogic {
         return ds.createTower(tower);
     }
 
-    boolean registerClient(String content) {
+    public boolean registerClient(String content) {
         List<Client> list = Client.fromJson(content);
         Client client = null;
         if(list!=null && list.size()>0){
             client = list.get(0);
         }
-        DatastoreFacade ds = new DatastoreFacade();
+        //DatastoreFacade ds = new DatastoreFacade();
         return ds.createClient(client);
     }
 

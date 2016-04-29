@@ -6,23 +6,49 @@
 package appLogic;
 
 import entity.Client;
+import entity.DatastoreFacade;
 import entity.Tower;
 import java.util.ArrayList;
 import java.util.List;
+import javax.security.auth.login.LoginException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.mockito.Matchers;
+import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
 
 /**
  *
- * @author Freny
+ * @author Juan
  */
 public class EditProfileLogicTest {
     
+    private EditProfileLogic instance;
+    private final Authenticator authenticator;
+    Client client1;
+    String tokenClient1;
+    Client client2;
+    String tokenClient2;
+    Client client3;
+    String tokenClient3;
+    Tower tower1;
+    String tokenTower1;
+    Tower tower2;
+    String tokenTower2;
+    Tower tower3;
+    String tokenTower3;
+    
+    @Mock
+    DatastoreFacade datastoreFacade;
+    
     public EditProfileLogicTest() {
+        authenticator = Authenticator.getInstance();
     }
     
     @BeforeClass
@@ -34,7 +60,55 @@ public class EditProfileLogicTest {
     }
     
     @Before
-    public void setUp() {
+    public void setUp() throws LoginException {
+        MockitoAnnotations.initMocks(this);
+        instance = new EditProfileLogic();
+        instance.setDatastoreFacade(datastoreFacade);
+        client1 = new Client();
+        client1.setId(1);
+        client1.setEmail("user1@email.com");
+        client1.setPassword("user1");
+        client1.setFname("Freny");
+        client1.setLname("Patel");
+        tokenClient1 = authenticator.login(client1.getEmail(), client1.getPassword());
+        
+        client2 = new Client();
+        client2.setId(2);
+        client2.setEmail("user4@email.com");
+        client2.setPassword("user4");
+        client2.setFname("Steve");
+        client2.setLname("Foo");
+        tokenClient2 = authenticator.login(client2.getEmail(), client2.getPassword());
+        
+        client3 = new Client();
+        client3.setId(3);
+        client3.setEmail("user5@email.com");
+        client3.setPassword("user5");
+        client3.setFname("Maral");
+        client3.setLname("Kargar");
+        tokenClient3 = authenticator.login(client3.getEmail(), client3.getPassword());
+
+        tower1 = new Tower();
+        tower1.setId(1);
+        tower1.setEmail("user2@email.com");
+        tower1.setPassword("user2");
+        tower1.setFname("Anjli");
+        tower1.setLname("Chhatwani");
+        tokenTower1 = authenticator.login(tower1.getEmail(), tower1.getPassword());
+
+        tower2 = new Tower();
+        tower2.setEmail("user3@email.com");
+        tower2.setPassword("user3");
+        tower2.setFname("Dionny");
+        tower2.setLname("Santiago");
+        tokenTower2 = authenticator.login(tower2.getEmail(), tower2.getPassword());
+        
+        tower3 = new Tower();
+        tower3.setEmail("user6@email.com");
+        tower3.setPassword("user6");
+        tower3.setFname("Gregory");
+        tower3.setLname("Jean-Baptiste");
+        tokenTower3 = authenticator.login(tower3.getEmail(), tower3.getPassword());
     }
     
     @After
@@ -45,198 +119,81 @@ public class EditProfileLogicTest {
      * Test of updateTower method, of class EditProfileLogic.
      */
     @Test
-    public void testUpdateTowerSD_01() {
+    public void testUpdateTower() {
         System.out.println("updateTower");
-        String content = "";
-        Integer id = 1;
-        String email = "user2@email.com";
-        String token = "12c99426-b051-4db1-ba7d-2e7f3de9f7a3";
-        EditProfileLogic instance = new EditProfileLogic();
-        boolean expResult = false;
+        String content = "[{\"email\":\"juan@email.com\",\"password\":\"juan01\",\"fname\":\"juan 01\",\"lname\":\"juan\"}]";
+        String email = tower1.getEmail();
+        String token = tokenTower1;
+        Integer id = tower1.getId();
+        when(datastoreFacade.updateTower((Tower) Matchers.anyObject())).thenReturn(true);
         boolean result = instance.updateTower(content, email, token, id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        assertTrue(result);
+        verify(datastoreFacade).updateTower((Tower) Matchers.anyObject());
     }
 
-    @Test
-      public void testUpdateTowerSD_02() {
-        System.out.println("updateTower");
-        Integer id = 2;
-        String content = "";
-        String email = "user3@email.com";
-        String token = "";
-        EditProfileLogic instance = new EditProfileLogic();
-        boolean expResult = false;
-        boolean result = instance.updateTower(content, email, token, id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
-      
-        @Test
-        public void testUpdateTowerRD_01() {
-        System.out.println("updateTower");
-        Integer id=null;
-        String content = null;
-        String email = null;
-        String token = null;
-        EditProfileLogic instance = new EditProfileLogic();
-        boolean expResult = false;
-        boolean result = instance.updateTower(content, email, token, id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-       // fail("The test case is a prototype.");
-    }
-      
     /**
-     * Test of getTowerById method, of class EditProfileLogic Sunny Day.
+     * Test of getTowerById method, of class EditProfileLogic.
      */
     @Test
-    public void testGetTowerByIdSD_01() {
+    public void testGetTowerById() {
         System.out.println("getTowerById");
-        String email = "user2@email.com";
-        String token = "12c99426-b051-4db1-ba7d-2e7f3de9f7a3";
-        Integer id = 1;
-        EditProfileLogic instance = new EditProfileLogic();
-        List<Tower> expResult = new ArrayList<Tower>();
-        Tower tower = new Tower();
-        tower.setId(2);
-        //expResult.add(tower);
+        String email = tower1.getEmail();
+        String token = tokenTower1;
+        Integer id = tower1.getId();
+        List<Tower> list = new ArrayList<Tower>();
+        list.add(tower1);
+        when(datastoreFacade.getTowerById(Matchers.anyInt())).thenReturn(tower1);
         List<Tower> result = instance.getTowerById(email, token, id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-       // fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testGetTowerByIdSD_02() {
-        System.out.println("getTowerById");
-        String email = "user3@email.com";
-        String token = "12c99426-b051-4db1-ba7d-2e7f3de9f7a3";
-        Integer id = 2;
-        EditProfileLogic instance = new EditProfileLogic();
-        List<Tower> expResult = new ArrayList<Tower>();
-        Tower tower = new Tower();
-        tower.setId(3);
-        //expResult.add(tower);
-        List<Tower> result = instance.getTowerById(email, token, id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-       // fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testGetTowerByIdRD_01() {
-        System.out.println("getTowerById");
-        String email = "user2@email.com";
-        String token = "";
-        Integer id = 0;
-        EditProfileLogic instance = new EditProfileLogic();
-        List<Tower> expResult = new ArrayList<Tower>();
-        /*Tower tower = new Tower();
-        tower.setId(5);
-        expResult.add(tower);*/
-        List<Tower> result = instance.getTowerById(email, token, id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-       // fail("The test case is a prototype.");
+        assertEquals(list, result);
+        verify(datastoreFacade).getTowerById(Matchers.anyInt());
     }
 
     /**
      * Test of getClientById method, of class EditProfileLogic.
      */
     @Test
-    public void testGetClientByIdSD_01() {
+    public void testGetClientById() {
         System.out.println("getClientById");
-        String email = "user1@email.com";
-        String token = "";
-        Integer id = 1;
-        EditProfileLogic instance = new EditProfileLogic();
-        List<Client> expResult = new ArrayList<Client>();
-        Client client = new Client();
-        client.setId(1);
+        String email = client1.getEmail();
+        String token = tokenClient1;
+        Integer id = client1.getId();
+        List<Client> list = new ArrayList<Client>();
+        list.add(client1);
+        when(datastoreFacade.getClientById(Matchers.anyInt())).thenReturn(client1);
         List<Client> result = instance.getClientById(email, token, id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
-    
-     @Test
-    public void testGetClientByIdSD_02() {
-        System.out.println("getClientById");
-        String email = "user@email.com";
-        String token = "";
-        Integer id = 2;
-        EditProfileLogic instance = new EditProfileLogic();
-        List<Client> expResult = new ArrayList<Client>();
-        Client client = new Client();
-        client.setId(2);
-        List<Client> result = instance.getClientById(email, token, id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
-    
-     @Test
-    public void testGetClientByIdRD_01() {
-        System.out.println("getClientById");
-        String email = "user7@email.com";
-        String token = "";
-        Integer id = 7;
-        EditProfileLogic instance = new EditProfileLogic();
-        List<Client> expResult = new ArrayList<Client>();
-        /*Client client = new Client();
-        client.setId(7);
-        expResult.add(client);*/
-        List<Client> result = instance.getClientById(email, token, id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        assertEquals(list, result);
+        verify(datastoreFacade).getClientById(Matchers.anyInt());
     }
 
     /**
      * Test of updateClient method, of class EditProfileLogic.
      */
     @Test
-    public void testUpdateClientSD_01() {
+    public void testUpdateClient() {
         System.out.println("updateClient");
-        String content = "";
-        String email = "user1@email.com";
-        String token = "";
-        EditProfileLogic instance = new EditProfileLogic();
-        boolean expResult = false;
+        String content = "[{\"email\":\"juan@email.com\",\"password\":\"juan01\",\"fname\":\"juan 01\",\"lname\":\"juan\"}]";
+        String email = client1.getEmail();
+        String token = tokenClient1;
+        when(datastoreFacade.updateClient((Client) Matchers.anyObject())).thenReturn(true);
         boolean result = instance.updateClient(content, email, token);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        assertTrue(result);
+        verify(datastoreFacade).updateClient((Client) Matchers.anyObject());
     }
-     @Test
-    public void testUpdateClientSD_02() {
-        System.out.println("updateClient");
-        String content = "";
-        String email = "user2@email.com";
-        String token = "";
-        EditProfileLogic instance = new EditProfileLogic();
-        boolean expResult = false;
-        boolean result = instance.updateClient(content, email, token);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
-    
+
+    /**
+     * Test of selectClientByEmail method, of class EditProfileLogic.
+     */
     @Test
-    public void testUpdateClientRD_01() {
-        System.out.println("updateClient");
-        String content = null;
-        String email = null;
-        String token = null;
-        EditProfileLogic instance = new EditProfileLogic();
-        boolean expResult = false;
-        boolean result = instance.updateClient(content, email, token);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+    public void testSelectClientByEmail() {
+        System.out.println("selectClientByEmail");
+        String email = client1.getEmail();
+        String token = tokenClient1;
+        List<Client> list = new ArrayList<Client>();
+        list.add(client1);
+        when(datastoreFacade.selectClientByEmail(Matchers.anyString())).thenReturn(list);
+        List<Client> result = instance.selectClientByEmail(email, token);
+        assertEquals(list, result);
+        verify(datastoreFacade).selectClientByEmail(Matchers.anyString());
     }
     
 }

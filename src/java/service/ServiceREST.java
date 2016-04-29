@@ -6,7 +6,6 @@
 package service;
 
 import appLogic.AppLogicFacade;
-import util.Location;
 import entity.Service;
 import java.util.List;
 import javax.ws.rs.Consumes;
